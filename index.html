@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soil Health Card Research Programme</title>
+  <meta name="description" content="Soil Health Card Research Programme portal for scheme administrator and district users in Nagaland.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container topbar">
+      <img src="assets/gon-logo.png" alt="Government of Nagaland logo" class="top-logo top-logo-round top-logo-left">
+
+      <div class="brand-center">
+        <p class="mini-label">Soil and Water Conservation Department</p>
+        <h1>Soil Health Card Research Programme</h1>
+        <p class="brand-subtitle">Kohima, Nagaland</p>
+      </div>
+
+      <div class="session-box" id="sessionBox">
+        <span class="status-dot"></span>
+        <span id="sessionText">Secure role-based access</span>
+      </div>
+
+      <img src="assets/soil-logo.jpg" alt="Soil Health logo" class="top-logo top-logo-right">
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="section-tag">Portal Overview</p>
+          <h2>Login-based Soil Health Card system for scheme administration and district-level card generation.</h2>
+          <p>
+            This prototype includes one Scheme Administrator account that can create and manage district user accounts,
+            inspect all district data, and monitor generated Soil Health Cards. District users can log in, enter soil
+            testing data, and generate recommendation-ready Soil Health Cards.
+          </p>
+          <div class="hero-features">
+            <span>Scheme administrator control</span>
+            <span>District account creation</span>
+            <span>12 soil parameters</span>
+            <span>Texture and moisture context</span>
+            <span>Status color indicators</span>
+            <span>Recommendation generator</span>
+          </div>
+          <div class="hero-contact">
+            <p><strong>Support & Contact:</strong> SHCS&Wdirectorateteam@gmail.com</p>
+            <p><strong>Phone:</strong> 7005303701</p>
+          </div>
+        </div>
+
+        <div class="login-card">
+          <div class="card-head">
+            <p class="section-tag">Login</p>
+            <h3>Access the portal</h3>
+          </div>
+          <form id="loginForm" class="stack-form">
+            <label>
+              <span>Username</span>
+              <input type="text" id="loginUsername" placeholder="Enter username" required>
+            </label>
+            <label>
+              <span>Password</span>
+              <input type="password" id="loginPassword" placeholder="Enter password" required>
+            </label>
+            <button type="submit" class="button button-primary">Login</button>
+          </form>
+          <div class="login-help">
+            <p><strong>Sample District User:</strong> `kohima_user` / `District@123`</p>
+            <p><strong>Note:</strong> Administrator login details are not shown on the homepage.</p>
+          </div>
+          <p id="loginMessage" class="form-message" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <div class="container info-grid">
+        <article class="panel-card">
+          <div class="card-head">
+            <p class="section-tag">About Us</p>
+            <h3>Soil Health Card Team Center</h3>
+          </div>
+          <p>
+            The Soil Health Card Team Center under the Soil and Water Conservation Department, Kohima, Nagaland supports
+            scientific soil testing, district coordination, and data-driven advisory for farmers through the research programme.
+          </p>
+        </article>
+
+        <article class="panel-card">
+          <div class="card-head">
+            <p class="section-tag">SHC Scheme</p>
+            <h3>Research and Field Support</h3>
+          </div>
+          <p>
+            The SHC Scheme helps collect soil data, test key parameters, generate Soil Health Cards, and provide practical
+            recommendations for balanced nutrient use, soil conservation, and better productivity.
+          </p>
+        </article>
+
+        <article class="panel-card">
+          <div class="card-head">
+            <p class="section-tag">Benefits</p>
+            <h3>Why This Programme Matters</h3>
+          </div>
+          <ul class="check-list compact">
+            <li>Supports accurate fertilizer and nutrient planning.</li>
+            <li>Improves soil health monitoring across districts.</li>
+            <li>Helps generate recommendation-based Soil Health Cards.</li>
+            <li>Provides programme-wide inspection for the scheme administrator.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="workspace-section hidden" id="appShell">
+      <div class="container">
+        <div class="workspace-header">
+          <div>
+            <p class="section-tag">Dashboard</p>
+            <h2 id="dashboardTitle">Portal Dashboard</h2>
+            <p id="dashboardSubtitle">Manage accounts, inspect data, and generate Soil Health Cards.</p>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="button button-primary" id="logoutButton">Logout</button>
+          </div>
+        </div>
+
+        <section id="adminPanel" class="role-panel hidden">
+          <div class="stats-grid" id="adminStats"></div>
+
+          <div class="panel-grid">
+            <article class="panel-card wide-card">
+              <div class="card-head">
+                <p class="section-tag">Create District User</p>
+                <h3>Scheme Administrator Control</h3>
+              </div>
+              <form id="districtAccountForm" class="form-grid">
+                <label>
+                  <span>District</span>
+                  <input type="text" id="districtName" placeholder="Example: Dimapur" required>
+                </label>
+                <label>
+                  <span>Officer Name</span>
+                  <input type="text" id="districtOfficer" placeholder="District officer name" required>
+                </label>
+                <label>
+                  <span>Username</span>
+                  <input type="text" id="districtUsername" placeholder="Create username" required>
+                </label>
+                <label>
+                  <span>Password</span>
+                  <input type="text" id="districtPassword" placeholder="Create password" required>
+                </label>
+                <label class="span-2">
+                  <span>Test Center Address</span>
+                  <input type="text" id="districtAddress" placeholder="District test center address" required>
+                </label>
+                <button type="submit" class="button button-primary">Create District Account</button>
+              </form>
+              <p id="districtAccountMessage" class="form-message" aria-live="polite"></p>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <p class="section-tag">Bulk Upload</p>
+                <h3>District Accounts CSV</h3>
+              </div>
+              <div class="bulk-upload-info">
+                <p>Upload multiple district accounts using CSV format. <a href="#" id="downloadExampleCsv">Download example CSV</a></p>
+                <form id="bulkUploadForm" class="form-grid">
+                  <label class="span-2">
+                    <span>CSV File</span>
+                    <input type="file" id="bulkUploadFile" accept=".csv" required>
+                  </label>
+                  <button type="submit" class="button button-primary">Upload and Create Accounts</button>
+                </form>
+              </div>
+              <p id="bulkUploadMessage" class="form-message" aria-live="polite"></p>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <p class="section-tag">Account Rules</p>
+                <h3>Portal Access Model</h3>
+              </div>
+              <ul class="check-list compact">
+                <li>One Scheme Administrator controls all district accounts.</li>
+                <li>Administrator can inspect all Soil Health Card records.</li>
+                <li>District users can only create and inspect their district records.</li>
+                <li>All saved records stay in browser local storage for this demo.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="panel-grid">
+            <article class="panel-card">
+              <div class="card-head">
+                <p class="section-tag">District Accounts</p>
+                <h3>Managed Users</h3>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>District</th>
+                      <th>Officer</th>
+                      <th>Username</th>
+                      <th>Address</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="districtAccountsTable"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="panel-card wide-card">
+              <div class="card-head">
+                <p class="section-tag">All District Data</p>
+                <h3>Generated Soil Health Cards</h3>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Card ID</th>
+                      <th>District</th>
+                      <th>Farmer</th>
+                      <th>Survey No.</th>
+                      <th>Testing Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminCardsTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <article class="panel-card">
+            <div class="card-head">
+              <p class="section-tag">Inspection View</p>
+              <h3>Selected Soil Health Card</h3>
+            </div>
+              <div class="card-actions">
+                <button type="button" class="button button-secondary" id="adminDownloadPdfButton">Download PDF</button>
+              </div>
+            <div id="adminCardPreview" class="card-preview empty-state">
+              Select a card from the table to inspect all entered data.
+            </div>
+          </article>
+        </section>
+
+        <section id="districtPanel" class="role-panel hidden">
+          <div class="stats-grid" id="districtStats"></div>
+
+          <div class="panel-grid">
+            <article class="panel-card wide-card">
+              <div class="card-head">
+                <p class="section-tag">Generate Soil Health Card</p>
+                <h3>District Data Entry</h3>
+              </div>
+              <form id="soilCardForm" class="stack-form">
+                <div class="form-grid">
+                  <label>
+                    <span>District</span>
+                    <input type="text" id="formDistrict" required>
+                  </label>
+                  <label>
+                    <span>Testing Date</span>
+                    <input type="date" id="testingDate" required>
+                  </label>
+                  <label class="span-2">
+                    <span>Test Center Address</span>
+                    <input type="text" id="testCenterAddress" placeholder="Enter district address" required>
+                  </label>
+                  <label>
+                    <span>Test Center ID</span>
+                    <input type="text" id="testCenterId" placeholder="Center ID" required>
+                  </label>
+                  <label>
+                    <span>Survey No.</span>
+                    <input type="text" id="surveyNo" value="1" required>
+                  </label>
+                  <label>
+                    <span>Farmer Name</span>
+                    <input type="text" id="farmerName" placeholder="Name" required>
+                  </label>
+                  <label>
+                    <span>Farmer Village</span>
+                    <input type="text" id="farmerVillage" placeholder="Village" required>
+                  </label>
+                  <label>
+                    <span>Soil Texture</span>
+                    <select id="soilTexture" required>
+                      <option value="">Select texture</option>
+                      <option>Sandy</option>
+                      <option>Loamy</option>
+                      <option>Clayey</option>
+                      <option>Silty</option>
+                      <option>Gravelly</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Moisture Context</span>
+                    <select id="moistureContext" required>
+                      <option value="">Select moisture context</option>
+                      <option>Dry</option>
+                      <option>Moderate</option>
+                      <option>Moist</option>
+                      <option>Wet</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="parameter-grid" id="parameterGrid"></div>
+
+                <label>
+                  <span>Recommendation</span>
+                  <textarea id="manualRecommendation" rows="4" placeholder="Optional manual recommendation. Leave blank to auto-generate."></textarea>
+                </label>
+
+                <div class="form-actions">
+                  <button type="submit" class="button button-primary">Save and Generate Card</button>
+                  <button type="button" class="button button-secondary" id="previewButton">Preview Current Data</button>
+                </div>
+              </form>
+              <p id="soilCardMessage" class="form-message" aria-live="polite"></p>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <p class="section-tag">Measured Scale</p>
+                <h3>Indicator Information</h3>
+              </div>
+              <div class="legend-list">
+                <div><span class="legend-dot legend-green"></span>GREEN: SUFFICIENT</div>
+                <div><span class="legend-dot legend-yellow"></span>YELLOW: MEDIUM</div>
+                <div><span class="legend-dot legend-orange"></span>ORANGE: LOW or HIGH</div>
+                <div><span class="legend-dot legend-red"></span>RED: DEFICIENT</div>
+                <div><span class="legend-dot legend-grey"></span>GREY: NOT AVAILABLE</div>
+              </div>
+            </article>
+          </div>
+
+          <div class="panel-grid">
+            <article class="panel-card">
+              <div class="card-head">
+                <p class="section-tag">Bulk Upload</p>
+                <h3>Soil Health Cards CSV</h3>
+              </div>
+              <div class="bulk-upload-info">
+                <p>Upload multiple soil health cards using CSV format. <a href="#" id="downloadCardsExampleCsv">Download example CSV</a></p>
+                <form id="bulkCardsUploadForm" class="form-grid">
+                  <label class="span-2">
+                    <span>CSV File</span>
+                    <input type="file" id="bulkCardsUploadFile" accept=".csv" required>
+                  </label>
+                  <button type="submit" class="button button-primary">Upload and Generate Cards</button>
+                </form>
+              </div>
+              <p id="bulkCardsUploadMessage" class="form-message" aria-live="polite"></p>
+            </article>
+
+            <article class="panel-card">
+              <div class="card-head">
+                <p class="section-tag">Saved District Cards</p>
+                <h3>Generated Records</h3>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Card ID</th>
+                      <th>Farmer</th>
+                      <th>Survey No.</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="districtCardsTable"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="panel-card wide-card">
+              <div class="card-head">
+                <p class="section-tag">Card Preview</p>
+                <h3>Soil Health Card Output</h3>
+              </div>
+              <div class="card-actions">
+                <button type="button" class="button button-secondary" id="districtDownloadPdfButton">Download PDF</button>
+              </div>
+              <div id="districtCardPreview" class="card-preview empty-state">
+                Fill the form and preview or save the card to see the generated output here.
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="info-section info-section-soft">
+      <div class="container credits-grid">
+        <article class="panel-card">
+          <div class="card-head">
+            <p class="section-tag">Support & Contact</p>
+            <h3>Reach the SHC Team</h3>
+          </div>
+          <p><strong>Email:</strong> SHCS&Wdirectorateteam@gmail.com</p>
+          <p><strong>Phone:</strong> 7005303701</p>
+          <p><strong>Office:</strong> Soil and Water Conservation Department, Kohima, Nagaland</p>
+        </article>
+
+        <article class="panel-card">
+          <div class="card-head">
+            <p class="section-tag">Programme Credits</p>
+            <h3>Research Programme Team</h3>
+          </div>
+          <p><strong>Developer:</strong> Khanchulo Semy</p>
+          <p><strong>Virtualizer and Advisor:</strong> Sir. Kihika G Yeptho</p>
+          <p><strong>And</strong> Sir. Rontilo Kent</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <p>Soil Health Card Team Center · Soil and Water Conservation Department · Kohima, Nagaland</p>
+      <p>SHC Research Programme Team Kohima</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
