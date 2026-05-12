@@ -26,10 +26,24 @@ export const create = mutation(async ({ db }, account) => {
 });
 
 export const update = mutation(async ({ db }, account) => {
-  await db.delete("accounts", account.id);
+  const existing = await db
+    .query("accounts")
+    .filter((q) => q.eq(q.field("id"), account.id))
+    .collect();
+  if (existing.length === 0) {
+    throw new Error("Account not found.");
+  }
+  await db.delete("accounts", existing[0]._id);
   return await db.insert("accounts", account);
 });
 
 export const deleteAccount = mutation(async ({ db }, { id }) => {
-  return await db.delete("accounts", id);
+  const existing = await db
+    .query("accounts")
+    .filter((q) => q.eq(q.field("id"), id))
+    .collect();
+  if (existing.length === 0) {
+    return null;
+  }
+  return await db.delete("accounts", existing[0]._id);
 });

@@ -13,5 +13,12 @@ export const save = mutation(async ({ db }, card) => {
 });
 
 export const deleteCard = mutation(async ({ db }, { id }) => {
-  return await db.delete("soil_cards", id);
+  const existing = await db
+    .query("soil_cards")
+    .filter((q) => q.eq(q.field("id"), id))
+    .collect();
+  if (existing.length === 0) {
+    return null;
+  }
+  return await db.delete("soil_cards", existing[0]._id);
 });
