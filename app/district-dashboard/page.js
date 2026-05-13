@@ -14,6 +14,7 @@ import {
   saveCurrentUser,
   evaluateParameter,
   getRecommendationLines,
+  buildCardPreviewHtml,
   formatDate,
   getStatusClass
 } from "../utils/shc-helpers";
@@ -23,6 +24,7 @@ export default function DistrictDashboard() {
   const [currentUser, setCurrentUser] = useState(null);
   const [state, setState] = useState(defaultState);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [previewHtml, setPreviewHtml] = useState("");
   const [convexReady, setConvexReady] = useState(false);
   const [convexClient, setConvexClient] = useState(null);
   const [apiClient, setApiClient] = useState(null);
@@ -36,7 +38,7 @@ export default function DistrictDashboard() {
     farmerVillage: "",
     soilTexture: "",
     moistureContext: "",
-    manualRecommendation: "",
+    recommendationChoice: "auto",
     parameters: {
       ph: "", ec: "", organicCarbon: "", nitrogen: "", phosphorous: "",
       potassium: "", sulphur: "", zinc: "", boron: "", iron: "", manganese: "", copper: ""
@@ -134,7 +136,8 @@ export default function DistrictDashboard() {
       const definition = parameterDefinitions.find((entry) => entry.key === key);
       evaluations[key] = evaluateParameter(definition, value);
     });
-    const autoRecommendation = getRecommendationLines(evaluations, form.soilTexture, form.moistureContext).join(" ");
+    const recLines = getRecommendationLines(evaluations, form.soilTexture, form.moistureContext);
+    const autoRecommendation = recLines.join(", ");
     return {
       id: `SHC-${Date.now()}`,
       district: currentUser?.role === "district" ? currentUser.district : form.district.trim(),
@@ -148,7 +151,7 @@ export default function DistrictDashboard() {
       moistureContext: form.moistureContext,
       parameters: form.parameters,
       evaluations,
-      recommendation: form.manualRecommendation.trim() || autoRecommendation,
+      recommendation: form.recommendationChoice === "auto" ? autoRecommendation : form.recommendationChoice,
       createdBy: currentUser?.username || "",
       createdAt: new Date().toISOString()
     };
@@ -166,6 +169,7 @@ export default function DistrictDashboard() {
         await remoteSaveCard(card);
         setState((prev) => ({...prev, cards: [...prev.cards, card]}));
         setSelectedCard(card);
+        setPreviewHtml(buildCardPreviewHtml(card));
         setMessage("soilCard", `Soil Health Card ${card.id} saved successfully.`, "success");
         return;
       } catch (error) {
@@ -178,12 +182,14 @@ export default function DistrictDashboard() {
       return next;
     });
     setSelectedCard(card);
+    setPreviewHtml(buildCardPreviewHtml(card));
     setMessage("soilCard", `Soil Health Card ${card.id} saved successfully.`, "success");
   };
 
   const handlePreviewCard = () => {
     const previewCard = buildCardRecord(soilCardForm);
     setSelectedCard(previewCard);
+    setPreviewHtml(buildCardPreviewHtml(previewCard));
     setMessage("soilCard", "Preview generated from current form values.", "success");
   };
 
@@ -191,6 +197,7 @@ export default function DistrictDashboard() {
     const card = state.cards.find((entry) => entry.id === cardId);
     if (!card) return;
     setSelectedCard(card);
+    setPreviewHtml(buildCardPreviewHtml(card));
   };
 
   const handleDeleteCard = async (cardId) => {
@@ -250,6 +257,9 @@ export default function DistrictDashboard() {
         evaluations[def.key] = evaluateParameter(def, parameters[def.key]);
       });
       const autoRecommendation = getRecommendationLines(evaluations, soilTexture, moistureContext).join(" ");
+      const recommendation = ["Lime", "Gypsum", "Manure"].includes(manualRecommendation)
+        ? manualRecommendation
+        : autoRecommendation;
       const card = {
         id: `SHC-${Date.now()}-${i}`,
         district,
@@ -263,7 +273,7 @@ export default function DistrictDashboard() {
         moistureContext,
         parameters,
         evaluations,
-        recommendation: manualRecommendation || autoRecommendation,
+        recommendation,
         createdBy: currentUser?.username || "",
         createdAt: new Date().toISOString()
       };
@@ -291,12 +301,7 @@ export default function DistrictDashboard() {
       alert("No card selected to download.");
       return;
     }
-    const paramRows = parameterDefinitions.map((definition) => {
-      const evaluation = card.evaluations[definition.key];
-      const displayValue = evaluation.value === "" ? "N/A" : `${evaluation.value} ${definition.unit}`.trim();
-      return `<div><strong>${definition.label}:</strong> ${displayValue} - ${evaluation.text}</div>`;
-    }).join("");
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>${card.id}</title><style>body{margin:0;font-family:Arial,sans-serif;padding:20px}@page{size:A4}h1{color:#1d6a3a}p{margin:5px 0}</style></head><body><h1>Soil Health Card</h1><p><strong>Card ID:</strong> ${card.id}</p><p><strong>District:</strong> ${card.district}</p><p><strong>Farmer:</strong> ${card.farmerName}</p><p><strong>Village:</strong> ${card.farmerVillage}</p><p><strong>Testing Date:</strong> ${formatDate(card.testingDate)}</p><p><strong>Survey No:</strong> ${card.surveyNo}</p><h2>Parameters</h2>${paramRows}<p><strong>Recommendation:</strong></p><p>${card.recommendation}</p><script>window.print();</script></body></html>`;
+    const html = buildCardPreviewHtml(card).replace("</body>", "<script>window.onload = () => window.print();</script></body>");
     const win = window.open("", "_blank");
     if (!win) {
       alert("Popup blocked. Please allow popups to download PDF.");
@@ -431,7 +436,12 @@ export default function DistrictDashboard() {
                   </div>
                   <label>
                     <span>Recommendation</span>
-                    <textarea value={soilCardForm.manualRecommendation} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, manualRecommendation: event.target.value }))} rows="4" placeholder="Optional manual recommendation. Leave blank to auto-generate."></textarea>
+                    <select value={soilCardForm.recommendationChoice} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, recommendationChoice: event.target.value }))}>
+                      <option value="auto">Auto-generate recommendation</option>
+                      <option value="Lime">Lime</option>
+                      <option value="Gypsum">Gypsum</option>
+                      <option value="Manure">Manure</option>
+                    </select>
                   </label>
                   <div className="form-actions">
                     <button type="submit" className="button button-primary">Save and Generate Card</button>
@@ -507,7 +517,17 @@ export default function DistrictDashboard() {
                   </div>
                 )}
                 <div className="card-preview">
-                  {selectedCard ? "Card preview available - Click Download PDF to generate report" : "Fill the form and preview or save the card to see the generated output here."}
+                  {previewHtml ? (
+                    <iframe
+                      title="Soil Health Card Preview"
+                      srcDoc={previewHtml}
+                      className="preview-frame"
+                    />
+                  ) : (
+                    <div className="empty-state">
+                      {selectedCard ? "Preview generation failed. Please refresh or retry." : "Fill the form and click Preview Current Data or Save and Generate Card to render the Soil Health Card preview."}
+                    </div>
+                  )}
                 </div>
               </article>
             </div>

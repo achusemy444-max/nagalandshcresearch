@@ -545,6 +545,13 @@ td {
   min-height: 280px;
 }
 
+.preview-frame {
+  width: 100%;
+  min-height: 650px;
+  border: 1px solid rgba(23, 49, 29, 0.12);
+  border-radius: 18px;
+}
+
 .empty-state {
   display: grid;
   place-items: center;

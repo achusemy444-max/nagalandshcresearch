@@ -15,6 +15,7 @@ import {
   saveCurrentUser,
   evaluateParameter,
   getRecommendationLines,
+  buildCardPreviewHtml,
   formatDate,
   getStatusClass
 } from "../utils/shc-helpers";
@@ -24,6 +25,7 @@ export default function AdminDashboard() {
   const [currentUser, setCurrentUser] = useState(null);
   const [state, setState] = useState(defaultState);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [previewHtml, setPreviewHtml] = useState("");
   const [convexReady, setConvexReady] = useState(false);
   const [convexClient, setConvexClient] = useState(null);
   const [apiClient, setApiClient] = useState(null);
@@ -182,6 +184,7 @@ export default function AdminDashboard() {
     const card = state.cards.find((entry) => entry.id === cardId);
     if (!card) return;
     setSelectedCard(card);
+    setPreviewHtml(buildCardPreviewHtml(card));
   };
 
   const handleDeleteCard = async (cardId) => {
@@ -339,12 +342,7 @@ export default function AdminDashboard() {
       alert("No card selected to download.");
       return;
     }
-    const paramRows = parameterDefinitions.map((definition) => {
-      const evaluation = card.evaluations[definition.key];
-      const displayValue = evaluation.value === "" ? "N/A" : `${evaluation.value} ${definition.unit}`.trim();
-      return `<div class="param-row"><div class="param-name">${definition.label}</div><div class="param-range">${definition.rangeText}</div><div class="param-value"><div class="param-measured">${displayValue}</div><div class="param-status ${getStatusClass(evaluation.status)}">${evaluation.text}</div></div></div>`;
-    }).join("");
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>${card.id}</title><style>body{margin:0;font-family:Arial,sans-serif}@page{size:A4;margin:12mm}.soil-card{padding:20px;line-height:1.6}</style></head><body><div class="soil-card"><h1>Soil Health Card</h1><p><strong>Card ID:</strong> ${card.id}</p><p><strong>District:</strong> ${card.district}</p><p><strong>Farmer:</strong> ${card.farmerName}</p><p><strong>Date:</strong> ${formatDate(card.testingDate)}</p></div><script>window.print();</script></body></html>`;
+    const html = buildCardPreviewHtml(card).replace("</body>", "<script>window.onload = () => window.print();</script></body>");
     const win = window.open("", "_blank");
     if (!win) {
       alert("Popup blocked. Please allow popups to download PDF.");
@@ -560,6 +558,17 @@ export default function AdminDashboard() {
                 </div>
                 <div className="card-actions">
                   <button type="button" className="button button-secondary" onClick={() => downloadCardPdf(selectedCard)}>Download PDF</button>
+                </div>
+                <div className="card-preview">
+                  {previewHtml ? (
+                    <iframe
+                      title="Soil Health Card Preview"
+                      srcDoc={previewHtml}
+                      className="preview-frame"
+                    />
+                  ) : (
+                    <div className="empty-state">Select a card to render the Soil Health Card preview.</div>
+                  )}
                 </div>
               </article>
             )}

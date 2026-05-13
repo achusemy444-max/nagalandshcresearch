@@ -170,63 +170,23 @@ export function evaluateParameter(definition, value) {
 }
 
 export function getRecommendationLines(evaluations, soilTexture, moistureContext) {
-  const lines = [];
-  const getStatus = (key) => evaluations[key]?.status;
-  if (["yellow", "orange", "red"].includes(getStatus("ph"))) {
-    lines.push("Apply agricultural lime in recommended dose to improve acidic soil reaction and enhance nutrient availability.");
+  const recommendations = new Set();
+  const status = (key) => evaluations[key]?.status;
+  if (["yellow", "orange", "red"].includes(status("ph"))) {
+    recommendations.add("Lime");
   }
-  if (getStatus("ec") !== "green" && getStatus("ec") !== "grey") {
-    lines.push("Check irrigation water quality, improve drainage, and avoid excess salt-forming inputs.");
+  if (["orange", "red"].includes(status("ec"))) {
+    recommendations.add("Gypsum");
   }
-  if (getStatus("organicCarbon") !== "green" && getStatus("organicCarbon") !== "grey") {
-    lines.push("Increase compost, farmyard manure, crop residue incorporation, and green manuring to improve organic carbon.");
+  if (
+    ["organicCarbon", "nitrogen", "phosphorous", "potassium", "sulphur"].some((key) => status(key) !== "green" && status(key) !== "grey")
+  ) {
+    recommendations.add("Manure");
   }
-  if (getStatus("nitrogen") !== "green" && getStatus("nitrogen") !== "grey") {
-    lines.push("Apply nitrogen in split doses according to crop stage and combine with organic manures.");
+  if (!recommendations.size) {
+    recommendations.add("Manure");
   }
-  if (getStatus("phosphorous") !== "green" && getStatus("phosphorous") !== "grey") {
-    lines.push("Apply phosphatic fertilizers such as SSP or DAP as per crop requirement and soil test guidance.");
-  }
-  if (getStatus("potassium") !== "green" && getStatus("potassium") !== "grey") {
-    lines.push("Apply potassic fertilizer such as MOP where deficiency is observed.");
-  }
-  if (getStatus("sulphur") !== "green" && getStatus("sulphur") !== "grey") {
-    lines.push("Use sulphur-containing fertilizers or gypsum to correct sulphur deficiency.");
-  }
-  if (getStatus("zinc") !== "green" && getStatus("zinc") !== "grey") {
-    lines.push("Apply zinc sulphate in recommended quantity to address zinc deficiency.");
-  }
-  if (getStatus("boron") !== "green" && getStatus("boron") !== "grey") {
-    lines.push("Apply boron carefully in small recommended doses, such as borax, to avoid toxicity.");
-  }
-  if (getStatus("iron") !== "green" && getStatus("iron") !== "grey") {
-    lines.push("Use iron micronutrient application if deficiency symptoms or low test values are observed.");
-  }
-  if (getStatus("manganese") !== "green" && getStatus("manganese") !== "grey") {
-    lines.push("Apply manganese sulphate if manganese deficiency is confirmed in crop or soil analysis.");
-  }
-  if (getStatus("copper") !== "green" && getStatus("copper") !== "grey") {
-    lines.push("Apply copper sulphate only in recommended doses where copper deficiency exists.");
-  }
-  if (soilTexture === "Sandy") {
-    lines.push("For sandy soil, use split fertilizer doses and increase organic matter to improve nutrient retention.");
-  }
-  if (soilTexture === "Clayey") {
-    lines.push("For clayey soil, maintain good drainage and avoid water stagnation during crop growth.");
-  }
-  if (soilTexture === "Loamy") {
-    lines.push("Loamy soil is suitable for balanced nutrient management; maintain organic matter for sustained productivity.");
-  }
-  if (moistureContext === "Dry") {
-    lines.push("Use mulching and moisture conservation practices because current moisture condition is dry.");
-  }
-  if (moistureContext === "Wet") {
-    lines.push("Improve surface drainage and avoid over-irrigation under wet moisture conditions.");
-  }
-  if (!lines.length) {
-    lines.push("All measured values are within the desired range. Continue balanced nutrient management and periodic soil testing.");
-  }
-  return lines;
+  return Array.from(recommendations);
 }
 
 export function formatDate(value) {
@@ -240,4 +200,14 @@ export function formatDate(value) {
 
 export function getStatusClass(status) {
   return `status-${status}`;
+}
+
+export function buildCardPreviewHtml(card) {
+  const paramRows = parameterDefinitions.map((definition) => {
+    const evaluation = card.evaluations?.[definition.key] || { value: "", status: "grey", text: "NOT AVAILABLE" };
+    const displayValue = evaluation.value === "" ? "N/A" : `${evaluation.value} ${definition.unit}`.trim();
+    return `<div class="param-row"><div class="param-name">${definition.label}</div><div class="param-range">${definition.rangeText}</div><div class="param-value"><div class="param-measured">${displayValue}</div><div class="param-status ${getStatusClass(evaluation.status)}">${evaluation.text}</div></div></div>`;
+  }).join("");
+  const recommendationText = card.recommendation || "Manure";
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>${card.id}</title><style>body{margin:0;font-family:Arial,sans-serif;color:#1b3421;background:#f6f8f3}*{box-sizing:border-box}.soil-card{max-width:210mm;width:100%;margin:0 auto;padding:24px;background:#fff;border-radius:18px;box-shadow:0 12px 34px rgba(0,0,0,.08)}.soil-card-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.logo-group{display:flex;align-items:center;gap:12px}.logo-group img{width:72px;height:72px;object-fit:cover;border-radius:12px;border:1px solid rgba(23,49,29,.12)}.card-title{display:grid;gap:6px}.card-title h1{margin:0;font-size:1.1rem;color:#165f32}.card-title p{margin:0;color:#445643;font-size:.85rem}.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px}.info-block{background:rgba(109,152,88,.08);padding:12px;border-radius:12px}.info-block strong{display:block;font-size:.82rem;color:#1b3421;margin-bottom:4px}.info-block span{font-size:.75rem;color:#4d5f4b}.section{margin-bottom:18px}.section h2{margin:0 0 8px;font-size:.92rem;color:#1d5d34}.parameter-table{display:grid;gap:10px}.param-row{display:grid;grid-template-columns:1.5fr 1fr 1.3fr;gap:10px;padding:12px 14px;border:1px solid rgba(23,49,29,.1);border-radius:10px;align-items:center;font-size:.78rem}.param-name{font-weight:700;color:#1b3421}.param-range{color:#5a6a57}.param-measured{font-weight:700;color:#263b28}.param-status{display:inline-flex;padding:.25rem .5rem;border-radius:999px;font-size:.68rem;font-weight:700;white-space:nowrap}.status-green{color:#1d6a3a;background:rgba(37,132,64,.12)}.status-yellow{color:#b58a00;background:rgba(255,214,84,.16)}.status-orange{color:#b35a00;background:rgba(255,173,75,.14)}.status-red{color:#b00020;background:rgba(255,148,148,.18)}.status-grey{color:#5b6b59;background:rgba(121,132,116,.12)}.recommendation-box{padding:16px;border-radius:14px;background:rgba(204,230,175,.2);border:1px solid rgba(109,152,88,.18);font-size:.86rem;line-height:1.5}.range-indicator{display:grid;grid-template-columns:1fr 1fr;gap:10px}.indicator-card{padding:14px;border-radius:14px;border:1px solid rgba(23,49,29,.08);background:#fafbf7}.indicator-card strong{display:block;margin-bottom:4px;color:#1c4725}.indicator-card span{font-size:.82rem;color:#475746}.footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:22px;padding-top:14px;border-top:1px solid rgba(23,49,29,.1);font-size:.72rem;color:#5b6b57}.footer small{display:block}</style></head><body><div class="soil-card"><div class="soil-card-header"><div class="logo-group"><img src="/assets/gon-logo.png" alt="Government of Nagaland logo"/><img src="/assets/soil-logo.jpg" alt="Soil Health logo"/></div><div class="card-title"><h1>Soil Health Card</h1><p>Soil and Water Conservation Department · Kohima, Nagaland</p></div><div class="logo-group"><div style="text-align:right"><strong>${card.id}</strong><br/><span>${formatDate(card.testingDate)}</span></div></div></div><div class="info-grid"><div class="info-block"><strong>District</strong><span>${card.district}</span></div><div class="info-block"><strong>Survey No.</strong><span>${card.surveyNo}</span></div><div class="info-block"><strong>Farmer</strong><span>${card.farmerName}, ${card.farmerVillage}</span></div><div class="info-block"><strong>Test Center</strong><span>${card.testCenterAddress} (${card.testCenterId})</span></div></div><section class="section"><h2>Indicator Summary</h2><div class="range-indicator"><div class="indicator-card"><strong>pH Range</strong><span>5.5 - 8.5</span></div><div class="indicator-card"><strong>EC Range</strong><span>< 1 dS/m</span></div></div></section><section class="section"><h2>Parameter Values</h2><div class="parameter-table">${paramRows}</div></section><section class="section"><h2>Recommendation</h2><div class="recommendation-box">${recommendationText}</div></section><div class="footer"><small>Generated by Kohima District Soil Health Card System</small><small>Only Lime, Gypsum, Manure recommendations are shown.</small></div></div></body></html>`;
 }
