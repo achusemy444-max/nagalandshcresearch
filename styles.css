@@ -798,6 +798,371 @@ td {
   gap: 0.3rem;
 }
 
+/* ===== HOME PAGE STYLES ===== */
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin: 0 0 0.8rem;
+  color: var(--text);
+}
+
+.section-header p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+.section-subtitle {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-top: 0.5rem;
+}
+
+/* Benefits Grid */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.benefit-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.8rem 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 48px rgba(18, 46, 28, 0.12);
+}
+
+.benefit-icon {
+  font-size: 2.5rem;
+}
+
+.benefit-card h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.benefit-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Lab Content */
+.lab-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.lab-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.8rem;
+  box-shadow: var(--shadow);
+}
+
+.lab-card h3 {
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+  color: var(--text);
+}
+
+.lab-card p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.lab-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.lab-card li {
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.lab-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+.facility-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Parameter Categories */
+.parameter-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.param-group {
+  background: rgba(216, 232, 193, 0.2);
+  padding: 1rem;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary);
+}
+
+.param-group strong {
+  display: block;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.param-group p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Process Steps */
+.process-steps {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  counter-reset: step-counter;
+}
+
+.process-steps li {
+  counter-increment: step-counter;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(216, 232, 193, 0.1);
+  border-radius: 12px;
+  margin-bottom: 0.8rem;
+  border-left: 4px solid var(--primary);
+}
+
+.process-steps li::before {
+  content: counter(step-counter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.process-steps strong {
+  display: block;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+
+/* Login Section */
+.login-section {
+  padding: 3rem 0;
+  background: linear-gradient(135deg, rgba(29, 106, 58, 0.05) 0%, rgba(143, 179, 79, 0.05) 100%);
+}
+
+.login-container {
+  display: grid;
+  place-items: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+/* Soil Card Info Table */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table tr {
+  border-bottom: 1px solid rgba(23, 49, 29, 0.08);
+}
+
+.info-table tr:last-child {
+  border-bottom: none;
+}
+
+.info-table td {
+  padding: 0.6rem 0.8rem;
+  vertical-align: top;
+}
+
+.info-table strong {
+  color: var(--primary);
+  font-weight: 700;
+  min-width: 150px;
+}
+
+/* Indicators Display */
+.indicators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.indicator-item {
+  background: rgba(216, 232, 193, 0.15);
+  padding: 1rem;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary);
+}
+
+.indicator-item strong {
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.indicator-item p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+}
+
+/* Bulk Upload Info */
+.bulk-upload-info {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Nutrient Analysis */
+.nutrient-analysis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.nutrient-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.2rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.nutrient-summary strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.nutrient-summary p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-grid,
+  .panel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wide-card {
+    grid-column: auto;
+  }
+
+  .stats-grid,
+  .info-grid,
+  .credits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .parameter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .soil-card-meta,
+  .soil-card-issued {
+    grid-template-columns: 1fr;
+  }
+
+  .parameter-table {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 1rem 0;
+  }
+
+  .top-logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .soil-card {
+    box-shadow: none;
+    border: none;
+    page-break-inside: avoid;
+  }
+
+  .site-header,
+  main > .info-section,
+  .site-footer {
+    display: none;
+  }
+
+  main {
+    padding: 0;
+  }
+}
+
 @page {
   size: A4;
   margin: 12mm;

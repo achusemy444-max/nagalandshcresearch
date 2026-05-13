@@ -1,0 +1,525 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import Script from "next/script";
+import Link from "next/link";
+import {
+  STORAGE_KEY,
+  parameterDefinitions,
+  defaultState,
+  loadLocalState,
+  saveLocalState,
+  loadCurrentUser,
+  saveCurrentUser,
+  evaluateParameter,
+  getRecommendationLines,
+  formatDate,
+  getStatusClass
+} from "../utils/shc-helpers";
+
+export default function DistrictDashboard() {
+  const router = useRouter();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [state, setState] = useState(defaultState);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [convexReady, setConvexReady] = useState(false);
+  const [convexClient, setConvexClient] = useState(null);
+  const [apiClient, setApiClient] = useState(null);
+  const [soilCardForm, setSoilCardForm] = useState({
+    district: "",
+    testingDate: "",
+    testCenterAddress: "",
+    testCenterId: "",
+    surveyNo: "1",
+    farmerName: "",
+    farmerVillage: "",
+    soilTexture: "",
+    moistureContext: "",
+    manualRecommendation: "",
+    parameters: {
+      ph: "", ec: "", organicCarbon: "", nitrogen: "", phosphorous: "",
+      potassium: "", sulphur: "", zinc: "", boron: "", iron: "", manganese: "", copper: ""
+    }
+  });
+  const [messages, setMessages] = useState({ soilCard: "", soilCardType: "", bulkCards: "", bulkCardsType: "" });
+
+  useEffect(() => {
+    const user = loadCurrentUser();
+    if (!user || user.role !== "district") {
+      router.push("/");
+      return;
+    }
+    setCurrentUser(user);
+    const stored = loadLocalState();
+    setState(stored);
+    setSoilCardForm((prev) => ({
+      ...prev,
+      testingDate: prev.testingDate || new Date().toISOString().split("T")[0],
+      district: user.district,
+      testCenterAddress: prev.testCenterAddress || user.address
+    }));
+  }, [router]);
+
+  useEffect(() => {
+    if (!convexReady) return;
+    if (typeof window === "undefined" || !window.convex) return;
+    const url = process.env.NEXT_PUBLIC_CONVEX_URL;
+    const accessToken = process.env.NEXT_PUBLIC_CONVEX_ACCESS_TOKEN;
+    if (!url || !accessToken) return;
+    const client = new window.convex.ConvexClient(url, {
+      accessToken
+    });
+    setConvexClient(client);
+    setApiClient(window.convex.anyApi);
+  }, [convexReady]);
+
+  async function remoteLoadCards(district) {
+    if (!convexClient || !apiClient) return null;
+    try {
+      return await convexClient.query(apiClient.cards.list, { district });
+    } catch (error) {
+      console.warn("Convex load cards error:", error);
+      return null;
+    }
+  }
+
+  async function remoteSaveCard(card) {
+    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
+    return await convexClient.mutation(apiClient.cards.save, card);
+  }
+
+  async function remoteDeleteCard(cardId) {
+    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
+    return await convexClient.mutation(apiClient.cards.deleteCard, { id: cardId });
+  }
+
+  const districtCards = useMemo(
+    () => (currentUser ? state.cards.filter((card) => card.district === currentUser.district) : []),
+    [state.cards, currentUser]
+  );
+
+  const districtStats = [
+    { value: districtCards.length, label: "Cards Saved", note: "Records created in this district account" },
+    { value: currentUser?.district || "-", label: "District", note: currentUser?.address || "" },
+    { value: parameterDefinitions.length, label: "Measured Parameters", note: "Includes texture and moisture context" }
+  ];
+
+  const setMessage = (field, text, type = "") => {
+    setMessages((prev) => ({
+      ...prev,
+      [field]: text,
+      [`${field}Type`]: type
+    }));
+  };
+
+  const handleLogout = () => {
+    saveCurrentUser(null);
+    router.push("/");
+  };
+
+  const handleParameterChange = (key, value) => {
+    setSoilCardForm((prev) => ({
+      ...prev,
+      parameters: {
+        ...prev.parameters,
+        [key]: value
+      }
+    }));
+  };
+
+  const buildCardRecord = (form) => {
+    const evaluations = {};
+    Object.entries(form.parameters).forEach(([key, value]) => {
+      const definition = parameterDefinitions.find((entry) => entry.key === key);
+      evaluations[key] = evaluateParameter(definition, value);
+    });
+    const autoRecommendation = getRecommendationLines(evaluations, form.soilTexture, form.moistureContext).join(" ");
+    return {
+      id: `SHC-${Date.now()}`,
+      district: currentUser?.role === "district" ? currentUser.district : form.district.trim(),
+      testCenterAddress: form.testCenterAddress.trim(),
+      testCenterId: form.testCenterId.trim(),
+      testingDate: form.testingDate,
+      surveyNo: form.surveyNo.trim(),
+      farmerName: form.farmerName.trim(),
+      farmerVillage: form.farmerVillage.trim(),
+      soilTexture: form.soilTexture,
+      moistureContext: form.moistureContext,
+      parameters: form.parameters,
+      evaluations,
+      recommendation: form.manualRecommendation.trim() || autoRecommendation,
+      createdBy: currentUser?.username || "",
+      createdAt: new Date().toISOString()
+    };
+  };
+
+  const handleSoilCardSubmit = async (event) => {
+    event.preventDefault();
+    const card = buildCardRecord(soilCardForm);
+    if (!card.district || !card.testingDate || !card.testCenterId || !card.farmerName || !card.farmerVillage) {
+      setMessage("soilCard", "Please complete all required card details.", "error");
+      return;
+    }
+    if (convexClient && apiClient) {
+      try {
+        await remoteSaveCard(card);
+        setState((prev) => ({...prev, cards: [...prev.cards, card]}));
+        setSelectedCard(card);
+        setMessage("soilCard", `Soil Health Card ${card.id} saved successfully.`, "success");
+        return;
+      } catch (error) {
+        console.warn("Remote save card failed, falling back locally", error);
+      }
+    }
+    setState((prev) => {
+      const next = { ...prev, cards: [...prev.cards, card] };
+      saveLocalState(next);
+      return next;
+    });
+    setSelectedCard(card);
+    setMessage("soilCard", `Soil Health Card ${card.id} saved successfully.`, "success");
+  };
+
+  const handlePreviewCard = () => {
+    const previewCard = buildCardRecord(soilCardForm);
+    setSelectedCard(previewCard);
+    setMessage("soilCard", "Preview generated from current form values.", "success");
+  };
+
+  const handleViewCard = (cardId) => {
+    const card = state.cards.find((entry) => entry.id === cardId);
+    if (!card) return;
+    setSelectedCard(card);
+  };
+
+  const handleDeleteCard = async (cardId) => {
+    const card = state.cards.find((entry) => entry.id === cardId);
+    if (!card) return;
+    if (!confirm(`Delete Soil Health Card ${card.id}?`)) return;
+    if (convexClient && apiClient) {
+      try {
+        await remoteDeleteCard(cardId);
+        setState((prev) => ({...prev, cards: prev.cards.filter((entry) => entry.id !== cardId)}));
+        setMessage("soilCard", `Deleted Soil Health Card ${card.id}.`, "success");
+        return;
+      } catch (error) {
+        console.warn("Remote delete failed, falling back locally", error);
+      }
+    }
+    setState((prev) => {
+      const next = { ...prev, cards: prev.cards.filter((entry) => entry.id !== cardId) };
+      saveLocalState(next);
+      return next;
+    });
+    setMessage("soilCard", `Deleted Soil Health Card ${card.id}.`, "success");
+  };
+
+  const handleBulkCardsUpload = async (event) => {
+    event.preventDefault();
+    const file = event.target.files?.[0] || null;
+    if (!file) {
+      setMessage("bulkCards", "Please select a CSV file to upload.", "error");
+      return;
+    }
+    const text = await file.text();
+    const lines = text.split("\n").filter((line) => line.trim());
+    if (lines.length < 2) {
+      setMessage("bulkCards", "CSV file must contain at least a header row and one data row.", "error");
+      return;
+    }
+    let successCount = 0, errorCount = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(",").map((v) => v.trim());
+      if (values.length !== 22) {
+        errorCount++;
+        continue;
+      }
+      const [district, testingDate, testCenterAddress, testCenterId, surveyNo, farmerName, farmerVillage, soilTexture, moistureContext, ph, ec, organicCarbon, nitrogen, phosphorous, potassium, sulphur, zinc, boron, iron, manganese, copper, manualRecommendation] = values;
+      if (!district || !testingDate || !testCenterAddress || !testCenterId || !surveyNo || !farmerName || !farmerVillage || !soilTexture || !moistureContext) {
+        errorCount++;
+        continue;
+      }
+      if (currentUser?.role === "district" && district !== currentUser.district) {
+        errorCount++;
+        continue;
+      }
+      const parameters = { ph, ec, organicCarbon, nitrogen, phosphorous, potassium, sulphur, zinc, boron, iron, manganese, copper };
+      const evaluations = {};
+      parameterDefinitions.forEach((def) => {
+        evaluations[def.key] = evaluateParameter(def, parameters[def.key]);
+      });
+      const autoRecommendation = getRecommendationLines(evaluations, soilTexture, moistureContext).join(" ");
+      const card = {
+        id: `SHC-${Date.now()}-${i}`,
+        district,
+        testCenterAddress,
+        testCenterId,
+        testingDate,
+        surveyNo,
+        farmerName,
+        farmerVillage,
+        soilTexture,
+        moistureContext,
+        parameters,
+        evaluations,
+        recommendation: manualRecommendation || autoRecommendation,
+        createdBy: currentUser?.username || "",
+        createdAt: new Date().toISOString()
+      };
+      if (convexClient && apiClient) {
+        try {
+          await remoteSaveCard(card);
+          successCount++;
+          continue;
+        } catch (error) {
+          console.warn("Bulk remote card save failed", error);
+        }
+      }
+      setState((prev) => {
+        const next = { ...prev, cards: [...prev.cards, card] };
+        saveLocalState(next);
+        return next;
+      });
+      successCount++;
+    }
+    setMessage("bulkCards", `Bulk upload completed. ${successCount} cards generated, ${errorCount} errors.`, successCount > 0 ? "success" : "error");
+  };
+
+  const downloadCardPdf = (card) => {
+    if (!card) {
+      alert("No card selected to download.");
+      return;
+    }
+    const paramRows = parameterDefinitions.map((definition) => {
+      const evaluation = card.evaluations[definition.key];
+      const displayValue = evaluation.value === "" ? "N/A" : `${evaluation.value} ${definition.unit}`.trim();
+      return `<div><strong>${definition.label}:</strong> ${displayValue} - ${evaluation.text}</div>`;
+    }).join("");
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>${card.id}</title><style>body{margin:0;font-family:Arial,sans-serif;padding:20px}@page{size:A4}h1{color:#1d6a3a}p{margin:5px 0}</style></head><body><h1>Soil Health Card</h1><p><strong>Card ID:</strong> ${card.id}</p><p><strong>District:</strong> ${card.district}</p><p><strong>Farmer:</strong> ${card.farmerName}</p><p><strong>Village:</strong> ${card.farmerVillage}</p><p><strong>Testing Date:</strong> ${formatDate(card.testingDate)}</p><p><strong>Survey No:</strong> ${card.surveyNo}</p><h2>Parameters</h2>${paramRows}<p><strong>Recommendation:</strong></p><p>${card.recommendation}</p><script>window.print();</script></body></html>`;
+    const win = window.open("", "_blank");
+    if (!win) {
+      alert("Popup blocked. Please allow popups to download PDF.");
+      return;
+    }
+    win.document.write(html);
+    win.document.close();
+  };
+
+  if (!currentUser) {
+    return <div style={{textAlign: 'center', padding: '2rem'}}>Loading...</div>;
+  }
+
+  return (
+    <>
+      <Script
+        src="https://unpkg.com/convex@1.3.1/dist/browser.bundle.js"
+        strategy="afterInteractive"
+        onLoad={() => setConvexReady(true)}
+      />
+      <header className="site-header">
+        <div className="container topbar">
+          <img src="/assets/gon-logo.png" alt="Government of Nagaland logo" className="top-logo top-logo-round top-logo-left" />
+          <div className="brand-center">
+            <p className="mini-label">Soil and Water Conservation Department</p>
+            <h1>Soil Health Card Research Programme</h1>
+            <p className="brand-subtitle">Kohima, Nagaland</p>
+          </div>
+          <div className="session-box">
+            <span className="status-dot"></span>
+            <span>District: {currentUser.username}</span>
+          </div>
+          <img src="/assets/soil-logo.jpg" alt="Soil Health logo" className="top-logo top-logo-right" />
+        </div>
+      </header>
+      <main>
+        <section className="workspace-section">
+          <div className="container">
+            <div className="workspace-header">
+              <div>
+                <p className="section-tag">Dashboard</p>
+                <h2>{currentUser.district} District Dashboard</h2>
+                <p>Enter soil test data and generate Soil Health Cards for the district.</p>
+              </div>
+              <div className="toolbar-actions">
+                <Link href="/" className="button button-secondary">Home</Link>
+                <button type="button" className="button button-primary" onClick={handleLogout}>Logout</button>
+              </div>
+            </div>
+
+            <div className="stats-grid">
+              {districtStats.map((item) => (
+                <article key={item.label} className="stat-card">
+                  <strong>{item.value}</strong>
+                  <span>{item.label}</span>
+                  <p>{item.note}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="panel-grid">
+              <article className="panel-card wide-card">
+                <div className="card-head">
+                  <p className="section-tag">Generate Soil Health Card</p>
+                  <h3>District Data Entry</h3>
+                </div>
+                <form onSubmit={handleSoilCardSubmit} className="stack-form">
+                  <div className="form-grid">
+                    <label>
+                      <span>District</span>
+                      <input type="text" value={soilCardForm.district} readOnly />
+                    </label>
+                    <label>
+                      <span>Testing Date</span>
+                      <input type="date" value={soilCardForm.testingDate} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, testingDate: event.target.value }))} required />
+                    </label>
+                    <label className="span-2">
+                      <span>Test Center Address</span>
+                      <input type="text" value={soilCardForm.testCenterAddress} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, testCenterAddress: event.target.value }))} required />
+                    </label>
+                    <label>
+                      <span>Test Center ID</span>
+                      <input type="text" value={soilCardForm.testCenterId} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, testCenterId: event.target.value }))} required />
+                    </label>
+                    <label>
+                      <span>Survey No.</span>
+                      <input type="text" value={soilCardForm.surveyNo} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, surveyNo: event.target.value }))} required />
+                    </label>
+                    <label>
+                      <span>Farmer Name</span>
+                      <input type="text" value={soilCardForm.farmerName} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, farmerName: event.target.value }))} required />
+                    </label>
+                    <label>
+                      <span>Farmer Village</span>
+                      <input type="text" value={soilCardForm.farmerVillage} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, farmerVillage: event.target.value }))} required />
+                    </label>
+                    <label>
+                      <span>Soil Texture</span>
+                      <select value={soilCardForm.soilTexture} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, soilTexture: event.target.value }))} required>
+                        <option value="">Select texture</option>
+                        <option>Sandy</option>
+                        <option>Loamy</option>
+                        <option>Clayey</option>
+                        <option>Silty</option>
+                        <option>Gravelly</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Moisture Context</span>
+                      <select value={soilCardForm.moistureContext} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, moistureContext: event.target.value }))} required>
+                        <option value="">Select moisture context</option>
+                        <option>Dry</option>
+                        <option>Moderate</option>
+                        <option>Moist</option>
+                        <option>Wet</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div className="parameter-grid">
+                    {parameterDefinitions.map((parameter) => (
+                      <label key={parameter.key}>
+                        <span>{parameter.label} {parameter.unit ? `(${parameter.unit})` : ""}</span>
+                        <input
+                          type="number"
+                          step="any"
+                          value={soilCardForm.parameters[parameter.key]}
+                          onChange={(event) => handleParameterChange(parameter.key, event.target.value)}
+                          placeholder={`Range ${parameter.rangeText}`}
+                        />
+                      </label>
+                    ))}
+                  </div>
+                  <label>
+                    <span>Recommendation</span>
+                    <textarea value={soilCardForm.manualRecommendation} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, manualRecommendation: event.target.value }))} rows="4" placeholder="Optional manual recommendation. Leave blank to auto-generate."></textarea>
+                  </label>
+                  <div className="form-actions">
+                    <button type="submit" className="button button-primary">Save and Generate Card</button>
+                    <button type="button" className="button button-secondary" onClick={handlePreviewCard}>Preview Current Data</button>
+                  </div>
+                </form>
+                <p className={`form-message ${messages.soilCardType === "success" ? "message-success" : messages.soilCardType === "error" ? "message-error" : ""}`}>{messages.soilCard}</p>
+              </article>
+
+              <article className="panel-card">
+                <div className="card-head">
+                  <p className="section-tag">Bulk Upload</p>
+                  <h3>Soil Health Cards CSV</h3>
+                </div>
+                <div className="bulk-upload-info">
+                  <p>Upload multiple soil health cards using CSV format.</p>
+                  <form className="form-grid">
+                    <label className="span-2">
+                      <span>CSV File</span>
+                      <input type="file" accept=".csv" onChange={handleBulkCardsUpload} />
+                    </label>
+                  </form>
+                </div>
+                <p className={`form-message ${messages.bulkCardsType === "success" ? "message-success" : messages.bulkCardsType === "error" ? "message-error" : ""}`}>{messages.bulkCards}</p>
+              </article>
+            </div>
+
+            <div className="panel-grid">
+              <article className="panel-card">
+                <div className="card-head">
+                  <p className="section-tag">Saved District Cards</p>
+                  <h3>Generated Records</h3>
+                </div>
+                <div className="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Card ID</th>
+                        <th>Farmer</th>
+                        <th>Survey No.</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {districtCards.length ? [...districtCards].reverse().map((card) => (
+                        <tr key={card.id}>
+                          <td>{card.id}</td>
+                          <td>{card.farmerName}</td>
+                          <td>{card.surveyNo}</td>
+                          <td>{formatDate(card.testingDate)}</td>
+                          <td>
+                            <button type="button" className="button button-secondary" onClick={() => handleViewCard(card.id)}>View</button>
+                            <button type="button" className="button button-secondary" onClick={() => handleDeleteCard(card.id)}>Delete</button>
+                          </td>
+                        </tr>
+                      )) : (
+                        <tr><td colSpan="5">No cards saved for this district yet.</td></tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+
+              <article className="panel-card wide-card">
+                <div className="card-head">
+                  <p className="section-tag">Card Preview</p>
+                  <h3>Soil Health Card Output</h3>
+                </div>
+                {selectedCard && (
+                  <div className="card-actions">
+                    <button type="button" className="button button-secondary" onClick={() => downloadCardPdf(selectedCard)}>Download PDF</button>
+                  </div>
+                )}
+                <div className="card-preview">
+                  {selectedCard ? "Card preview available - Click Download PDF to generate report" : "Fill the form and preview or save the card to see the generated output here."}
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="site-footer">
+        <div className="container footer-row">
+          <p>Soil Health Card Team Center · Soil and Water Conservation Department · Kohima, Nagaland</p>
+          <p>SHC Research Programme Team Kohima</p>
+        </div>
+      </footer>
+    </>
+  );
+}
