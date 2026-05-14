@@ -5,11 +5,8 @@ import { useRouter } from "next/navigation";
 import Script from "next/script";
 import Link from "next/link";
 import {
-  STORAGE_KEY,
   parameterDefinitions,
   defaultState,
-  loadLocalState,
-  saveLocalState,
   loadCurrentUser,
   saveCurrentUser,
   evaluateParameter,
@@ -53,9 +50,6 @@ export default function DistrictDashboard() {
       return;
     }
     setCurrentUser(user);
-    // Load initial state but prioritize Convex data
-    const stored = loadLocalState();
-    setState(stored);
     setSoilCardForm((prev) => ({
       ...prev,
       testingDate: prev.testingDate || new Date().toISOString().split("T")[0],
@@ -72,14 +66,22 @@ export default function DistrictDashboard() {
     const client = new window.convex.ConvexClient(url);
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
-    
-    // Load cards from Convex when client is ready
-    remoteLoadCards(currentUser?.district).then((remoteCards) => {
+  }, [convexReady]);
+
+  useEffect(() => {
+    if (!convexClient || !apiClient || !currentUser) return;
+
+    const loadCards = async () => {
+      const remoteCards = await remoteLoadCards(currentUser.district);
       if (remoteCards) {
         setState((prev) => ({ ...prev, cards: remoteCards }));
       }
-    });
-  }, [convexReady, currentUser]);
+    };
+    loadCards();
+
+    const interval = setInterval(loadCards, 15000);
+    return () => clearInterval(interval);
+  }, [convexClient, apiClient, currentUser]);
 
   async function remoteLoadCards(district) {
     if (!convexClient || !apiClient) return null;

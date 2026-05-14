@@ -178,6 +178,21 @@ a {
   box-shadow: 0 0 0 6px rgba(143, 179, 79, 0.14);
 }
 
+.status-dot.online {
+  background: var(--green);
+  box-shadow: 0 0 0 6px rgba(72, 187, 120, 0.18);
+}
+
+.status-dot.offline {
+  background: var(--red);
+  box-shadow: 0 0 0 6px rgba(255, 107, 107, 0.18);
+}
+
+.status-dot.checking {
+  background: var(--accent-strong);
+  box-shadow: 0 0 0 6px rgba(111, 111, 255, 0.16);
+}
+
 .hero-section,
 .workspace-section {
   padding: 3rem 0;

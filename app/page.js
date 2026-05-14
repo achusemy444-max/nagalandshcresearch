@@ -6,16 +6,15 @@ import Script from "next/script";
 import {
   CURRENT_USER_KEY,
   defaultState,
-  loadLocalState,
   loadCurrentUser,
   saveCurrentUser
 } from "./utils/shc-helpers";
 
 export default function HomePage() {
   const router = useRouter();
-  const [state, setState] = useState(defaultState);
   const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [messages, setMessages] = useState({ login: "", loginType: "" });
+  const [backendStatus, setBackendStatus] = useState("checking");
   const [convexReady, setConvexReady] = useState(false);
   const [convexClient, setConvexClient] = useState(null);
   const [apiClient, setApiClient] = useState(null);
@@ -25,22 +24,42 @@ export default function HomePage() {
     const currentUser = loadCurrentUser();
     if (currentUser) {
       router.push(currentUser.role === "admin" ? "/admin-dashboard" : "/district-dashboard");
-      return;
     }
-
-    const stored = loadLocalState();
-    setState(stored);
   }, [router]);
 
   useEffect(() => {
     if (!convexReady) return;
     if (typeof window === "undefined" || !window.convex) return;
     const url = process.env.NEXT_PUBLIC_CONVEX_URL;
-    if (!url) return;
+    if (!url) {
+      setBackendStatus("offline");
+      return;
+    }
     const client = new window.convex.ConvexClient(url);
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
   }, [convexReady]);
+
+  useEffect(() => {
+    if (!convexClient || !apiClient) {
+      setBackendStatus("offline");
+      return;
+    }
+
+    let active = true;
+    const verifyBackend = async () => {
+      try {
+        await convexClient.query(apiClient.accounts.list, {});
+        if (active) setBackendStatus("online");
+      } catch (error) {
+        if (active) setBackendStatus("offline");
+      }
+    };
+    verifyBackend();
+    return () => {
+      active = false;
+    };
+  }, [convexClient, apiClient]);
 
   async function remoteLoadAccounts() {
     if (!convexClient || !apiClient) return null;
@@ -119,8 +138,8 @@ export default function HomePage() {
             <p className="brand-subtitle">Kohima, Nagaland</p>
           </div>
           <div className="session-box">
-            <span className="status-dot"></span>
-            <span>Secure Portal Access</span>
+            <span className={`status-dot ${backendStatus}`}></span>
+            <span>Convex Backend: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Checking..."}</span>
           </div>
           <img src="/assets/soil-logo.jpg" alt="Soil Health logo" className="top-logo top-logo-right" />
         </div>

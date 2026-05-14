@@ -5,12 +5,9 @@ import { useRouter } from "next/navigation";
 import Script from "next/script";
 import Link from "next/link";
 import {
-  STORAGE_KEY,
   CURRENT_USER_KEY,
   parameterDefinitions,
   defaultState,
-  loadLocalState,
-  saveLocalState,
   loadCurrentUser,
   saveCurrentUser,
   evaluateParameter,
@@ -39,9 +36,6 @@ export default function AdminDashboard() {
       return;
     }
     setCurrentUser(user);
-    // Load initial state but prioritize Convex data
-    const stored = loadLocalState();
-    setState(stored);
   }, [router]);
 
   useEffect(() => {
@@ -52,20 +46,25 @@ export default function AdminDashboard() {
     const client = new window.convex.ConvexClient(url);
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
-    
-    // Load data from Convex when client is ready
-    Promise.all([
-      remoteLoadAccounts(),
-      remoteLoadCards()
-    ]).then(([accounts, cards]) => {
+  }, [convexReady]);
+
+  useEffect(() => {
+    if (!convexClient || !apiClient) return;
+
+    const loadData = async () => {
+      const [accounts, cards] = await Promise.all([remoteLoadAccounts(), remoteLoadCards()]);
       if (accounts) {
         setState((prev) => ({ ...prev, accounts }));
       }
       if (cards) {
         setState((prev) => ({ ...prev, cards }));
       }
-    });
-  }, [convexReady]);
+    };
+    loadData();
+
+    const interval = setInterval(loadData, 15000);
+    return () => clearInterval(interval);
+  }, [convexClient, apiClient]);
 
   async function remoteLoadAccounts() {
     if (!convexClient || !apiClient) return null;
