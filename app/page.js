@@ -240,7 +240,7 @@ export default function HomePage() {
               </div>
               <div className="contact-info">
                 <p><strong>Email:</strong> SHCS&Wdirectorateteam@gmail.com</p>
-                <p><strong>Phone:</strong> 7005303701</p>
+                <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
                 <p><strong>Office:</strong> Soil and Water Conservation Department, Kohima, Nagaland</p>
               </div>
             </div>
