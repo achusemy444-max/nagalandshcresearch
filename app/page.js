@@ -130,134 +130,27 @@ export default function HomePage() {
         <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <p className="section-tag">Welcome to Portal</p>
-              <h2>Soil Health Card Scheme: Empowering Farmers for Sustainable Agriculture</h2>
+              <p className="section-tag">Portal Overview</p>
+              <h2>Online-based Soil Health Card system for scheme administration and district-level card generation.</h2>
               <p>
-                The Soil Health Card Scheme is a government initiative designed to empower farmers with detailed soil health information. 
-                Our state-of-the-art testing laboratory provides comprehensive soil analysis using advanced machinery and professional expertise.
+                This prototype includes one Scheme Administrator account that can create and manage district user accounts,
+                inspect all district data, and monitor generated Soil Health Cards. District users can log in, enter soil
+                testing data, and generate recommendation-ready Soil Health Cards.
               </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="info-section">
-          <div className="container">
-            <div className="section-header">
-              <h2>Benefits of the Soil Health Card Scheme</h2>
-              <p>Farmers will gain valuable insights for informed agricultural decisions</p>
-            </div>
-            <div className="benefits-grid">
-              <article className="benefit-card">
-                <div className="benefit-icon">📋</div>
-                <h3>Proper Soil Health Record</h3>
-                <p>Farmers will get a comprehensive soil health record that documents the status of their farmland's soil conditions.</p>
-              </article>
-              <article className="benefit-card">
-                <div className="benefit-icon">🌱</div>
-                <h3>Soil Management Practices</h3>
-                <p>Learn about proper soil management practices and become aware of best practices for soil conservation and fertility.</p>
-              </article>
-              <article className="benefit-card">
-                <div className="benefit-icon">📊</div>
-                <h3>Nutrient Deficiency Analysis</h3>
-                <p>The soil card provides farmers with a clear idea of which nutrients their soil is lacking, enabling informed crop selection.</p>
-              </article>
-              <article className="benefit-card">
-                <div className="benefit-icon">🎯</div>
-                <h3>Crop Planning</h3>
-                <p>Plan the future of crops and land based on detailed soil analysis. Choose crops that are well-suited to your soil type.</p>
-              </article>
-              <article className="benefit-card">
-                <div className="benefit-icon">💊</div>
-                <h3>Fertilizer Recommendations</h3>
-                <p>Receive specific fertilizer recommendations based on your soil's nutrient content, reducing unnecessary expenses.</p>
-              </article>
-              <article className="benefit-card">
-                <div className="benefit-icon">📈</div>
-                <h3>Increased Crop Yield</h3>
-                <p>Ultimately, informed soil management practices and proper nutrient application lead to improved crop productivity and higher yields.</p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className="info-section info-section-soft">
-          <div className="container">
-            <div className="section-header">
-              <h2>Soil Testing Laboratory</h2>
-              <p className="section-subtitle">Empowering Farmers, Enhancing Soil Fertility</p>
-            </div>
-            <div className="lab-content-grid">
-              <article className="lab-card">
-                <h3>Our Laboratory</h3>
-                <p>
-                  Our Soil Testing Laboratory, funded by the Ministry of Agriculture and Farmers Welfare, Government of India, 
-                  under the Soil Health and Fertility component of RKVY, is dedicated to analyzing soil samples and providing 
-                  valuable insights for informed decision-making.
-                </p>
-              </article>
-              <article className="lab-card">
-                <h3>State-of-the-Art Facilities</h3>
-                <p>Our laboratory is equipped with advanced machines for precise soil analysis:</p>
-                <ul className="facility-list">
-                  <li>EC Scale (Electric Conductivity)</li>
-                  <li>pH Scale</li>
-                  <li>AAS (Atomic Absorption Spectroscopy)</li>
-                  <li>Semi-Automatic Nitrogen Analyzer</li>
-                  <li>Double Distillation Unit</li>
-                </ul>
-              </article>
-            </div>
-
-            <article className="lab-card full-width">
-              <h3>Soil Health Card (SHC) Report</h3>
-              <p>
-                We provide a printed report, the Soil Health Card, which contains the comprehensive status of the soil based on 12 parameters:
-              </p>
-              <div className="parameter-categories">
-                <div className="param-group">
-                  <strong>Macro-Nutrients:</strong>
-                  <p>Nitrogen (N), Phosphorous (P), Potassium (K)</p>
-                </div>
-                <div className="param-group">
-                  <strong>Secondary Nutrients:</strong>
-                  <p>Sulphur (S)</p>
-                </div>
-                <div className="param-group">
-                  <strong>Micro-Nutrients:</strong>
-                  <p>Zinc (Zn), Boron (B), Iron (Fe), Manganese (Mn), Copper (Cu)</p>
-                </div>
-                <div className="param-group">
-                  <strong>Physical Parameters:</strong>
-                  <p>pH, EC (Electric Conductivity), Organic Carbon</p>
-                </div>
+              <div className="hero-features">
+                <span>Scheme administrator control</span>
+                <span>District account creation</span>
+                <span>12 soil parameters</span>
+                <span>Texture and moisture context</span>
+                <span>Status color indicators</span>
+                <span>Recommendation generator</span>
               </div>
-            </article>
-
-            <article className="lab-card full-width">
-              <h3>Our Process</h3>
-              <ol className="process-steps">
-                <li><strong>Soil Sampling</strong> - Systematic collection of soil samples from farmer fields</li>
-                <li><strong>Testing</strong> - Analysis using advanced laboratory machinery and protocols</li>
-                <li><strong>Report Generation</strong> - Creation of comprehensive Soil Health Cards</li>
-                <li><strong>Personalized Recommendations</strong> - Tailored guidance based on soil analysis results</li>
-                <li><strong>Farmer Guidance</strong> - Direct support for optimal soil health and crop productivity</li>
-              </ol>
-            </article>
-
-            <article className="lab-card full-width">
-              <h3>Our Vision</h3>
-              <p>
-                Our initiative aligns with the government's vision to empower farmers, boost agricultural growth, and ensure food security. 
-                We aim to promote sustainable agricultural practices, enhance soil fertility, and provide accurate and timely recommendations 
-                to farmers for achieving optimal soil health and improved crop productivity.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        <section className="login-section">
-          <div className="container login-container">
+              <div className="hero-contact">
+                <p><strong>Support & Contact:</strong> SHCS&Wdirectorateteam@gmail.com</p>
+                <p><strong>Phone:</strong> 7005303701</p>
+              </div>
+            </div>
+            
             <div className="login-card">
               <div className="card-head">
                 <p className="section-tag">Portal Access</p>
@@ -293,6 +186,75 @@ export default function HomePage() {
                 <p className="help-note">Contact the Soil and Water Conservation Department for your credentials.</p>
               </div>
               <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="info-section">
+          <div className="container info-grid">
+            <article className="panel-card">
+              <div className="card-head">
+                <p className="section-tag">About Us</p>
+                <h3>Soil Health Card Team Center</h3>
+              </div>
+              <p>
+                The Soil Health Card Team Center under the Soil and Water Conservation Department, Kohima, Nagaland supports
+                scientific soil testing, district coordination, and data-driven advisory for farmers through the research programme.
+              </p>
+            </article>
+
+            <article className="panel-card">
+              <div className="card-head">
+                <p className="section-tag">SHC Scheme</p>
+                <h3>Research and Field Support</h3>
+              </div>
+              <p>
+                The SHC Scheme helps collect soil data, test key parameters, generate Soil Health Cards, and provide practical
+                recommendations for balanced nutrient use, soil conservation, and better productivity.
+              </p>
+            </article>
+
+            <article className="panel-card">
+              <div className="card-head">
+                <p className="section-tag">Benefits</p>
+                <h3>Why This Programme Matters</h3>
+              </div>
+              <ul className="check-list compact">
+                <li>Supports accurate fertilizer and nutrient planning.</li>
+                <li>Improves soil health monitoring across districts.</li>
+                <li>Helps generate recommendation-based Soil Health Cards.</li>
+                <li>Provides programme-wide inspection for the scheme administrator.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section className="contact-section">
+          <div className="container contact-grid">
+            <div className="contact-card">
+              <div className="card-head">
+                <p className="section-tag">Support & Contact</p>
+                <h3>Reach the SHC Team</h3>
+              </div>
+              <div className="contact-info">
+                <p><strong>Email:</strong> SHCS&Wdirectorateteam@gmail.com</p>
+                <p><strong>Phone:</strong> 7005303701</p>
+                <p><strong>Office:</strong> Soil and Water Conservation Department, Kohima, Nagaland</p>
+              </div>
+            </div>
+
+            <div className="contact-card">
+              <div className="card-head">
+                <p className="section-tag">Programme Credits</p>
+                <h3>Research Programme Team</h3>
+              </div>
+              <div className="credits-list">
+                <p><strong>Int. Developer:</strong> Shri. Khanchulo Semy</p>
+                <p><strong>Cyber Security and Optimization Developer:</strong> Er. Chentilo (IIT Developer Sp.)</p>
+                <p><strong>SHC Virtualizer:</strong> Shri. Kihika G Yeptho</p>
+                <p><strong>Advisor:</strong> Shri. Rontilo Kent</p>
+                <p><strong>Supervisor:</strong> Smti. Krutalu Tunyi</p>
+              </div>
             </div>
           </div>
         </section>

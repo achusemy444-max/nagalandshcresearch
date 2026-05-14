@@ -522,7 +522,7 @@ export default function AdminDashboard() {
                       <tr>
                         <th>Card ID</th>
                         <th>District</th>
-                        <th>Farmer</th>
+                        <th>Farmer Name</th>
                         <th>Survey No.</th>
                         <th>Testing Date</th>
                         <th>Action</th>
@@ -559,7 +559,7 @@ export default function AdminDashboard() {
                 <div className="card-actions">
                   <button type="button" className="button button-secondary" onClick={() => downloadCardPdf(selectedCard)}>Download PDF</button>
                 </div>
-                <div className="card-preview">
+                <div className="card-preview full-preview">
                   {previewHtml ? (
                     <iframe
                       title="Soil Health Card Preview"

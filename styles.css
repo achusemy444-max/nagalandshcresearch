@@ -64,8 +64,7 @@ a {
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
+  position: static;
   z-index: 20;
   border-bottom: 1px solid rgba(23, 49, 29, 0.08);
   backdrop-filter: blur(14px);
@@ -184,21 +183,275 @@ a {
   padding: 3rem 0;
 }
 
-.hero-grid,
-.panel-grid {
+.banner-section {
+  padding: 3rem 0 1rem;
+}
+
+.banner-grid,
+.panel-grid,
+.feature-grid,
+.announcement-grid,
+.stats-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.9fr;
   gap: 1.5rem;
 }
 
+.banner-grid {
+  grid-template-columns: 1.2fr 0.9fr;
+  align-items: stretch;
+}
+
+.hero-grid {
+  grid-template-columns: 1fr 0.9fr;
+  align-items: start;
+}
+
+.feature-grid {
+  grid-template-columns: 1.4fr 0.8fr;
+}
+
+.announcement-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.banner-copy,
+.banner-card,
 .hero-copy,
 .login-card,
 .panel-card,
-.stat-card {
+.stat-card,
+.feature-card,
+.announcement-card,
+.cta-card,
+.nutrient-ring,
+.video-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+}
+
+.hero-copy,
+.login-card,
+.panel-card {
+  padding: 1.7rem;
+}
+
+.banner-copy {
+  padding: 2rem;
+}
+
+.banner-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.banner-card {
+  padding: 1.6rem;
+}
+
+.banner-card-large {
+  min-height: 260px;
+  display: grid;
+  gap: 1rem;
+}
+
+.banner-card-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.banner-card-small {
+  padding: 1.4rem;
+}
+
+.banner-card-tag,
+.feature-card .section-tag,
+.announcement-card small,
+.stat-card small,
+.feature-card small {
+  display: inline-flex;
+  margin-bottom: 0.85rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.6rem;
+}
+
+.hero-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.6rem;
+}
+
+.hero-pill-group span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: rgba(216, 232, 193, 0.25);
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.announcement-card {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.announcement-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.announcement-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.announcement-card span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.background-hero {
+  background: linear-gradient(135deg, rgba(29, 106, 58, 0.18), rgba(216, 232, 193, 0.12));
+}
+
+.progress-section {
+  padding: 1rem 0 3rem;
+}
+
+.feature-section {
+  padding: 0 0 3rem;
+}
+
+.feature-card {
+  padding: 1.75rem;
+}
+
+.feature-card-analytics {
+  display: grid;
+  gap: 1.3rem;
+}
+
+.feature-card-videos {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.nutrient-summary {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.nutrient-value strong {
+  font-size: 2.6rem;
+  color: var(--primary-dark);
+  display: block;
+}
+
+.nutrient-value span {
+  color: var(--muted);
+}
+
+.nutrient-charts {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.nutrient-ring {
+  width: 120px;
+  min-height: 120px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(23, 49, 29, 0.08);
+  padding: 1rem;
+  text-align: center;
+}
+
+.nutrient-ring span {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.nutrient-ring small {
+  color: var(--muted);
+}
+
+.video-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.video-card {
+  padding: 1.3rem;
+  min-height: 126px;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.video-card strong {
+  display: block;
+}
+
+.cta-section {
+  padding: 0 0 3rem;
+}
+
+.cta-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  padding: 1.6rem 1.8rem;
+  align-items: center;
+}
+
+.cta-card h3 {
+  margin: 0;
+}
+
+@media (max-width: 1080px) {
+  .banner-grid,
+  .feature-grid,
+  .panel-grid,
+  .announcement-grid,
+  .stats-grid,
+  .cta-card {
+    grid-template-columns: 1fr;
+  }
+
+  .banner-card-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    padding: 1rem 0;
+  }
+
+  .hero-copy h2 {
+    font-size: clamp(1.8rem, 5vw, 2.3rem);
+  }
+
+  .hero-actions,
+  .hero-pill-group,
+  .banner-card-row,
+  .cta-card {
+    display: grid;
+  }
 }
 
 .hero-copy,
@@ -542,12 +795,13 @@ td {
 }
 
 .card-preview {
-  min-height: 280px;
+  min-height: 100vh;
+  display: flex;
 }
 
 .preview-frame {
   width: 100%;
-  min-height: 650px;
+  height: 100vh;
   border: 1px solid rgba(23, 49, 29, 0.12);
   border-radius: 18px;
 }
@@ -1017,6 +1271,43 @@ td {
   border-radius: var(--radius);
   padding: 2rem;
   box-shadow: var(--shadow);
+}
+
+/* Contact Section */
+.contact-section {
+  padding: 3rem 0;
+  background: linear-gradient(135deg, rgba(29, 106, 58, 0.03) 0%, rgba(143, 179, 79, 0.03) 100%);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.contact-info p,
+.credits-list p {
+  margin: 0.75rem 0;
+  color: var(--muted);
+}
+
+.contact-info p:first-child,
+.credits-list p:first-child {
+  margin-top: 0;
+}
+
+.contact-info strong,
+.credits-list strong {
+  color: var(--text);
+  font-weight: 600;
 }
 
 /* Soil Card Info Table */

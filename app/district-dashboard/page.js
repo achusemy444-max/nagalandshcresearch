@@ -437,10 +437,7 @@ export default function DistrictDashboard() {
                   <label>
                     <span>Recommendation</span>
                     <select value={soilCardForm.recommendationChoice} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, recommendationChoice: event.target.value }))}>
-                      <option value="auto">Auto-generate recommendation</option>
-                      <option value="Lime">Lime</option>
-                      <option value="Gypsum">Gypsum</option>
-                      <option value="Manure">Manure</option>
+                      <option value="auto">Auto-generate recommendation</option>                      
                     </select>
                   </label>
                   <div className="form-actions">
@@ -516,7 +513,7 @@ export default function DistrictDashboard() {
                     <button type="button" className="button button-secondary" onClick={() => downloadCardPdf(selectedCard)}>Download PDF</button>
                   </div>
                 )}
-                <div className="card-preview">
+                <div className="card-preview full-preview">
                   {previewHtml ? (
                     <iframe
                       title="Soil Health Card Preview"

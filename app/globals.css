@@ -337,6 +337,22 @@ tbody tr:hover {
   background: var(--surface-soft);
 }
 
+.card-preview.full-preview {
+  min-height: 100vh;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: visible;
+}
+
+.card-preview.full-preview .preview-frame {
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  border: 1px solid rgba(23, 49, 29, 0.12);
+  border-radius: 18px;
+}
+
 .soil-card {
   background: #fff;
   border-radius: var(--radius);
