@@ -13,7 +13,8 @@ import {
   getRecommendationLines,
   buildCardPreviewHtml,
   formatDate,
-  getStatusClass
+  getStatusClass,
+  buildConvexClient
 } from "../utils/shc-helpers";
 
 export default function DistrictDashboard() {
@@ -60,10 +61,8 @@ export default function DistrictDashboard() {
 
   useEffect(() => {
     if (!convexReady) return;
-    if (typeof window === "undefined" || !window.convex) return;
-    const url = process.env.NEXT_PUBLIC_CONVEX_URL;
-    if (!url) return;
-    const client = new window.convex.ConvexClient(url);
+    const client = buildConvexClient();
+    if (!client) return;
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
   }, [convexReady]);

@@ -109,6 +109,25 @@ export function saveCurrentUser(user) {
   }
 }
 
+export function getConvexConfig() {
+  if (typeof window === "undefined") return null;
+  const url = process.env.NEXT_PUBLIC_CONVEX_URL?.trim();
+  const accessToken = process.env.NEXT_PUBLIC_CONVEX_ACCESS_TOKEN?.trim();
+  if (!url) return null;
+  const options = {};
+  if (accessToken) {
+    options.accessToken = accessToken;
+  }
+  return { url, options };
+}
+
+export function buildConvexClient() {
+  if (typeof window === "undefined" || !window.convex) return null;
+  const config = getConvexConfig();
+  if (!config) return null;
+  return new window.convex.ConvexClient(config.url, config.options);
+}
+
 export function classifyRange(value, min, max) {
   if (value >= min && value <= max) return { status: "green", text: "SUFFICIENT" };
   const distance = value < min ? (min - value) / Math.max(min, 1) : (value - max) / Math.max(max, 1);

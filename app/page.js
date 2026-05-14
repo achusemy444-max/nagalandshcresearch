@@ -7,7 +7,8 @@ import {
   CURRENT_USER_KEY,
   defaultState,
   loadCurrentUser,
-  saveCurrentUser
+  saveCurrentUser,
+  buildConvexClient
 } from "./utils/shc-helpers";
 
 export default function HomePage() {
@@ -29,13 +30,11 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!convexReady) return;
-    if (typeof window === "undefined" || !window.convex) return;
-    const url = process.env.NEXT_PUBLIC_CONVEX_URL;
-    if (!url) {
+    const client = buildConvexClient();
+    if (!client) {
       setBackendStatus("offline");
       return;
     }
-    const client = new window.convex.ConvexClient(url);
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
   }, [convexReady]);
