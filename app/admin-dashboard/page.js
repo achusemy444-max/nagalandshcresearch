@@ -166,23 +166,6 @@ export default function AdminDashboard() {
       throw new Error("Failed to delete card. Please try again.");
     }
   }
-    return await convexClient.mutation(apiClient.accounts.create, account);
-  }
-
-  async function remoteUpdateAccount(account) {
-    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
-    return await convexClient.mutation(apiClient.accounts.update, account);
-  }
-
-  async function remoteDeleteAccount(accountId) {
-    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
-    return await convexClient.mutation(apiClient.accounts.deleteAccount, { id: accountId });
-  }
-
-  async function remoteDeleteCard(cardId) {
-    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
-    return await convexClient.mutation(apiClient.cards.deleteCard, { id: cardId });
-  }
 
   const accounts = useMemo(() => state.accounts, [state.accounts]);
   const districtAccounts = useMemo(() => accounts.filter((account) => account.role === "district"), [accounts]);
