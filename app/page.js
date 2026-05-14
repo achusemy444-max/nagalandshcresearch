@@ -36,11 +36,8 @@ export default function HomePage() {
     if (!convexReady) return;
     if (typeof window === "undefined" || !window.convex) return;
     const url = process.env.NEXT_PUBLIC_CONVEX_URL;
-    const accessToken = process.env.NEXT_PUBLIC_CONVEX_ACCESS_TOKEN;
-    if (!url || !accessToken) return;
-    const client = new window.convex.ConvexClient(url, {
-      accessToken
-    });
+    if (!url) return;
+    const client = new window.convex.ConvexClient(url);
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
   }, [convexReady]);

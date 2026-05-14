@@ -48,11 +48,8 @@ export default function AdminDashboard() {
     if (!convexReady) return;
     if (typeof window === "undefined" || !window.convex) return;
     const url = process.env.NEXT_PUBLIC_CONVEX_URL;
-    const accessToken = process.env.NEXT_PUBLIC_CONVEX_ACCESS_TOKEN;
-    if (!url || !accessToken) return;
-    const client = new window.convex.ConvexClient(url, {
-      accessToken
-    });
+    if (!url) return;
+    const client = new window.convex.ConvexClient(url);
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
     
@@ -332,25 +329,18 @@ export default function AdminDashboard() {
       password: password.trim() || account.password,
       address: address.trim() || account.address
     };
-    if (convexClient && apiClient) {
-      try {
-        await remoteUpdateAccount(updatedAccount);
-        setState((prev) => ({...prev, accounts: prev.accounts.map((entry) => (entry.id === accountId ? updatedAccount : entry))}));
-        setMessage("districtAccount", `Updated account for ${updatedAccount.district}.`, "success");
-        return;
-      } catch (error) {
-        console.warn("Remote update failed, falling back locally", error);
-      }
+    if (!convexClient || !apiClient) {
+      setMessage("districtAccount", "Database connection unavailable. Please check your internet connection and try again.", "error");
+      return;
     }
-    setState((prev) => {
-      const next = {
-        ...prev,
-        accounts: prev.accounts.map((entry) => (entry.id === accountId ? updatedAccount : entry))
-      };
-      saveLocalState(next);
-      return next;
-    });
-    setMessage("districtAccount", `Updated account for ${updatedAccount.district}.`, "success");
+    try {
+      await remoteUpdateAccount(updatedAccount);
+      setState((prev) => ({...prev, accounts: prev.accounts.map((entry) => (entry.id === accountId ? updatedAccount : entry))}));
+      setMessage("districtAccount", `Updated account for ${updatedAccount.district}.`, "success");
+    } catch (error) {
+      console.error("Update account error:", error);
+      setMessage("districtAccount", error.message || "Failed to update account. Please try again.", "error");
+    }
   };
 
   const handleBulkUpload = async (event) => {
@@ -399,21 +389,17 @@ export default function AdminDashboard() {
         address,
         createdAt: new Date().toISOString()
       };
-      if (convexClient && apiClient) {
-        try {
-          await remoteCreateAccount(newAccount);
-          successCount++;
-          continue;
-        } catch (error) {
-          console.warn("Bulk remote account creation failed", error);
-        }
+      if (!convexClient || !apiClient) {
+        errorCount++;
+        continue;
       }
-      setState((prev) => {
-        const next = { ...prev, accounts: [...prev.accounts, newAccount] };
-        saveLocalState(next);
-        return next;
-      });
-      successCount++;
+      try {
+        await remoteCreateAccount(newAccount);
+        successCount++;
+      } catch (error) {
+        console.error("Bulk account creation failed:", error);
+        errorCount++;
+      }
     }
     setMessage("bulkUpload", `Bulk upload completed. ${successCount} accounts created, ${errorCount} errors.`, successCount > 0 ? "success" : "error");
   };

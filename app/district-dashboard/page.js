@@ -68,11 +68,8 @@ export default function DistrictDashboard() {
     if (!convexReady) return;
     if (typeof window === "undefined" || !window.convex) return;
     const url = process.env.NEXT_PUBLIC_CONVEX_URL;
-    const accessToken = process.env.NEXT_PUBLIC_CONVEX_ACCESS_TOKEN;
-    if (!url || !accessToken) return;
-    const client = new window.convex.ConvexClient(url, {
-      accessToken
-    });
+    if (!url) return;
+    const client = new window.convex.ConvexClient(url);
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
     
@@ -229,22 +226,18 @@ export default function DistrictDashboard() {
     const card = state.cards.find((entry) => entry.id === cardId);
     if (!card) return;
     if (!confirm(`Delete Soil Health Card ${card.id}?`)) return;
-    if (convexClient && apiClient) {
-      try {
-        await remoteDeleteCard(cardId);
-        setState((prev) => ({...prev, cards: prev.cards.filter((entry) => entry.id !== cardId)}));
-        setMessage("soilCard", `Deleted Soil Health Card ${card.id}.`, "success");
-        return;
-      } catch (error) {
-        console.warn("Remote delete failed, falling back locally", error);
-      }
+    if (!convexClient || !apiClient) {
+      setMessage("soilCard", "Database connection unavailable. Please check your internet connection and try again.", "error");
+      return;
     }
-    setState((prev) => {
-      const next = { ...prev, cards: prev.cards.filter((entry) => entry.id !== cardId) };
-      saveLocalState(next);
-      return next;
-    });
-    setMessage("soilCard", `Deleted Soil Health Card ${card.id}.`, "success");
+    try {
+      await remoteDeleteCard(cardId);
+      setState((prev) => ({...prev, cards: prev.cards.filter((entry) => entry.id !== cardId)}));
+      setMessage("soilCard", `Deleted Soil Health Card ${card.id}.`, "success");
+    } catch (error) {
+      console.error("Delete card error:", error);
+      setMessage("soilCard", error.message || "Failed to delete card. Please try again.", "error");
+    }
   };
 
   const handleBulkCardsUpload = async (event) => {
