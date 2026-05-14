@@ -42,7 +42,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (!convexReady) return;
     const client = buildConvexClient();
-    if (!client) return;
+    if (!client) {
+      console.error("[Admin] Failed to build Convex client");
+      return;
+    }
+    console.log("[Admin] Convex client initialized");
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
   }, [convexReady]);
@@ -88,7 +92,9 @@ export default function AdminDashboard() {
   async function remoteCreateAccount(account) {
     if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
     try {
+      console.log("[Admin] Creating account:", account);
       const result = await convexClient.mutation(apiClient.accounts.create, account);
+      console.log("[Admin] Account created:", result);
       // Reload accounts from Convex to ensure consistency
       const updatedAccounts = await remoteLoadAccounts();
       if (updatedAccounts) {
@@ -96,8 +102,8 @@ export default function AdminDashboard() {
       }
       return result;
     } catch (error) {
-      console.error("Failed to create account in Convex:", error);
-      throw new Error("Failed to create account. Please try again.");
+      console.error("[Admin] Failed to create account:", error.message || error);
+      throw new Error(error.message || "Failed to create account. Please try again.");
     }
   }
 

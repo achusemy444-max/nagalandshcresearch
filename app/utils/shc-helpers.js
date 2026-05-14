@@ -113,7 +113,16 @@ export function getConvexConfig() {
   if (typeof window === "undefined") return null;
   const url = process.env.NEXT_PUBLIC_CONVEX_URL?.trim();
   const accessToken = process.env.NEXT_PUBLIC_CONVEX_ACCESS_TOKEN?.trim();
-  if (!url) return null;
+  
+  if (!url) {
+    console.error("Missing NEXT_PUBLIC_CONVEX_URL environment variable");
+    return null;
+  }
+  
+  if (!accessToken) {
+    console.warn("Missing NEXT_PUBLIC_CONVEX_ACCESS_TOKEN - mutations may fail");
+  }
+  
   const options = {};
   if (accessToken) {
     options.accessToken = accessToken;
@@ -122,10 +131,23 @@ export function getConvexConfig() {
 }
 
 export function buildConvexClient() {
-  if (typeof window === "undefined" || !window.convex) return null;
+  if (typeof window === "undefined" || !window.convex) {
+    console.error("Convex SDK not loaded in browser");
+    return null;
+  }
   const config = getConvexConfig();
-  if (!config) return null;
-  return new window.convex.ConvexClient(config.url, config.options);
+  if (!config) {
+    console.error("Failed to get Convex config");
+    return null;
+  }
+  try {
+    const client = new window.convex.ConvexClient(config.url, config.options);
+    console.log("Convex client initialized successfully with URL:", config.url);
+    return client;
+  } catch (error) {
+    console.error("Failed to initialize Convex client:", error);
+    return null;
+  }
 }
 
 export function classifyRange(value, min, max) {

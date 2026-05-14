@@ -62,7 +62,11 @@ export default function DistrictDashboard() {
   useEffect(() => {
     if (!convexReady) return;
     const client = buildConvexClient();
-    if (!client) return;
+    if (!client) {
+      console.error("[District] Failed to build Convex client");
+      return;
+    }
+    console.log("[District] Convex client initialized");
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
   }, [convexReady]);
