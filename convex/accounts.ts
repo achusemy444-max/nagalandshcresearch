@@ -33,8 +33,13 @@ export const update = mutation(async ({ db }, account) => {
   if (existing.length === 0) {
     throw new Error("Account not found.");
   }
-  await db.delete("accounts", existing[0]._id);
-  return await db.insert("accounts", account);
+  const { _id, ...updateData } = existing[0];
+  const mergedData = { ...updateData, ...account };
+  await db.patch("accounts", existing[0]._id, mergedData);
+  return await db.query("accounts")
+    .filter((q) => q.eq(q.field("id"), account.id))
+    .collect()
+    .then(results => results[0] || null);
 });
 
 export const deleteAccount = mutation(async ({ db }, { id }) => {

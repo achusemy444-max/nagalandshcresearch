@@ -20,5 +20,6 @@ export const deleteCard = mutation(async ({ db }, { id }) => {
   if (existing.length === 0) {
     return null;
   }
-  return await db.delete("soil_cards", existing[0]._id);
+  await db.delete("soil_cards", existing[0]._id);
+  return { success: true, deletedId: id };
 });

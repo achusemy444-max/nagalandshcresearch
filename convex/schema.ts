@@ -1,6 +1,14 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+// Helper for parameter evaluation object
+const paramEvaluationV = v.object({
+  value: v.union(v.string(), v.number()),
+  status: v.string(),
+  text: v.string(),
+  rangeText: v.string()
+});
+
 export default defineSchema({
   accounts: defineTable({
     id: v.string(),
@@ -40,78 +48,18 @@ export default defineSchema({
       copper: v.string()
     }),
     evaluations: v.object({
-      ph: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      ec: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      organicCarbon: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      nitrogen: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      phosphorous: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      potassium: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      sulphur: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      zinc: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      boron: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      iron: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      manganese: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      })),
-      copper: v.optional(v.object({
-        value: v.any(),
-        status: v.string(),
-        text: v.string(),
-        rangeText: v.string()
-      }))
+      ph: v.optional(paramEvaluationV),
+      ec: v.optional(paramEvaluationV),
+      organicCarbon: v.optional(paramEvaluationV),
+      nitrogen: v.optional(paramEvaluationV),
+      phosphorous: v.optional(paramEvaluationV),
+      potassium: v.optional(paramEvaluationV),
+      sulphur: v.optional(paramEvaluationV),
+      zinc: v.optional(paramEvaluationV),
+      boron: v.optional(paramEvaluationV),
+      iron: v.optional(paramEvaluationV),
+      manganese: v.optional(paramEvaluationV),
+      copper: v.optional(paramEvaluationV)
     }),
     recommendation: v.string(),
     createdBy: v.string(),
