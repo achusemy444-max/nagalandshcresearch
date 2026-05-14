@@ -71,25 +71,27 @@ export default function HomePage() {
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     const { username, password } = loginForm;
-    let account = null;
-
-    if (convexClient && apiClient) {
-      try {
-        account = await convexClient.query(apiClient.accounts.login, { username, password });
-        if (!account) {
-          const accountsRemote = await remoteLoadAccounts();
-          if (Array.isArray(accountsRemote) && accountsRemote.length === 0) {
-            await Promise.all(defaultState.accounts.map((acct) => remoteCreateAccount(acct).catch(() => null)));
-            account = await convexClient.query(apiClient.accounts.login, { username, password });
-          }
-        }
-      } catch (error) {
-        console.warn("Login remote error", error);
-      }
+    
+    if (!convexClient || !apiClient) {
+      setMessage("login", "Database connection unavailable. Please check your internet connection and try again.", "error");
+      return;
     }
-
-    if (!account) {
-      account = state.accounts.find((entry) => entry.username === username && entry.password === password);
+    
+    let account = null;
+    try {
+      account = await convexClient.query(apiClient.accounts.login, { username, password });
+      if (!account) {
+        // If no account found, try to initialize default accounts if database is empty
+        const accountsRemote = await remoteLoadAccounts();
+        if (Array.isArray(accountsRemote) && accountsRemote.length === 0) {
+          await Promise.all(defaultState.accounts.map((acct) => remoteCreateAccount(acct).catch(() => null)));
+          account = await convexClient.query(apiClient.accounts.login, { username, password });
+        }
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setMessage("login", "Login failed. Please check your credentials and try again.", "error");
+      return;
     }
 
     if (!account) {

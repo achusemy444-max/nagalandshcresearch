@@ -39,6 +39,7 @@ export default function AdminDashboard() {
       return;
     }
     setCurrentUser(user);
+    // Load initial state but prioritize Convex data
     const stored = loadLocalState();
     setState(stored);
   }, [router]);
@@ -54,6 +55,19 @@ export default function AdminDashboard() {
     });
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
+    
+    // Load data from Convex when client is ready
+    Promise.all([
+      remoteLoadAccounts(),
+      remoteLoadCards()
+    ]).then(([accounts, cards]) => {
+      if (accounts) {
+        setState((prev) => ({ ...prev, accounts }));
+      }
+      if (cards) {
+        setState((prev) => ({ ...prev, cards }));
+      }
+    });
   }, [convexReady]);
 
   async function remoteLoadAccounts() {
@@ -77,7 +91,84 @@ export default function AdminDashboard() {
   }
 
   async function remoteCreateAccount(account) {
-    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
+    if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
+    try {
+      const result = await convexClient.mutation(apiClient.accounts.create, account);
+      // Reload accounts from Convex to ensure consistency
+      const updatedAccounts = await remoteLoadAccounts();
+      if (updatedAccounts) {
+        setState((prev) => ({ ...prev, accounts: updatedAccounts }));
+      }
+      return result;
+    } catch (error) {
+      console.error("Failed to create account in Convex:", error);
+      throw new Error("Failed to create account. Please try again.");
+    }
+  }
+
+  async function remoteUpdateAccount(account) {
+    if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
+    try {
+      const result = await convexClient.mutation(apiClient.accounts.update, account);
+      // Reload accounts from Convex to ensure consistency
+      const updatedAccounts = await remoteLoadAccounts();
+      if (updatedAccounts) {
+        setState((prev) => ({ ...prev, accounts: updatedAccounts }));
+      }
+      return result;
+    } catch (error) {
+      console.error("Failed to update account in Convex:", error);
+      throw new Error("Failed to update account. Please try again.");
+    }
+  }
+
+  async function remoteDeleteAccount(accountId) {
+    if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
+    try {
+      const result = await convexClient.mutation(apiClient.accounts.deleteAccount, { id: accountId });
+      // Reload accounts from Convex to ensure consistency
+      const updatedAccounts = await remoteLoadAccounts();
+      if (updatedAccounts) {
+        setState((prev) => ({ ...prev, accounts: updatedAccounts }));
+      }
+      return result;
+    } catch (error) {
+      console.error("Failed to delete account from Convex:", error);
+      throw new Error("Failed to delete account. Please try again.");
+    }
+  }
+
+  async function remoteSaveCard(card) {
+    if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
+    try {
+      const result = await convexClient.mutation(apiClient.cards.save, card);
+      // Reload cards from Convex to ensure consistency
+      const updatedCards = await remoteLoadCards();
+      if (updatedCards) {
+        setState((prev) => ({ ...prev, cards: updatedCards }));
+      }
+      return result;
+    } catch (error) {
+      console.error("Failed to save card to Convex:", error);
+      throw new Error("Failed to save card. Please try again.");
+    }
+  }
+
+  async function remoteDeleteCard(cardId) {
+    if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
+    try {
+      const result = await convexClient.mutation(apiClient.cards.deleteCard, { id: cardId });
+      // Reload cards from Convex to ensure consistency
+      const updatedCards = await remoteLoadCards();
+      if (updatedCards) {
+        setState((prev) => ({ ...prev, cards: updatedCards }));
+      }
+      return result;
+    } catch (error) {
+      console.error("Failed to delete card from Convex:", error);
+      throw new Error("Failed to delete card. Please try again.");
+    }
+  }
     return await convexClient.mutation(apiClient.accounts.create, account);
   }
 
@@ -160,24 +251,20 @@ export default function AdminDashboard() {
       address,
       createdAt: new Date().toISOString()
     };
-    if (convexClient && apiClient) {
-      try {
-        await remoteCreateAccount(newAccount);
-        setState((prev) => ({...prev, accounts: [...prev.accounts, newAccount]}));
-        setDistrictAccountForm({ district: "", officerName: "", username: "", password: "", address: "" });
-        setMessage("districtAccount", `District account created for ${district}.`, "success");
-        return;
-      } catch (error) {
-        console.warn("Remote create account failed, falling back locally", error);
-      }
+    
+    if (!convexClient || !apiClient) {
+      setMessage("districtAccount", "Database connection unavailable. Please check your internet connection and try again.", "error");
+      return;
     }
-    setState((prev) => {
-      const next = { ...prev, accounts: [...prev.accounts, newAccount] };
-      saveLocalState(next);
-      return next;
-    });
-    setDistrictAccountForm({ district: "", officerName: "", username: "", password: "", address: "" });
-    setMessage("districtAccount", `District account created for ${district}.`, "success");
+    
+    try {
+      await remoteCreateAccount(newAccount);
+      setDistrictAccountForm({ district: "", officerName: "", username: "", password: "", address: "" });
+      setMessage("districtAccount", `District account created for ${district}.`, "success");
+    } catch (error) {
+      console.error("Create account error:", error);
+      setMessage("districtAccount", error.message || "Failed to create account. Please try again.", "error");
+    }
   };
 
   const handleViewCard = (cardId) => {
@@ -191,44 +278,38 @@ export default function AdminDashboard() {
     const card = state.cards.find((entry) => entry.id === cardId);
     if (!card) return;
     if (!confirm(`Delete Soil Health Card ${card.id}?`)) return;
-    if (convexClient && apiClient) {
-      try {
-        await remoteDeleteCard(cardId);
-        setState((prev) => ({...prev, cards: prev.cards.filter((entry) => entry.id !== cardId)}));
-        setMessage("districtAccount", `Deleted Soil Health Card ${card.id}.`, "success");
-        return;
-      } catch (error) {
-        console.warn("Remote delete failed, falling back locally", error);
-      }
+    
+    if (!convexClient || !apiClient) {
+      setMessage("districtAccount", "Database connection unavailable. Please check your internet connection and try again.", "error");
+      return;
     }
-    setState((prev) => {
-      const next = { ...prev, cards: prev.cards.filter((entry) => entry.id !== cardId) };
-      saveLocalState(next);
-      return next;
-    });
-    setMessage("districtAccount", `Deleted Soil Health Card ${card.id}.`, "success");
+    
+    try {
+      await remoteDeleteCard(cardId);
+      setMessage("districtAccount", `Deleted Soil Health Card ${card.id}.`, "success");
+    } catch (error) {
+      console.error("Delete card error:", error);
+      setMessage("districtAccount", error.message || "Failed to delete card. Please try again.", "error");
+    }
   };
 
   const handleDeleteAccount = async (accountId) => {
     const account = state.accounts.find((entry) => entry.id === accountId);
     if (!account) return;
     if (!confirm(`Delete district account "${account.username}" (${account.district})?`)) return;
-    if (convexClient && apiClient) {
-      try {
-        await remoteDeleteAccount(accountId);
-        setState((prev) => ({...prev, accounts: prev.accounts.filter((entry) => entry.id !== accountId)}));
-        setMessage("districtAccount", `Deleted account for ${account.district}.`, "success");
-        return;
-      } catch (error) {
-        console.warn("Remote delete account failed, falling back locally", error);
-      }
+    
+    if (!convexClient || !apiClient) {
+      setMessage("districtAccount", "Database connection unavailable. Please check your internet connection and try again.", "error");
+      return;
     }
-    setState((prev) => {
-      const next = { ...prev, accounts: prev.accounts.filter((entry) => entry.id !== accountId) };
-      saveLocalState(next);
-      return next;
-    });
-    setMessage("districtAccount", `Deleted account for ${account.district}.`, "success");
+    
+    try {
+      await remoteDeleteAccount(accountId);
+      setMessage("districtAccount", `Deleted account for ${account.district}.`, "success");
+    } catch (error) {
+      console.error("Delete account error:", error);
+      setMessage("districtAccount", error.message || "Failed to delete account. Please try again.", "error");
+    }
   };
 
   const handleEditAccount = async (accountId) => {

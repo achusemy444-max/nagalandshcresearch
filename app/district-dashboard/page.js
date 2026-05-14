@@ -53,6 +53,7 @@ export default function DistrictDashboard() {
       return;
     }
     setCurrentUser(user);
+    // Load initial state but prioritize Convex data
     const stored = loadLocalState();
     setState(stored);
     setSoilCardForm((prev) => ({
@@ -74,7 +75,14 @@ export default function DistrictDashboard() {
     });
     setConvexClient(client);
     setApiClient(window.convex.anyApi);
-  }, [convexReady]);
+    
+    // Load cards from Convex when client is ready
+    remoteLoadCards(currentUser?.district).then((remoteCards) => {
+      if (remoteCards) {
+        setState((prev) => ({ ...prev, cards: remoteCards }));
+      }
+    });
+  }, [convexReady, currentUser]);
 
   async function remoteLoadCards(district) {
     if (!convexClient || !apiClient) return null;
@@ -87,13 +95,35 @@ export default function DistrictDashboard() {
   }
 
   async function remoteSaveCard(card) {
-    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
-    return await convexClient.mutation(apiClient.cards.save, card);
+    if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
+    try {
+      const result = await convexClient.mutation(apiClient.cards.save, card);
+      // Reload cards from Convex to ensure consistency
+      const updatedCards = await remoteLoadCards(currentUser?.district);
+      if (updatedCards) {
+        setState((prev) => ({ ...prev, cards: updatedCards }));
+      }
+      return result;
+    } catch (error) {
+      console.error("Failed to save card to Convex:", error);
+      throw new Error("Failed to save card. Please try again.");
+    }
   }
 
   async function remoteDeleteCard(cardId) {
-    if (!convexClient || !apiClient) throw new Error("Convex unavailable");
-    return await convexClient.mutation(apiClient.cards.deleteCard, { id: cardId });
+    if (!convexClient || !apiClient) throw new Error("Convex backend unavailable. Please check your connection.");
+    try {
+      const result = await convexClient.mutation(apiClient.cards.deleteCard, { id: cardId });
+      // Reload cards from Convex to ensure consistency
+      const updatedCards = await remoteLoadCards(currentUser?.district);
+      if (updatedCards) {
+        setState((prev) => ({ ...prev, cards: updatedCards }));
+      }
+      return result;
+    } catch (error) {
+      console.error("Failed to delete card from Convex:", error);
+      throw new Error("Failed to delete card. Please try again.");
+    }
   }
 
   const districtCards = useMemo(
@@ -164,26 +194,21 @@ export default function DistrictDashboard() {
       setMessage("soilCard", "Please complete all required card details.", "error");
       return;
     }
-    if (convexClient && apiClient) {
-      try {
-        await remoteSaveCard(card);
-        setState((prev) => ({...prev, cards: [...prev.cards, card]}));
-        setSelectedCard(card);
-        setPreviewHtml(buildCardPreviewHtml(card));
-        setMessage("soilCard", `Soil Health Card ${card.id} saved successfully.`, "success");
-        return;
-      } catch (error) {
-        console.warn("Remote save card failed, falling back locally", error);
-      }
+    
+    if (!convexClient || !apiClient) {
+      setMessage("soilCard", "Database connection unavailable. Please check your internet connection and try again.", "error");
+      return;
     }
-    setState((prev) => {
-      const next = { ...prev, cards: [...prev.cards, card] };
-      saveLocalState(next);
-      return next;
-    });
-    setSelectedCard(card);
-    setPreviewHtml(buildCardPreviewHtml(card));
-    setMessage("soilCard", `Soil Health Card ${card.id} saved successfully.`, "success");
+    
+    try {
+      await remoteSaveCard(card);
+      setSelectedCard(card);
+      setPreviewHtml(buildCardPreviewHtml(card));
+      setMessage("soilCard", `Soil Health Card ${card.id} saved successfully to cloud database.`, "success");
+    } catch (error) {
+      console.error("Save card error:", error);
+      setMessage("soilCard", error.message || "Failed to save card. Please try again.", "error");
+    }
   };
 
   const handlePreviewCard = () => {
@@ -277,21 +302,19 @@ export default function DistrictDashboard() {
         createdBy: currentUser?.username || "",
         createdAt: new Date().toISOString()
       };
-      if (convexClient && apiClient) {
-        try {
-          await remoteSaveCard(card);
-          successCount++;
-          continue;
-        } catch (error) {
-          console.warn("Bulk remote card save failed", error);
-        }
+      
+      if (!convexClient || !apiClient) {
+        errorCount++;
+        continue;
       }
-      setState((prev) => {
-        const next = { ...prev, cards: [...prev.cards, card] };
-        saveLocalState(next);
-        return next;
-      });
-      successCount++;
+      
+      try {
+        await remoteSaveCard(card);
+        successCount++;
+      } catch (error) {
+        console.error("Bulk card save failed:", error);
+        errorCount++;
+      }
     }
     setMessage("bulkCards", `Bulk upload completed. ${successCount} cards generated, ${errorCount} errors.`, successCount > 0 ? "success" : "error");
   };
