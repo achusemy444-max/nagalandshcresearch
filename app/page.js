@@ -205,7 +205,7 @@ export default function HomePage() {
           </div>
           <div className="session-box">
             <span className={`status-dot ${backendStatus}`}></span>
-            <span>Main Server Status: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Checking..."}</span>
+            <span>Main Server Status: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Synchronizing..."}</span>
           </div>
           <img src="/assets/soil-logo.jpg" alt="Soil Health logo" className="top-logo top-logo-right" />
         </div>
@@ -215,18 +215,19 @@ export default function HomePage() {
           <div className="container hero-grid">
             <div className="hero-copy">
               <p className="section-tag">Welcome to the Soil Health Card Research Portal</p>
-              <h2>Soil Health Card system for Administration and District-level card generation.</h2>
+              <h2>Soil Health Card Research Scheme for Administration and State-level SHC card generation.</h2>
               <p>
                 This prototype includes one Administrator account that can create and manage district user accounts,
                 Review all district data, and monitor generated Soil Health Cards. District users can log in, enter soil
-                testing data, and generate recommendation-ready Soil Health Cards.
+                testing data, and generate Automated recommendation-ready Soil Health Cards.
               </p>
               <div className="hero-features">
-                <span>Scheme administrator control</span>
+                <span>Scheme are Supervise under administrator control</span>
                 <span>District account creation</span>
                 <span>12 soil parameters</span>
                 <span>Texture and moisture context</span>
                 <span>Status color indicators</span>
+                <span>Nutrient Analysis</span>
                 <span>Recommendation generator</span>
               </div>
               <div className="hero-contact">
@@ -264,9 +265,9 @@ export default function HomePage() {
                 <button type="submit" className="button button-primary">Login</button>
               </form>
               <div className="login-help">
-                <p><strong>Sample District User:</strong></p>
-                <p>Username: Kohima123</p>
-                <p>Password: Kohima123</p>
+                <p><strong>Guest account:</strong></p>
+                <p>Username: Guest123</p>
+                <p>Password: Guest123</p>
                 <p className="help-note">Contact the Soil and Water Conservation Department for your credentials.</p>
               </div>
               <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
