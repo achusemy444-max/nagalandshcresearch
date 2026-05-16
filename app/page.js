@@ -47,47 +47,6 @@ export default function HomePage() {
     setApiClient(window.convex.anyApi);
   }, [convexReady]);
 
-  const computeDistrictAnalysis = (cards = []) => {
-    const analysis = {
-      totalCards: 0,
-      districts: {},
-      overall: {
-        ph: { green: 0, yellow: 0, red: 0 },
-        ec: { green: 0, yellow: 0, red: 0 }
-      }
-    };
-
-    cards.forEach((card) => {
-      if (!card?.district) return;
-
-      if (!analysis.districts[card.district]) {
-        analysis.districts[card.district] = {
-          totalCards: 0,
-          ph: { green: 0, yellow: 0, red: 0 },
-          ec: { green: 0, yellow: 0, red: 0 }
-        };
-      }
-
-      const districtData = analysis.districts[card.district];
-      districtData.totalCards += 1;
-      analysis.totalCards += 1;
-
-      const phStatus = card?.evaluations?.ph?.status;
-      const ecStatus = card?.evaluations?.ec?.status;
-
-      if (phStatus && districtData.ph[phStatus] !== undefined) {
-        districtData.ph[phStatus] += 1;
-        analysis.overall.ph[phStatus] += 1;
-      }
-      if (ecStatus && districtData.ec[ecStatus] !== undefined) {
-        districtData.ec[ecStatus] += 1;
-        analysis.overall.ec[ecStatus] += 1;
-      }
-    });
-
-    return analysis;
-  };
-
   const getStatusCounts = () => ({ green: 0, yellow: 0, orange: 0, red: 0, grey: 0 });
 
   const getPieGradient = (status = { green: 0, yellow: 0, orange: 0, red: 0, grey: 0 }) => {
