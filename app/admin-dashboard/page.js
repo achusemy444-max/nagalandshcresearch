@@ -185,31 +185,6 @@ export default function AdminDashboard() {
     { value: new Set(state.cards.map((card) => card.district)).size, label: "Active Districts", note: "Districts with at least one card" }
   ];
 
-  const getNutrientAnalysisByDistrict = () => {
-    const districtAnalysis = {};
-    state.cards.forEach(card => {
-      if (!districtAnalysis[card.district]) {
-        districtAnalysis[card.district] = {
-          totalCards: 0,
-          phStatus: { red: 0, green: 0, yellow: 0 },
-          ecStatus: { red: 0, green: 0, yellow: 0 }
-        };
-      }
-      districtAnalysis[card.district].totalCards++;
-      
-      const phEval = card.evaluations.ph;
-      const ecEval = card.evaluations.ec;
-      
-      if (phEval?.status) {
-        districtAnalysis[card.district].phStatus[phEval.status]++;
-      }
-      if (ecEval?.status) {
-        districtAnalysis[card.district].ecStatus[ecEval.status]++;
-      }
-    });
-    return districtAnalysis;
-  };
-
   const setMessage = (field, text, type = "") => {
     setMessages((prev) => ({
       ...prev,
@@ -515,25 +490,6 @@ export default function AdminDashboard() {
             </div>
 
             <div className="panel-grid">
-              <article className="panel-card">
-                <div className="card-head">
-                  <p className="section-tag">District Analysis</p>
-                  <h3>Nutrient Analysis by District</h3>
-                </div>
-                <div className="nutrient-analysis">
-                  {Object.entries(getNutrientAnalysisByDistrict()).map(([district, data]) => (
-                    <div key={district} className="nutrient-summary">
-                      <strong>{district}</strong>
-                      <p>📊 Total Cards: {data.totalCards}</p>
-                      <p>pH Status - 🔴: {data.phStatus.red}</p>
-                      <p>pH Status - 🟢: {data.phStatus.green}</p>
-                      <p>EC Status - 🔴: {data.ecStatus.red}</p>
-                      <p>EC Status - 🟢: {data.ecStatus.green}</p>
-                    </div>
-                  ))}
-                </div>
-              </article>
-
               <article className="panel-card">
                 <div className="card-head">
                   <p className="section-tag">District Accounts</p>

@@ -64,8 +64,6 @@ a {
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
   z-index: 20;
   border-bottom: 1px solid rgba(23, 49, 29, 0.08);
   backdrop-filter: blur(14px);
@@ -183,6 +181,94 @@ a {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.8rem;
+}
+
+.analysis-section {
+  padding: 3rem 0;
+}
+
+.analysis-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.analysis-content {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.pie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.pie-card {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  text-align: center;
+  min-height: 320px;
+}
+
+.pie-chart {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+  position: relative;
+  background: var(--surface-soft);
+}
+
+.pie-chart::after {
+  content: "";
+  position: absolute;
+  inset: 1.6rem;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.pie-label {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+  width: 100%;
+}
+
+.status-note {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.status-summary {
+  color: var(--muted);
+}
+
+.analysis-meta {
+  display: grid;
+  gap: 1rem;
+}
+
+.analysis-meta p {
+  margin: 0;
+}
+
+.analysis-note {
+  color: var(--muted);
+}
+
+.legend-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
 .login-card {

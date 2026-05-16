@@ -7,7 +7,8 @@ import {
   defaultState,
   loadCurrentUser,
   saveCurrentUser,
-  buildConvexClient
+  buildConvexClient,
+  parameterDefinitions
 } from "./utils/shc-helpers";
 
 export default function HomePage() {
@@ -18,6 +19,8 @@ export default function HomePage() {
   const [convexReady, setConvexReady] = useState(false);
   const [convexClient, setConvexClient] = useState(null);
   const [apiClient, setApiClient] = useState(null);
+  const [districtAnalysis, setDistrictAnalysis] = useState(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -44,22 +47,127 @@ export default function HomePage() {
     setApiClient(window.convex.anyApi);
   }, [convexReady]);
 
-  useEffect(() => {
-    if (!convexClient || !apiClient) {
-      setBackendStatus("offline");
-      return;
-    }
-
-    let active = true;
-    const verifyBackend = async () => {
-      try {
-        await convexClient.query(apiClient.accounts.list, {});
-        if (active) setBackendStatus("online");
-      } catch (error) {
-        if (active) setBackendStatus("offline");
+  const computeDistrictAnalysis = (cards = []) => {
+    const analysis = {
+      totalCards: 0,
+      districts: {},
+      overall: {
+        ph: { green: 0, yellow: 0, red: 0 },
+        ec: { green: 0, yellow: 0, red: 0 }
       }
     };
-    verifyBackend();
+
+    cards.forEach((card) => {
+      if (!card?.district) return;
+
+      if (!analysis.districts[card.district]) {
+        analysis.districts[card.district] = {
+          totalCards: 0,
+          ph: { green: 0, yellow: 0, red: 0 },
+          ec: { green: 0, yellow: 0, red: 0 }
+        };
+      }
+
+      const districtData = analysis.districts[card.district];
+      districtData.totalCards += 1;
+      analysis.totalCards += 1;
+
+      const phStatus = card?.evaluations?.ph?.status;
+      const ecStatus = card?.evaluations?.ec?.status;
+
+      if (phStatus && districtData.ph[phStatus] !== undefined) {
+        districtData.ph[phStatus] += 1;
+        analysis.overall.ph[phStatus] += 1;
+      }
+      if (ecStatus && districtData.ec[ecStatus] !== undefined) {
+        districtData.ec[ecStatus] += 1;
+        analysis.overall.ec[ecStatus] += 1;
+      }
+    });
+
+    return analysis;
+  };
+
+  const getStatusCounts = () => ({ green: 0, yellow: 0, orange: 0, red: 0, grey: 0 });
+
+  const getPieGradient = (status = { green: 0, yellow: 0, orange: 0, red: 0, grey: 0 }) => {
+    const total = status.green + status.yellow + status.orange + status.red + status.grey;
+    if (!total) {
+      return "var(--surface-soft)";
+    }
+
+    const greenPct = Math.round((status.green / total) * 100);
+    const yellowPct = Math.round((status.yellow / total) * 100);
+    const orangePct = Math.round((status.orange / total) * 100);
+    const redPct = Math.round((status.red / total) * 100);
+    const greyPct = 100 - greenPct - yellowPct - orangePct - redPct;
+    const slices = [];
+
+    if (greenPct) slices.push(`var(--green) 0% ${greenPct}%`);
+    if (yellowPct) slices.push(`var(--yellow) ${greenPct}% ${greenPct + yellowPct}%`);
+    if (orangePct) slices.push(`var(--orange) ${greenPct + yellowPct}% ${greenPct + yellowPct + orangePct}%`);
+    if (redPct) slices.push(`var(--red) ${greenPct + yellowPct + orangePct}% ${greenPct + yellowPct + orangePct + redPct}%`);
+    if (greyPct) slices.push(`var(--grey) ${greenPct + yellowPct + orangePct + redPct}% 100%`);
+
+    return `conic-gradient(${slices.join(", ")})`;
+  };
+
+  const computeDistrictAnalysis = (cards = []) => {
+    const analysis = {
+      totalCards: 0,
+      districts: {},
+      overall: {}
+    };
+
+    parameterDefinitions.forEach(({ key }) => {
+      analysis.overall[key] = getStatusCounts();
+    });
+
+    cards.forEach((card) => {
+      if (!card?.district) return;
+
+      if (!analysis.districts[card.district]) {
+        analysis.districts[card.district] = {
+          totalCards: 0
+        };
+        parameterDefinitions.forEach(({ key }) => {
+          analysis.districts[card.district][key] = getStatusCounts();
+        });
+      }
+
+      const districtData = analysis.districts[card.district];
+      districtData.totalCards += 1;
+      analysis.totalCards += 1;
+
+      parameterDefinitions.forEach(({ key }) => {
+        const status = card?.evaluations?.[key]?.status || "grey";
+        const normalizedStatus = ["green", "yellow", "orange", "red", "grey"].includes(status) ? status : "grey";
+        districtData[key][normalizedStatus] += 1;
+        analysis.overall[key][normalizedStatus] += 1;
+      });
+    });
+
+    return analysis;
+  };
+
+  useEffect(() => {
+    if (!convexClient || !apiClient) return;
+
+    setAnalysisLoading(true);
+    let active = true;
+    const loadAnalysis = async () => {
+      try {
+        const cardList = await convexClient.query(apiClient.cards.list, {});
+        if (!active) return;
+        setDistrictAnalysis(computeDistrictAnalysis(cardList || []));
+      } catch (error) {
+        console.warn("Failed to load nutrient analysis:", error);
+      } finally {
+        if (active) setAnalysisLoading(false);
+      }
+    };
+
+    loadAnalysis();
     return () => {
       active = false;
     };
@@ -147,11 +255,11 @@ export default function HomePage() {
         <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <p className="section-tag">Portal Overview</p>
-              <h2>Online-based Soil Health Card system for scheme administration and district-level card generation.</h2>
+              <p className="section-tag">Welcome to the Soil Health Card Portal</p>
+              <h2>Soil Health Card system for Administration and District-level card generation.</h2>
               <p>
-                This prototype includes one Scheme Administrator account that can create and manage district user accounts,
-                inspect all district data, and monitor generated Soil Health Cards. District users can log in, enter soil
+                This prototype includes one Administrator account that can create and manage district user accounts,
+                Review all district data, and monitor generated Soil Health Cards. District users can log in, enter soil
                 testing data, and generate recommendation-ready Soil Health Cards.
               </p>
               <div className="hero-features">
@@ -198,8 +306,8 @@ export default function HomePage() {
               </form>
               <div className="login-help">
                 <p><strong>Sample District User:</strong></p>
-                <p>Username: kohima_user</p>
-                <p>Password: District@123</p>
+                <p>Username: Kohima123</p>
+                <p>Password: Kohima123</p>
                 <p className="help-note">Contact the Soil and Water Conservation Department for your credentials.</p>
               </div>
               <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
@@ -246,6 +354,51 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="analysis-section">
+          <div className="container analysis-grid">
+            <article className="panel-card">
+              <div className="card-head">
+                <p className="section-tag">District Analysis</p>
+                <h3>Nutrient Analysis by District</h3>
+              </div>
+              <div className="analysis-content">
+                <div className="pie-row">
+                    <div className="pie-grid">
+                  {parameterDefinitions.map((param) => {
+                    const counts = districtAnalysis?.overall?.[param.key] || getStatusCounts();
+                    return (
+                      <div key={param.key} className="pie-card">
+                        <div className="pie-chart" style={{ background: getPieGradient(counts) }} aria-hidden="true" />
+                        <div className="pie-label">
+                          <p><strong>{param.label}</strong></p>
+                          <div className="status-row"><span>G {counts.green}</span><span>Y {counts.yellow}</span></div>
+                          <div className="status-row"><span>O {counts.orange}</span><span>R {counts.red}</span></div>
+                          {counts.grey > 0 && <p className="status-note">N/A {counts.grey}</p>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+                <div className="analysis-meta">
+                  <p><strong>{districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0}</strong> districts reporting</p>
+                  <p><strong>{districtAnalysis?.totalCards ?? 0}</strong> total soil cards analyzed</p>
+                  <div className="legend-list">
+                    <div><span className="legend-dot legend-green"></span>Optimal</div>
+                    <div><span className="legend-dot legend-yellow"></span>Moderate</div>
+                    <div><span className="legend-dot legend-red"></span>Attention</div>
+                  </div>
+                  {analysisLoading && <p className="analysis-note">Loading nutrient summary…</p>}
+                  {!analysisLoading && !districtAnalysis?.totalCards && (
+                    <p className="analysis-note">No district nutrient data available yet. Once soil cards are added, this chart will update automatically.</p>
+                  )}
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section className="contact-section">
           <div className="container contact-grid">
             <div className="contact-card">
@@ -266,9 +419,9 @@ export default function HomePage() {
                 <h3>Research Programme Team</h3>
               </div>
               <div className="credits-list">
-                <p><strong>Int. Developer:</strong> Shri. Khanchulo Semy</p>
-                <p><strong>Cyber Security and Optimizer:</strong> Er. Chentilo (IIT Developer Sp.)</p>
-                <p><strong>SHC Virtualizer:</strong> Shri. Kihika G Yeptho</p>
+                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy</p>
+                <p><strong>Programming Optimizer:</strong> Er. Chentilo (H.G Department on IIT Spl.Developer)</p>
+                <p><strong>SHC Virtualizer and Supervisor:</strong> Shri. Kihika G Yeptho</p>
                 <p><strong>Advisor:</strong> Shri. Rontilo Kent</p>
               </div>
             </div>
