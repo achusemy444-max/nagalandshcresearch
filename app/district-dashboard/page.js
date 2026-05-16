@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
 import Link from "next/link";
 import {
   parameterDefinitions,
@@ -58,6 +57,12 @@ export default function DistrictDashboard() {
       testCenterAddress: prev.testCenterAddress || user.address
     }));
   }, [router]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.convex) {
+      setConvexReady(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!convexReady) return;
@@ -338,11 +343,6 @@ export default function DistrictDashboard() {
 
   return (
     <>
-      <Script
-        src="https://unpkg.com/convex@1.3.1/dist/browser.bundle.js"
-        strategy="afterInteractive"
-        onLoad={() => setConvexReady(true)}
-      />
       <header className="site-header">
         <div className="container topbar">
           <img src="/assets/gon-logo.png" alt="Government of Nagaland logo" className="top-logo top-logo-round top-logo-left" />

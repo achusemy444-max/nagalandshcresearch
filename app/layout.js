@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata = {
   title: "Soil Health Card Portal",
@@ -8,7 +9,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Script
+          src="https://unpkg.com/convex@1.3.1/dist/browser.bundle.js"
+          strategy="beforeInteractive"
+          onError={() => console.error("Failed to load Convex SDK")}
+        />
+        {children}
+      </body>
     </html>
   );
 }

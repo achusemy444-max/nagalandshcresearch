@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Script from "next/script";
 import {
   CURRENT_USER_KEY,
   defaultState,
@@ -27,6 +26,12 @@ export default function HomePage() {
       router.push(currentUser.role === "admin" ? "/admin-dashboard" : "/district-dashboard");
     }
   }, [router]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.convex) {
+      setConvexReady(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!convexReady) return;
@@ -123,11 +128,6 @@ export default function HomePage() {
 
   return (
     <>
-      <Script
-        src="https://unpkg.com/convex@1.3.1/dist/browser.bundle.js"
-        strategy="afterInteractive"
-        onLoad={() => setConvexReady(true)}
-      />
       <header className="site-header">
         <div className="container topbar">
           <img src="/assets/gon-logo.png" alt="Government of Nagaland logo" className="top-logo top-logo-round top-logo-left" />
@@ -267,10 +267,9 @@ export default function HomePage() {
               </div>
               <div className="credits-list">
                 <p><strong>Int. Developer:</strong> Shri. Khanchulo Semy</p>
-                <p><strong>Cyber Security and Optimization Developer:</strong> Er. Chentilo (IIT Developer Sp.)</p>
+                <p><strong>Cyber Security and Optimizer:</strong> Er. Chentilo (IIT Developer Sp.)</p>
                 <p><strong>SHC Virtualizer:</strong> Shri. Kihika G Yeptho</p>
                 <p><strong>Advisor:</strong> Shri. Rontilo Kent</p>
-                <p><strong>Supervisor:</strong> Smti. Krutalu Tunyi</p>
               </div>
             </div>
           </div>
