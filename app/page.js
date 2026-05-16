@@ -201,11 +201,11 @@ export default function HomePage() {
           <div className="brand-center">
             <p className="mini-label">Soil and Water Conservation Department</p>
             <h1>Soil Health Card Research Programme</h1>
-            <p className="brand-subtitle">Kohima, Nagaland</p>
+            <p className="brand-subtitle">Directorate Kohima, Nagaland</p>
           </div>
           <div className="session-box">
             <span className={`status-dot ${backendStatus}`}></span>
-            <span>Convex Backend: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Checking..."}</span>
+            <span>Main Server Status: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Checking..."}</span>
           </div>
           <img src="/assets/soil-logo.jpg" alt="Soil Health logo" className="top-logo top-logo-right" />
         </div>
@@ -214,7 +214,7 @@ export default function HomePage() {
         <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <p className="section-tag">Welcome to the Soil Health Card Portal</p>
+              <p className="section-tag">Welcome to the Soil Health Card Research Portal</p>
               <h2>Soil Health Card system for Administration and District-level card generation.</h2>
               <p>
                 This prototype includes one Administrator account that can create and manage district user accounts,
@@ -317,8 +317,8 @@ export default function HomePage() {
           <div className="container analysis-grid">
             <article className="panel-card">
               <div className="card-head">
-                <p className="section-tag">District Analysis</p>
-                <h3>Nutrient Analysis by District</h3>
+                <p className="section-tag">State Level Nutrient Analysis</p>
+                <h3>Nutrient Analysis result from all District</h3>
               </div>
               <div className="analysis-content">
                 <div className="pie-row">
