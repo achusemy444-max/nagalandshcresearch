@@ -217,12 +217,12 @@ export default function HomePage() {
               <p className="section-tag">Welcome to the Soil Health Card Research Portal</p>
               <h2>Soil Health Card Research Scheme for Administration and State-level SHC card generation.</h2>
               <p>
-                This prototype includes one Administrator account that can create and manage district user accounts,
+                This prototype under Administrator account that can create and manage district user accounts,
                 Review all district data, and monitor generated Soil Health Cards. District users can log in, enter soil
                 testing data, and generate Automated recommendation-ready Soil Health Cards.
               </p>
               <div className="hero-features">
-                <span>Scheme are Supervise under administrator control</span>
+                <span>Scheme Supervise under administrator</span>
                 <span>District account creation</span>
                 <span>12 soil parameters</span>
                 <span>Texture and moisture context</span>
@@ -344,6 +344,12 @@ export default function HomePage() {
                 <div className="analysis-meta">
                   <p><strong>{districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0}</strong> districts reporting</p>
                   <p><strong>{districtAnalysis?.totalCards ?? 0}</strong> total soil cards analyzed</p>
+                  <span>Status Color Meanings</span>
+                      <span className="status-green">🟢GREEN: SUFFICIENT</span>
+                      <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
+                      <span className="status-orange">🟠ORANGE: MODERATE</span>
+                      <span className="status-red">🔴RED: DEFICIENT</span>                      
+                      <span className="status-gray">🔘GRAY: NOT APPLICABLE</span>
                   <div className="legend-list">
                     <div><span className="legend-dot legend-green"></span>Optimal</div>
                     <div><span className="legend-dot legend-yellow"></span>Moderate</div>

@@ -154,21 +154,21 @@ export function classifyRange(value, min, max) {
   if (value >= min && value <= max) return { status: "green", text: "SUFFICIENT" };
   const distance = value < min ? (min - value) / Math.max(min, 1) : (value - max) / Math.max(max, 1);
   if (distance <= 0.1) return { status: "yellow", text: "MEDIUM" };
-  if (distance <= 0.25) return { status: "orange", text: "DEFICIENT" };
+  if (distance <= 0.25) return { status: "orange", text: "MODERATE" };
   return { status: "red", text: "DEFICIENT" };
 }
 
 export function classifyGreaterThan(value, min) {
   if (value >= min) return { status: "green", text: "SUFFICIENT" };
   if (value >= min * 0.85) return { status: "yellow", text: "MEDIUM" };
-  if (value >= min * 0.7) return { status: "orange", text: "DEFICIENT" };
+  if (value >= min * 0.7) return { status: "orange", text: "MODERATE" };
   return { status: "red", text: "DEFICIENT" };
 }
 
 export function classifyLessThan(value, max) {
   if (value < max) return { status: "green", text: "SUFFICIENT" };
   if (value <= max * 1.2) return { status: "yellow", text: "MEDIUM" };
-  if (value <= max * 1.5) return { status: "orange", text: "DEFICIENT" };
+  if (value <= max * 1.5) return { status: "orange", text: "MODERATE" };
   return { status: "red", text: "DEFICIENT" };
 }
 

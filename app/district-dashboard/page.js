@@ -480,6 +480,13 @@ export default function DistrictDashboard() {
                     <label className="span-2">
                       <span>CSV File</span>
                       <input type="file" accept=".csv" onChange={handleBulkCardsUpload} />
+                      <span>___________________________________________________           </span>
+                      <span>Status Color Meanings</span>
+                      <span className="status-green">🟢GREEN: SUFFICIENT</span>
+                      <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
+                      <span className="status-orange">🟠ORANGE: MODERATE</span>
+                      <span className="status-red">🔴RED: DEFICIENT</span>                      
+                      <span className="status-gray">🔘GRAY: NOT APPLICABLE</span>
                     </label>
                   </form>
                 </div>

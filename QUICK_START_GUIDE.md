@@ -170,7 +170,7 @@ Each card includes:
 |-------|--------|---------|
 | 🟢 Green | SUFFICIENT | Within optimal range |
 | 🟡 Yellow | MEDIUM | Slightly off range |
-| 🟠 Orange | DEFICIENT | Moderately off range |
+| 🟠 Orange | MODERATE | Moderately off range |
 | 🔴 Red | DEFICIENT | Significantly below range |
 | ⚪ Grey | NOT AVAILABLE | Data not provided |
 

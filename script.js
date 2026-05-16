@@ -174,14 +174,14 @@ function classifyRange(value, min, max) {
   if (value >= min && value <= max) return { status: "green", text: "SUFFICIENT" };
   const distance = value < min ? (min - value) / Math.max(min, 1) : (value - max) / Math.max(max, 1);
   if (distance <= 0.1) return { status: "yellow", text: "MEDIUM" };
-  if (distance <= 0.25) return { status: "orange", text: "DEFICIENT" };
+  if (distance <= 0.25) return { status: "orange", text: "MODERATE" };
   return { status: "red", text: "DEFICIENT" };
 }
 
 function classifyGreaterThan(value, min) {
   if (value >= min) return { status: "green", text: "SUFFICIENT" };
   if (value >= min * 0.85) return { status: "yellow", text: "MEDIUM" };
-  if (value >= min * 0.7) return { status: "orange", text: "DEFICIENT" };
+  if (value >= min * 0.7) return { status: "orange", text: "MODERATE" };
   return { status: "red", text: "DEFICIENT" };
 }
 
@@ -195,11 +195,11 @@ function classifyLessThan(value, max) {
 function classifyPh(value, max) {
   if (value >= 5.5 && value <= max) return { status: "green", text: "SUFFICIENT" };
   if (value >= 5 && value < 5.5) return { status: "yellow", text: "MEDIUM" };
-  if (value >= 4.5 && value < 5) return { status: "orange", text: "DEFICIENT" };
+  if (value >= 4.5 && value < 5) return { status: "orange", text: "MODERATE" };
   if (value < 4.5) return { status: "red", text: "DEFICIENT" };
   // For values above max, still map to the same 4-level text labels.
   if (value <= max + 0.5) return { status: "yellow", text: "MEDIUM" };
-  if (value <= max + 1) return { status: "orange", text: "DEFICIENT" };
+  if (value <= max + 1) return { status: "orange", text: "MODERATE" };
   return { status: "red", text: "DEFICIENT" };
 }
 
@@ -466,7 +466,7 @@ function buildCardMarkup(card) {
         <div class="status-indicators-grid">
           <span class="status-green">GREEN: SUFFICIENT</span>
           <span class="status-yellow">YELLOW: MEDIUM</span>
-          <span class="status-orange">ORANGE: DEFICIENT</span>
+          <span class="status-orange">ORANGE: MODERATE</span>
           <span class="status-red">RED: DEFICIENT</span>
           <span class="status-grey">GREY: NOT AVAILABLE</span>
         </div>
