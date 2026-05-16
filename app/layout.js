@@ -13,7 +13,6 @@ export default function RootLayout({ children }) {
         <Script
           src="https://unpkg.com/convex@1.3.1/dist/browser.bundle.js"
           strategy="beforeInteractive"
-          onError={() => console.error("Failed to load Convex SDK")}
         />
         {children}
       </body>
