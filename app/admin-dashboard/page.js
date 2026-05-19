@@ -181,8 +181,8 @@ export default function AdminDashboard() {
 
   const adminStats = [
     { value: districtAccounts.length, label: "District Accounts", note: "Managed by scheme administrator" },
-    { value: state.cards.length, label: "Cards Generated", note: "All district data visible here" },
-    { value: new Set(state.cards.map((card) => card.district)).size, label: "Active Districts", note: "Districts with at least one card" }
+    { value: state.cards.length, label: "Reports Generated", note: "All district data visible here" },
+    { value: new Set(state.cards.map((card) => card.district)).size, label: "Active Districts", note: "Districts with at least one report" }
   ];
 
   const setMessage = (field, text, type = "") => {
@@ -241,7 +241,7 @@ export default function AdminDashboard() {
   const handleDeleteCard = async (cardId) => {
     const card = state.cards.find((entry) => entry.id === cardId);
     if (!card) return;
-    if (!confirm(`Delete Soil Health Card ${card.id}?`)) return;
+    if (!confirm(`Delete Soil Health Report ${card.id}?`)) return;
     
     if (!convexClient || !apiClient) {
       setMessage("districtAccount", "Database connection unavailable. Please check your internet connection and try again.", "error");
@@ -250,10 +250,10 @@ export default function AdminDashboard() {
     
     try {
       await remoteDeleteCard(cardId);
-      setMessage("districtAccount", `Deleted Soil Health Card ${card.id}.`, "success");
+      setMessage("districtAccount", `Deleted Soil Health Report ${card.id}.`, "success");
     } catch (error) {
       console.error("Delete card error:", error);
-      setMessage("districtAccount", error.message || "Failed to delete card. Please try again.", "error");
+      setMessage("districtAccount", error.message || "Failed to delete report. Please try again.", "error");
     }
   };
 
@@ -401,17 +401,16 @@ export default function AdminDashboard() {
     <>
       <header className="site-header">
         <div className="container topbar">
-          <img src="/assets/gon-logo.png" alt="Government of Nagaland logo" className="top-logo top-logo-round top-logo-left" />
+          <img src="/assets/soil-logo.jpg" alt="Department of Soil & Water Conservation, Nagaland logo" className="top-logo top-logo-round top-logo-left" />
           <div className="brand-center">
-            <p className="mini-label">Soil and Water Conservation Department</p>
-            <h1>Soil Health Card Research Programme</h1>
-            <p className="brand-subtitle">Kohima, Nagaland</p>
+            <p className="mini-label">Department of Soil & Water Conservation, Nagaland</p>
+            <h1>Soil Health Report Research Programme</h1>
+            <p className="brand-subtitle">Research and training portal</p>
           </div>
           <div className="session-box">
             <span className="status-dot"></span>
             <span>Admin: {currentUser.username}</span>
           </div>
-          <img src="/assets/soil-logo.jpg" alt="Soil Health logo" className="top-logo top-logo-right" />
         </div>
       </header>
       <main>
@@ -524,13 +523,13 @@ export default function AdminDashboard() {
               <article className="panel-card wide-card">
                 <div className="card-head">
                   <p className="section-tag">All District Data</p>
-                  <h3>Generated Soil Health Cards</h3>
+                  <h3>Generated Soil Health Reports</h3>
                 </div>
                 <div className="table-wrap">
                   <table>
                     <thead>
                       <tr>
-                        <th>Card ID</th>
+                        <th>Report ID</th>
                         <th>District</th>
                         <th>Farmer Name</th>
                         <th>Survey No.</th>
@@ -552,7 +551,7 @@ export default function AdminDashboard() {
                           </td>
                         </tr>
                       )) : (
-                        <tr><td colSpan="6">No Soil Health Cards generated yet.</td></tr>
+                        <tr><td colSpan="6">No Soil Health Reports generated yet.</td></tr>
                       )}
                     </tbody>
                   </table>
@@ -563,7 +562,7 @@ export default function AdminDashboard() {
             {selectedCard && (
               <article className="panel-card wide-card">
                 <div className="card-head">
-                  <p className="section-tag">Card Preview</p>
+                  <p className="section-tag">Report Preview</p>
                   <h3>{selectedCard.id}</h3>
                 </div>
                 <div className="card-actions">
@@ -572,12 +571,12 @@ export default function AdminDashboard() {
                 <div className="card-preview full-preview">
                   {previewHtml ? (
                     <iframe
-                      title="Soil Health Card Preview"
+                      title="Soil Health Report Preview"
                       srcDoc={previewHtml}
                       className="preview-frame"
                     />
                   ) : (
-                    <div className="empty-state">Select a card to render the Soil Health Card preview.</div>
+                    <div className="empty-state">Select a report to render the Soil Health Report preview.</div>
                   )}
                 </div>
               </article>
@@ -587,8 +586,8 @@ export default function AdminDashboard() {
       </main>
       <footer className="site-footer">
         <div className="container footer-row">
-          <p>Soil Health Card Team Center · Soil and Water Conservation Department · Kohima, Nagaland</p>
-          <p>SHC Research Programme Team Kohima</p>
+          <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
+          <p>Soil Health Report Programme</p>
         </div>
       </footer>
     </>

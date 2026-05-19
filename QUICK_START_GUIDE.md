@@ -197,8 +197,8 @@ Kohima,2024-01-15,Lab Address,TC-001,123,Ram Kumar,Nagaland,Loamy,Moderate,7.2,0
 
 ## Support & Contact
 
-**Email**: SHCS&Wdirectorateteam@gmail.com  
-**Phone**: 7005303701  
+**Email**: achusemy444@gmail.com  
+**Phone**: 7005303701 (Whatsapp no.)  
 **Office**: Soil and Water Conservation Department, Kohima, Nagaland
 
 ---

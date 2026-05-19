@@ -197,32 +197,30 @@ export default function HomePage() {
     <>
       <header className="site-header">
         <div className="container topbar">
-          <img src="/assets/gon-logo.png" alt="Government of Nagaland logo" className="top-logo top-logo-round top-logo-left" />
+          <img src="/assets/soil-logo.jpg" alt="Department of Soil & Water Conservation, Nagaland logo" className="top-logo top-logo-round top-logo-left" />
           <div className="brand-center">
-            <p className="mini-label">Soil and Water Conservation Department</p>
-            <h1>Soil Health Card Research Programme</h1>
-            <p className="brand-subtitle">Directorate Kohima, Nagaland</p>
+            <p className="mini-label">Department of Soil & Water Conservation, Nagaland</p>
+            <h1>Soil Health Report Research & Training Programme</h1>
+            <p className="brand-subtitle">Research and training service</p>
           </div>
           <div className="session-box">
             <span className={`status-dot ${backendStatus}`}></span>
             <span>Main Server Status: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Synchronizing..."}</span>
           </div>
-          <img src="/assets/soil-logo.jpg" alt="Soil Health logo" className="top-logo top-logo-right" />
+          {/* logo removed to avoid implication of official government branding */}
         </div>
       </header>
       <main>
         <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <p className="section-tag">Welcome to the Soil Health Card Research Portal</p>
-              <h2>Soil Health Card Research Scheme for Administration and State-level SHC card generation.</h2>
+              <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal (Independent State level)</p>
+              <h2></h2>
               <p>
-                This prototype under Administrator account that can create and manage district user accounts,
-                Review all district data, and monitor generated Soil Health Cards. District users can log in, enter soil
-                testing data, and generate Automated recommendation-ready Soil Health Cards.
+                The portal is run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. For legally recognised SHCs, use the official portal at soilhealth.dac.gov.in.
               </p>
               <div className="hero-features">
-                <span>Scheme Supervise under administrator</span>
+                <span>Scheme Supervise under administration</span>
                 <span>District account creation</span>
                 <span>12 soil parameters</span>
                 <span>Texture and moisture context</span>
@@ -231,7 +229,7 @@ export default function HomePage() {
                 <span>Recommendation generator</span>
               </div>
               <div className="hero-contact">
-                <p><strong>Support & Contact:</strong> SHCS&Wdirectorateteam@gmail.com</p>
+                <p><strong>Support & Contact:</strong> achusemy444@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701</p>
               </div>
             </div>
@@ -239,7 +237,7 @@ export default function HomePage() {
             <div className="login-card">
               <div className="card-head">
                 <p className="section-tag">Portal Access</p>
-                <h3>Login to Soil Health Card System</h3>
+                <h3>Login to Soil Health Report System</h3>
               </div>
               <form onSubmit={handleLoginSubmit} className="stack-form">
                 <label>
@@ -268,7 +266,7 @@ export default function HomePage() {
                 <p><strong>Guest account:</strong></p>
                 <p>Username: Guest123</p>
                 <p>Password: Guest123</p>
-                <p className="help-note">Contact the Soil and Water Conservation Department for your credentials.</p>
+                <p className="help-note">Contact the programme administrator for your credentials.</p>
               </div>
               <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
             </div>
@@ -280,11 +278,10 @@ export default function HomePage() {
             <article className="panel-card">
               <div className="card-head">
                 <p className="section-tag">About Us</p>
-                <h3>Soil Health Card Team Center</h3>
+                <h3>Soil Health Report Team Center</h3>
               </div>
               <p>
-                The Soil Health Card Team Center under the Soil and Water Conservation Department, Kohima, Nagaland supports
-                scientific soil testing, district coordination, and data-driven advisory for farmers through the research programme.
+                This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme. For official SHC issuance, visit soilhealth.dac.gov.in.
               </p>
             </article>
 
@@ -293,9 +290,8 @@ export default function HomePage() {
                 <p className="section-tag">SHC Scheme</p>
                 <h3>Research and Field Support</h3>
               </div>
-              <p>
-                The SHC Scheme helps collect soil data, test key parameters, generate Soil Health Cards, and provide practical
-                recommendations for balanced nutrient use, soil conservation, and better productivity.
+                <p>
+                The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government SHC.
               </p>
             </article>
 
@@ -307,7 +303,7 @@ export default function HomePage() {
               <ul className="check-list compact">
                 <li>Supports accurate fertilizer and nutrient planning.</li>
                 <li>Improves soil health monitoring across districts.</li>
-                <li>Helps generate recommendation-based Soil Health Cards.</li>
+                <li>Helps generate recommendation-based soil health reports.</li>
                 <li>Provides programme-wide inspection for the scheme administrator.</li>
               </ul>
             </article>
@@ -343,7 +339,7 @@ export default function HomePage() {
 
                 <div className="analysis-meta">
                   <p><strong>{districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0}</strong> districts reporting</p>
-                  <p><strong>{districtAnalysis?.totalCards ?? 0}</strong> total soil cards analyzed</p>
+                  <p><strong>{districtAnalysis?.totalCards ?? 0}</strong> total soil reports analyzed</p>
                   <span>Status Color Meanings</span>
                       <span className="status-green">🟢GREEN: SUFFICIENT</span>
                       <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
@@ -357,7 +353,7 @@ export default function HomePage() {
                   </div>
                   {analysisLoading && <p className="analysis-note">Loading nutrient summary…</p>}
                   {!analysisLoading && !districtAnalysis?.totalCards && (
-                    <p className="analysis-note">No district nutrient data available yet. Once soil cards are added, this chart will update automatically.</p>
+                    <p className="analysis-note">No district nutrient data available yet. Once soil reports are added, this chart will update automatically.</p>
                   )}
                 </div>
               </div>
@@ -370,12 +366,12 @@ export default function HomePage() {
             <div className="contact-card">
               <div className="card-head">
                 <p className="section-tag">Support & Contact</p>
-                <h3>Reach the SHC Team</h3>
+                <h3>Reach the Support Team</h3>
               </div>
               <div className="contact-info">
-                <p><strong>Email:</strong> SHCS&Wdirectorateteam@gmail.com</p>
+                <p><strong>Email:</strong> achusemy444@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
-                <p><strong>Office:</strong> Soil and Water Conservation Department, Kohima, Nagaland</p>
+<p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
               </div>
             </div>
 
@@ -385,9 +381,9 @@ export default function HomePage() {
                 <h3>Research Programme Team</h3>
               </div>
               <div className="credits-list">
-                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy</p>
-                <p><strong>Programming Optimizer:</strong> Er. Chentilo (H.G Department on IIT Spl.Developer)</p>
-                <p><strong>SHC Virtualizer and Supervisor:</strong> Shri. Kihika G Yeptho</p>
+                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy (P.T.Dev.)</p>
+                <p><strong>Programming Optimizer:</strong> Er. Chentilo (Freelance Dev.)</p>
+                <p><strong>SHC Data Virtualizer and Supervisor:</strong> Shri. Kihika G Yeptho</p>
                 <p><strong>Advisor:</strong> Shri. Rontilo Kent</p>
               </div>
             </div>
@@ -396,8 +392,8 @@ export default function HomePage() {
       </main>
       <footer className="site-footer">
         <div className="container footer-row">
-          <p>Soil Health Card Team Center · Soil and Water Conservation Department · Kohima, Nagaland</p>
-          <p>SHC Research Programme Team Kohima</p>
+          <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
+          <p>Soil Health Report Programme</p>
         </div>
       </footer>
     </>

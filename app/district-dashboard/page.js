@@ -139,7 +139,7 @@ export default function DistrictDashboard() {
   );
 
   const districtStats = [
-    { value: districtCards.length, label: "Cards Saved", note: "Records created in this district account" },
+    { value: districtCards.length, label: "Reports Saved", note: "Records created in this district account" },
     { value: currentUser?.district || "-", label: "District", note: currentUser?.address || "" },
     { value: parameterDefinitions.length, label: "Measured Parameters", note: "Includes texture and moisture context" }
   ];
@@ -208,10 +208,16 @@ export default function DistrictDashboard() {
     }
     
     try {
+      // Confirm farmer consent before saving to the cloud
+      const consent = confirm("Confirm: you have the farmer's explicit consent to store and process their soil data for advisory purposes? (Required)");
+      if (!consent) {
+        setMessage("soilCard", "Consent is required to save this soil report.", "error");
+        return;
+      }
       await remoteSaveCard(card);
       setSelectedCard(card);
       setPreviewHtml(buildCardPreviewHtml(card));
-      setMessage("soilCard", `Soil Health Card ${card.id} saved successfully to cloud database.`, "success");
+      setMessage("soilCard", `Soil Health Report ${card.id} saved successfully to cloud database.`, "success");
     } catch (error) {
       console.error("Save card error:", error);
       setMessage("soilCard", error.message || "Failed to save card. Please try again.", "error");
@@ -219,6 +225,11 @@ export default function DistrictDashboard() {
   };
 
   const handlePreviewCard = () => {
+    const consent = confirm("Confirm: you have the farmer's explicit consent to process and preview their soil data? (Required)");
+    if (!consent) {
+      setMessage("soilCard", "Consent is required to preview soil data.", "error");
+      return;
+    }
     const previewCard = buildCardRecord(soilCardForm);
     setSelectedCard(previewCard);
     setPreviewHtml(buildCardPreviewHtml(previewCard));
@@ -235,7 +246,7 @@ export default function DistrictDashboard() {
   const handleDeleteCard = async (cardId) => {
     const card = state.cards.find((entry) => entry.id === cardId);
     if (!card) return;
-    if (!confirm(`Delete Soil Health Card ${card.id}?`)) return;
+    if (!confirm(`Delete Soil Health Report ${card.id}?`)) return;
     if (!convexClient || !apiClient) {
       setMessage("soilCard", "Database connection unavailable. Please check your internet connection and try again.", "error");
       return;
@@ -243,7 +254,7 @@ export default function DistrictDashboard() {
     try {
       await remoteDeleteCard(cardId);
       setState((prev) => ({...prev, cards: prev.cards.filter((entry) => entry.id !== cardId)}));
-      setMessage("soilCard", `Deleted Soil Health Card ${card.id}.`, "success");
+      setMessage("soilCard", `Deleted Soil Health Report ${card.id}.`, "success");
     } catch (error) {
       console.error("Delete card error:", error);
       setMessage("soilCard", error.message || "Failed to delete card. Please try again.", "error");
@@ -319,14 +330,16 @@ export default function DistrictDashboard() {
         errorCount++;
       }
     }
-    setMessage("bulkCards", `Bulk upload completed. ${successCount} cards generated, ${errorCount} errors.`, successCount > 0 ? "success" : "error");
+    setMessage("bulkCards", `Bulk upload completed. ${successCount} reports generated, ${errorCount} errors.`, successCount > 0 ? "success" : "error");
   };
 
   const downloadCardPdf = (card) => {
     if (!card) {
-      alert("No card selected to download.");
+      alert("No report selected to download.");
       return;
     }
+    const consent = confirm("Confirm: you have the farmer's explicit consent to download/print their soil report? (Required)");
+    if (!consent) return;
     const html = buildCardPreviewHtml(card).replace("</body>", "<script>window.onload = () => window.print();</script></body>");
     const win = window.open("", "_blank");
     if (!win) {
@@ -345,17 +358,16 @@ export default function DistrictDashboard() {
     <>
       <header className="site-header">
         <div className="container topbar">
-          <img src="/assets/gon-logo.png" alt="Government of Nagaland logo" className="top-logo top-logo-round top-logo-left" />
+          <img src="/assets/soil-logo.jpg" alt="Department of Soil & Water Conservation, Nagaland logo" className="top-logo top-logo-round top-logo-left" />
           <div className="brand-center">
-            <p className="mini-label">Soil and Water Conservation Department</p>
-            <h1>Soil Health Card Research Programme</h1>
-            <p className="brand-subtitle">Kohima, Nagaland</p>
+            <p className="mini-label">Department of Soil & Water Conservation, Nagaland</p>
+            <h1>Soil Health Report Research Programme</h1>
+            <p className="brand-subtitle">Research and training portal</p>
           </div>
           <div className="session-box">
             <span className="status-dot"></span>
             <span>District: {currentUser.username}</span>
           </div>
-          <img src="/assets/soil-logo.jpg" alt="Soil Health logo" className="top-logo top-logo-right" />
         </div>
       </header>
       <main>
@@ -365,7 +377,7 @@ export default function DistrictDashboard() {
               <div>
                 <p className="section-tag">Dashboard</p>
                 <h2>{currentUser.district} District Dashboard</h2>
-                <p>Enter soil test data and generate Soil Health Cards for the district.</p>
+                <p>Enter soil test data and generate Soil Health Reports for the district.</p>
               </div>
               <div className="toolbar-actions">
                 <Link href="/" className="button button-secondary">Home</Link>
@@ -386,9 +398,9 @@ export default function DistrictDashboard() {
             <div className="panel-grid">
               <article className="panel-card wide-card">
                 <div className="card-head">
-                  <p className="section-tag">Generate Soil Health Card</p>
-                  <h3>District Data Entry</h3>
-                </div>
+                    <p className="section-tag">Generate Soil Health Report</p>
+                    <h3>District Data Entry</h3>
+                  </div>
                 <form onSubmit={handleSoilCardSubmit} className="stack-form">
                   <div className="form-grid">
                     <label>
@@ -462,7 +474,7 @@ export default function DistrictDashboard() {
                     </select>
                   </label>
                   <div className="form-actions">
-                    <button type="submit" className="button button-primary">Save and Generate Card</button>
+                    <button type="submit" className="button button-primary">Save and Generate Report</button>
                     <button type="button" className="button button-secondary" onClick={handlePreviewCard}>Preview Current Data</button>
                   </div>
                 </form>
@@ -472,10 +484,10 @@ export default function DistrictDashboard() {
               <article className="panel-card">
                 <div className="card-head">
                   <p className="section-tag">Bulk Upload</p>
-                  <h3>Soil Health Cards CSV</h3>
+                  <h3>Soil Health Reports CSV</h3>
                 </div>
                 <div className="bulk-upload-info">
-                  <p>Upload multiple soil health cards using CSV format.</p>
+                  <p>Upload multiple soil health reports using CSV format.</p>
                   <form className="form-grid">
                     <label className="span-2">
                       <span>CSV File</span>
@@ -497,14 +509,14 @@ export default function DistrictDashboard() {
             <div className="panel-grid">
               <article className="panel-card">
                 <div className="card-head">
-                  <p className="section-tag">Saved District Cards</p>
+                  <p className="section-tag">Saved District Reports</p>
                   <h3>Generated Records</h3>
                 </div>
                 <div className="table-wrap">
                   <table>
                     <thead>
                       <tr>
-                        <th>Card ID</th>
+                        <th>Report ID</th>
                         <th>Farmer</th>
                         <th>Survey No.</th>
                         <th>Date</th>
@@ -524,7 +536,7 @@ export default function DistrictDashboard() {
                           </td>
                         </tr>
                       )) : (
-                        <tr><td colSpan="5">No cards saved for this district yet.</td></tr>
+                        <tr><td colSpan="5">No reports saved for this district yet.</td></tr>
                       )}
                     </tbody>
                   </table>
@@ -533,8 +545,8 @@ export default function DistrictDashboard() {
 
               <article className="panel-card wide-card">
                 <div className="card-head">
-                  <p className="section-tag">Card Preview</p>
-                  <h3>Soil Health Card Output</h3>
+                  <p className="section-tag">Report Preview</p>
+                  <h3>Soil Health Report Output</h3>
                 </div>
                 {selectedCard && (
                   <div className="card-actions">
@@ -544,13 +556,13 @@ export default function DistrictDashboard() {
                 <div className="card-preview full-preview">
                   {previewHtml ? (
                     <iframe
-                      title="Soil Health Card Preview"
+                      title="Soil Health Report Preview"
                       srcDoc={previewHtml}
                       className="preview-frame"
                     />
                   ) : (
                     <div className="empty-state">
-                      {selectedCard ? "Preview generation failed. Please refresh or retry." : "Fill the form and click Preview Current Data or Save and Generate Card to render the Soil Health Card preview."}
+                      {selectedCard ? "Preview generation failed. Please refresh or retry." : "Fill the form and click Preview Current Data or Save and Generate Report to render the Soil Health Report preview."}
                     </div>
                   )}
                 </div>
@@ -561,8 +573,8 @@ export default function DistrictDashboard() {
       </main>
       <footer className="site-footer">
         <div className="container footer-row">
-          <p>Soil Health Card Team Center · Soil and Water Conservation Department · Kohima, Nagaland</p>
-          <p>SHC Research Programme Team Kohima</p>
+          <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
+          <p>Soil Health Report Programme</p>
         </div>
       </footer>
     </>

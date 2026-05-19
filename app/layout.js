@@ -2,8 +2,8 @@ import "./globals.css";
 import Script from "next/script";
 
 export const metadata = {
-  title: "Soil Health Card Portal",
-  description: "Next.js Soil Health Card portal with Convex backend",
+  title: "Department of Soil & Water Conservation, Nagaland — Soil Health Report Portal",
+  description: "Research and training portal by the Department of Soil & Water Conservation, Nagaland, for advisory soil health reports.",
 };
 
 export default function RootLayout({ children }) {
