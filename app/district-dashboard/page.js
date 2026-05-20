@@ -505,13 +505,33 @@ export default function DistrictDashboard() {
                     <label className="span-2">
                       <span>CSV File</span>
                       <input type="file" accept=".csv" onChange={handleBulkCardsUpload} />
-                      <span>___________________________________________________           </span>
+                      <span>___________________________________________________</span>
+                      <br/>
+                      <br/>
                       <span>Status Color Meanings</span>
                       <span className="status-green">🟢GREEN: SUFFICIENT</span>
                       <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
                       <span className="status-orange">🟠ORANGE: MODERATE</span>
                       <span className="status-red">🔴RED: DEFICIENT</span>                      
                       <span className="status-gray">🔘GRAY: NOT APPLICABLE</span>
+                      <br/>
+                      <br/>
+                      <span>___________________________________________________</span>
+                      <br/>
+                      <br/>
+                      <span>Auto Recommendation for Nutrients:</span><br/>
+                      <span>pH - Lime</span><br/>
+                      <span>Nitrogen - Legume Intercropping</span><br/>
+                      <span>Potassium - Wood Ash</span><br/>
+                      <span>Zinc - Zinc Sulphate</span><br/>
+                      <span>Boron - Borax</span><br/>
+                      <span>Sulphur - Zinc Sulphate</span><br/>
+                      <span>EC - Gypsum</span><br/>
+                      <span>Organic Carbon - Farmyard-Manure (FYM)</span><br/>
+                      <span>Phosphorus - Rock Phosphate</span><br/>
+                      <span>Iron - Ferrous Sulphate</span><br/>
+                      <span>Copper - Copper Sulphate</span><br/>
+                      <span>Manganese - Manganese Sulphate</span>
                     </label>
                   </form>
                 </div>
