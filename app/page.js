@@ -227,12 +227,12 @@ export default function HomePage() {
                 <span>Texture and Soil-Color</span>
                 <span>Status color indicators</span>
                 <span>Nutrient Analysis</span>
-                <span>Recommendation generator</span>
+                <span>Auto Recommendation generator</span>
               </div>
               <div className="hero-contact">
                 <p><strong>Support & Contact:</strong> achusemy444@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701</p>
-                <p><strong>The Platform is on BETA:</strong> Awaiting for read only API access Integration and authorization from Official Portal</p>
+                <p><strong>This platform is currently in BETA(Demo):</strong> Integration and authorization are pending for approval.</p>                
                 <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
               </div>
             </div>
