@@ -519,7 +519,8 @@ export default function DistrictDashboard() {
                       <span>___________________________________________________</span>
                       <br/>
                       <br/>
-                      <span>Auto Recommendation for Nutrients:</span><br/>
+                      <span>Auto Recommendation for Nutrients Deficiency</span>
+                      <br/>
                       <span>pH - Lime</span><br/>
                       <span>Nitrogen - Legume Intercropping</span><br/>
                       <span>Potassium - Wood Ash</span><br/>
