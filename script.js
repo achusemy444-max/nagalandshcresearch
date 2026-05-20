@@ -74,7 +74,7 @@ const ui = {
   farmerName: document.getElementById("farmerName"),
   farmerVillage: document.getElementById("farmerVillage"),
   soilTexture: document.getElementById("soilTexture"),
-  moistureContext: document.getElementById("moistureContext"),
+  soilColor: document.getElementById("soilColor"),
   manualRecommendation: document.getElementById("manualRecommendation"),
   bulkUploadForm: document.getElementById("bulkUploadForm"),
   bulkUploadFile: document.getElementById("bulkUploadFile"),
@@ -229,62 +229,45 @@ function evaluateParameter(definition, value) {
   };
 }
 
-function getRecommendationLines(evaluations, soilTexture, moistureContext) {
+function getRecommendationLines(evaluations, soilTexture, soilColor) {
   const lines = [];
   const getStatus = (key) => evaluations[key]?.status;
 
   if (getStatus("ph") === "yellow" || getStatus("ph") === "orange" || getStatus("ph") === "red") {
-    lines.push("Apply agricultural lime in recommended dose to improve acidic soil reaction and enhance nutrient availability.");
+    lines.push("Lime");
   }
   if (getStatus("ec") !== "green" && getStatus("ec") !== "grey") {
-    lines.push("Check irrigation water quality, improve drainage, and avoid excess salt-forming inputs.");
+    lines.push("Gypsum");
   }
   if (getStatus("organicCarbon") !== "green" && getStatus("organicCarbon") !== "grey") {
-    lines.push("Increase compost, farmyard manure, crop residue incorporation, and green manuring to improve organic carbon.");
+    lines.push("Farmyard-Manure (FYM)");
   }
   if (getStatus("nitrogen") !== "green" && getStatus("nitrogen") !== "grey") {
-    lines.push("Apply nitrogen in split doses according to crop stage and combine with organic manures.");
+    lines.push("Legume Intercropping");
   }
   if (getStatus("phosphorous") !== "green" && getStatus("phosphorous") !== "grey") {
-    lines.push("Apply phosphatic fertilizers such as SSP or DAP as per crop requirement and soil test guidance.");
+    lines.push("Rock Phosphate");
   }
   if (getStatus("potassium") !== "green" && getStatus("potassium") !== "grey") {
-    lines.push("Apply potassic fertilizer such as MOP where deficiency is observed.");
+    lines.push("Wood Ash");
   }
   if (getStatus("sulphur") !== "green" && getStatus("sulphur") !== "grey") {
-    lines.push("Use sulphur-containing fertilizers or gypsum to correct sulphur deficiency.");
+    lines.push("Zinc Sulphate");
   }
   if (getStatus("zinc") !== "green" && getStatus("zinc") !== "grey") {
-    lines.push("Apply zinc sulphate in recommended quantity to address zinc deficiency.");
+    lines.push("Zinc Sulphate");
   }
   if (getStatus("boron") !== "green" && getStatus("boron") !== "grey") {
-    lines.push("Apply boron carefully in small recommended doses, such as borax, to avoid toxicity.");
+    lines.push("Borax");
   }
   if (getStatus("iron") !== "green" && getStatus("iron") !== "grey") {
-    lines.push("Use iron micronutrient application if deficiency symptoms or low test values are observed.");
+    lines.push("Ferrous Sulphate");
   }
   if (getStatus("manganese") !== "green" && getStatus("manganese") !== "grey") {
-    lines.push("Apply manganese sulphate if manganese deficiency is confirmed in crop or soil analysis.");
+    lines.push("Manganese Sulphate");
   }
   if (getStatus("copper") !== "green" && getStatus("copper") !== "grey") {
-    lines.push("Apply copper sulphate only in recommended doses where copper deficiency exists.");
-  }
-
-  if (soilTexture === "Sandy") {
-    lines.push("For sandy soil, use split fertilizer doses and increase organic matter to improve nutrient retention.");
-  }
-  if (soilTexture === "Clayey") {
-    lines.push("For clayey soil, maintain good drainage and avoid water stagnation during crop growth.");
-  }
-  if (soilTexture === "Loamy") {
-    lines.push("Loamy soil is suitable for balanced nutrient management; maintain organic matter for sustained productivity.");
-  }
-
-  if (moistureContext === "Dry") {
-    lines.push("Use mulching and moisture conservation practices because current moisture condition is dry.");
-  }
-  if (moistureContext === "Wet") {
-    lines.push("Improve surface drainage and avoid over-irrigation under wet moisture conditions.");
+    lines.push("Copper Sulphate");
   }
 
   if (!lines.length) {
@@ -309,8 +292,8 @@ function buildCardRecord(fromPreview = false) {
   const autoRecommendation = getRecommendationLines(
     evaluations,
     ui.soilTexture.value,
-    ui.moistureContext.value
-  ).join(" ");
+    ui.soilColor.value
+  ).join(", ");
 
   return {
     id: fromPreview ? "Preview" : `SHC-${Date.now()}`,
@@ -322,7 +305,7 @@ function buildCardRecord(fromPreview = false) {
     farmerName: ui.farmerName.value.trim(),
     farmerVillage: ui.farmerVillage.value.trim(),
     soilTexture: ui.soilTexture.value,
-    moistureContext: ui.moistureContext.value,
+    soilColor: ui.soilColor.value,
     parameters,
     evaluations,
     recommendation: ui.manualRecommendation.value.trim() || autoRecommendation,
@@ -453,7 +436,7 @@ function buildCardMarkup(card) {
         <h4>Additional Sample Information</h4>
         <div class="soil-card-meta">
           <div><strong>Soil Texture</strong><p>${card.soilTexture || "Not provided"}</p></div>
-          <div><strong>Moisture Context</strong><p>${card.moistureContext || "Not provided"}</p></div>
+          <div><strong>Soil-Color</strong><p>${card.soilColor || "Not provided"}</p></div>
           <div><strong>Generated By</strong><p>${card.createdBy || "System"}</p></div>
           <div><strong>Card ID</strong><p>${card.id}</p></div>
         </div>
@@ -571,7 +554,7 @@ function renderDistrictDashboard() {
   renderStats(ui.districtStats, [
     { value: districtCards.length, label: "Cards Saved", note: "Records created in this district account" },
     { value: currentUser.district, label: "District", note: currentUser.address },
-    { value: parameterDefinitions.length, label: "Measured Parameters", note: "Includes texture and moisture context" }
+    { value: parameterDefinitions.length, label: "Measured Parameters", note: "Includes texture and Soil-Color" }
   ]);
 
   ui.formDistrict.value = currentUser.district;
@@ -739,7 +722,7 @@ function handleBulkUpload() {
 }
 
 function downloadCardsExampleCsv() {
-  const csvContent = `District,Testing Date,Test Center Address,Test Center ID,Survey No.,Farmer Name,Farmer Village,Soil Texture,Moisture Context,pH,EC,Organic Carbon,Nitrogen,Phosphorous,Potassium,Sulphur,Zinc,Boron,Iron,Manganese,Copper,Manual Recommendation
+  const csvContent = `District,Testing Date,Test Center Address,Test Center ID,Survey No.,Farmer Name,Farmer Village,Soil Texture,Soil-Color,pH,EC,Organic Carbon,Nitrogen,Phosphorous,Potassium,Sulphur,Zinc,Boron,Iron,Manganese,Copper,Manual Recommendation
 Kohima,2024-05-07,District Test Center, Kohima, Nagaland,KTC001,1,John Doe,Kohima Village,Sandy,Dry,6.5,0.8,0.6,320,18,200,12,0.8,0.6,5.5,3,0.3,Custom recommendation text here
 Kohima,2024-05-08,District Test Center, Kohima, Nagaland,KTC002,2,Jane Smith,Kohima Village,Loamy,Moderate,7.2,1.2,0.7,280,22,180,15,0.7,0.7,6.0,2.5,0.4,Another recommendation`;
 
@@ -772,7 +755,7 @@ function handleBulkCardsUpload() {
     }
 
     const headers = lines[0].split(',').map(h => h.trim());
-    const expectedHeaders = ['District', 'Testing Date', 'Test Center Address', 'Test Center ID', 'Survey No.', 'Farmer Name', 'Farmer Village', 'Soil Texture', 'Moisture Context', 'pH', 'EC', 'Organic Carbon', 'Nitrogen', 'Phosphorous', 'Potassium', 'Sulphur', 'Zinc', 'Boron', 'Iron', 'Manganese', 'Copper', 'Manual Recommendation'];
+    const expectedHeaders = ['District', 'Testing Date', 'Test Center Address', 'Test Center ID', 'Survey No.', 'Farmer Name', 'Farmer Village', 'Soil Texture', 'Soil-Color', 'pH', 'EC', 'Organic Carbon', 'Nitrogen', 'Phosphorous', 'Potassium', 'Sulphur', 'Zinc', 'Boron', 'Iron', 'Manganese', 'Copper', 'Manual Recommendation'];
     
     if (!expectedHeaders.every(header => headers.includes(header))) {
       setMessage(ui.bulkCardsUploadMessage, "CSV headers must match the expected format. Please check the example CSV.", "error");
@@ -790,9 +773,9 @@ function handleBulkCardsUpload() {
         continue;
       }
 
-      const [district, testingDate, testCenterAddress, testCenterId, surveyNo, farmerName, farmerVillage, soilTexture, moistureContext, ph, ec, organicCarbon, nitrogen, phosphorous, potassium, sulphur, zinc, boron, iron, manganese, copper, manualRecommendation] = values;
+      const [district, testingDate, testCenterAddress, testCenterId, surveyNo, farmerName, farmerVillage, soilTexture, soilColor, ph, ec, organicCarbon, nitrogen, phosphorous, potassium, sulphur, zinc, boron, iron, manganese, copper, manualRecommendation] = values;
 
-      if (!district || !testingDate || !testCenterAddress || !testCenterId || !surveyNo || !farmerName || !farmerVillage || !soilTexture || !moistureContext) {
+      if (!district || !testingDate || !testCenterAddress || !testCenterId || !surveyNo || !farmerName || !farmerVillage || !soilTexture || !soilColor) {
         errorCount++;
         continue;
       }
@@ -826,8 +809,8 @@ function handleBulkCardsUpload() {
       const autoRecommendation = getRecommendationLines(
         evaluations,
         soilTexture,
-        moistureContext
-      ).join(" ");
+        soilColor
+      ).join(", ");
 
       newCards.push({
         id: `SHC-${Date.now()}-${i}`,
@@ -839,7 +822,7 @@ function handleBulkCardsUpload() {
         farmerName,
         farmerVillage,
         soilTexture,
-        moistureContext,
+        soilColor,
         parameters,
         evaluations,
         recommendation: manualRecommendation || autoRecommendation,

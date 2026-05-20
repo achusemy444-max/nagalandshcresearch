@@ -48,7 +48,7 @@ Each card includes:
 - **Test Center Information**: ID, District, Address, Testing Date
 - **Card Issued To**: Survey No., Farmer Name, Village
 - **Soil Sample Details**: 12 measured parameters
-- **Additional Information**: Soil Texture, Moisture Context, Card ID
+- **Additional Information**: Soil Texture, Soil-Color, Card ID
 - **Indicator Information**: pH/EC scale indicators + status colors
 - **Recommendation**: Personalized farming guidance
 - **Contact Information**: Support email and phone
@@ -89,7 +89,7 @@ Each card includes:
 2. **Generate Soil Health Card**
    - Enter soil testing data
    - All 12 parameters
-   - Soil texture and moisture
+   - Soil texture and Soil-Color
    - Manual or auto-generated recommendations
 
 3. **Card Management**
@@ -189,7 +189,7 @@ Tuensang,Jane Smith,tuensang_user,Pass@456,Another Address
 
 ### Soil Cards CSV
 ```
-District,Testing Date,Test Center Address,Test Center ID,Survey No.,Farmer Name,Farmer Village,Soil Texture,Moisture Context,pH,EC,Organic Carbon,Nitrogen,Phosphorous,Potassium,Sulphur,Zinc,Boron,Iron,Manganese,Copper,Manual Recommendation
+District,Testing Date,Test Center Address,Test Center ID,Survey No.,Farmer Name,Farmer Village,Soil Texture,Soil-Color,pH,EC,Organic Carbon,Nitrogen,Phosphorous,Potassium,Sulphur,Zinc,Boron,Iron,Manganese,Copper,Manual Recommendation
 Kohima,2024-01-15,Lab Address,TC-001,123,Ram Kumar,Nagaland,Loamy,Moderate,7.2,0.8,0.6,350,15,200,15,0.8,0.6,5,2.5,0.3,
 ```
 

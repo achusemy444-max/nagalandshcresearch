@@ -223,7 +223,7 @@ export default function HomePage() {
                 <span>Scheme Supervise under administration</span>
                 <span>District account creation</span>
                 <span>12 soil parameters</span>
-                <span>Texture and moisture context</span>
+                <span>Texture and Soil-Color</span>
                 <span>Status color indicators</span>
                 <span>Nutrient Analysis</span>
                 <span>Recommendation generator</span>

@@ -137,7 +137,7 @@ Then redeploy from Vercel dashboard.
 - farmerName (string)
 - farmerVillage (string)
 - soilTexture (string)
-- moistureContext (string)
+- Soil-Color (string)
 - parameters (object with 12 soil parameters)
 - evaluations (object with status for each parameter)
 - recommendation (string)

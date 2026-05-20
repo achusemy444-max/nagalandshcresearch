@@ -34,7 +34,7 @@ export default function DistrictDashboard() {
     farmerName: "",
     farmerVillage: "",
     soilTexture: "",
-    moistureContext: "",
+    soilColor: "",
     recommendationChoice: "auto",
     parameters: {
       ph: "", ec: "", organicCarbon: "", nitrogen: "", phosphorous: "",
@@ -141,7 +141,7 @@ export default function DistrictDashboard() {
   const districtStats = [
     { value: districtCards.length, label: "Reports Saved", note: "Records created in this district account" },
     { value: currentUser?.district || "-", label: "District", note: currentUser?.address || "" },
-    { value: parameterDefinitions.length, label: "Measured Parameters", note: "Includes texture and moisture context" }
+    { value: parameterDefinitions.length, label: "Measured Parameters", note: "Includes texture and Soil-Color" }
   ];
 
   const setMessage = (field, text, type = "") => {
@@ -173,7 +173,7 @@ export default function DistrictDashboard() {
       const definition = parameterDefinitions.find((entry) => entry.key === key);
       evaluations[key] = evaluateParameter(definition, value);
     });
-    const recLines = getRecommendationLines(evaluations, form.soilTexture, form.moistureContext);
+    const recLines = getRecommendationLines(evaluations, form.soilTexture, form.soilColor);
     const autoRecommendation = recLines.join(", ");
     return {
       id: `SHC-${Date.now()}`,
@@ -185,7 +185,7 @@ export default function DistrictDashboard() {
       farmerName: form.farmerName.trim(),
       farmerVillage: form.farmerVillage.trim(),
       soilTexture: form.soilTexture,
-      moistureContext: form.moistureContext,
+      soilColor: form.soilColor,
       parameters: form.parameters,
       evaluations,
       recommendation: form.recommendationChoice === "auto" ? autoRecommendation : form.recommendationChoice,
@@ -281,8 +281,8 @@ export default function DistrictDashboard() {
         errorCount++;
         continue;
       }
-      const [district, testingDate, testCenterAddress, testCenterId, surveyNo, farmerName, farmerVillage, soilTexture, moistureContext, ph, ec, organicCarbon, nitrogen, phosphorous, potassium, sulphur, zinc, boron, iron, manganese, copper, manualRecommendation] = values;
-      if (!district || !testingDate || !testCenterAddress || !testCenterId || !surveyNo || !farmerName || !farmerVillage || !soilTexture || !moistureContext) {
+      const [district, testingDate, testCenterAddress, testCenterId, surveyNo, farmerName, farmerVillage, soilTexture, soilColor, ph, ec, organicCarbon, nitrogen, phosphorous, potassium, sulphur, zinc, boron, iron, manganese, copper, manualRecommendation] = values;
+      if (!district || !testingDate || !testCenterAddress || !testCenterId || !surveyNo || !farmerName || !farmerVillage || !soilTexture || !soilColor) {
         errorCount++;
         continue;
       }
@@ -295,7 +295,7 @@ export default function DistrictDashboard() {
       parameterDefinitions.forEach((def) => {
         evaluations[def.key] = evaluateParameter(def, parameters[def.key]);
       });
-      const autoRecommendation = getRecommendationLines(evaluations, soilTexture, moistureContext).join(" ");
+      const autoRecommendation = getRecommendationLines(evaluations, soilTexture, soilColor).join(" ");
       const recommendation = ["Lime", "Gypsum", "Manure"].includes(manualRecommendation)
         ? manualRecommendation
         : autoRecommendation;
@@ -309,7 +309,7 @@ export default function DistrictDashboard() {
         farmerName,
         farmerVillage,
         soilTexture,
-        moistureContext,
+        soilColor,
         parameters,
         evaluations,
         recommendation,
@@ -435,21 +435,34 @@ export default function DistrictDashboard() {
                       <span>Soil Texture</span>
                       <select value={soilCardForm.soilTexture} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, soilTexture: event.target.value }))} required>
                         <option value="">Select texture</option>
-                        <option>Sandy</option>
-                        <option>Loamy</option>
-                        <option>Clayey</option>
-                        <option>Silty</option>
-                        <option>Gravelly</option>
+                        <option>Alluvial Soil</option>
+                        <option>Black Cotton Soil</option>
+                        <option>Red & Yellow Soil</option>
+                        <option>Laterite Soil</option>
+                        <option>Mountainous or Forest Soil</option>
+                        <option>Arid or Desert Soil</option>
+                        <option>Saline and Alkaline Soil</option>
+                        <option>Peaty and Marshy Soil</option>
+                        <option>Sandy Loam</option>
+                        <option>Sandy Soil</option>
+                        <option>Loamy Sand</option>
+                        <option>Black Soil</option>
+                        <option>Sandy Clay Loam</option>
+                        <option>Red loamy soil</option>
+                        <option>Clay Loam</option>
                       </select>
                     </label>
                     <label>
-                      <span>Moisture Context</span>
-                      <select value={soilCardForm.moistureContext} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, moistureContext: event.target.value }))} required>
-                        <option value="">Select moisture context</option>
-                        <option>Dry</option>
-                        <option>Moderate</option>
-                        <option>Moist</option>
-                        <option>Wet</option>
+                      <span>Soil-Color</span>
+                      <select value={soilCardForm.soilColor} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, soilColor: event.target.value }))} required>
+                        <option value="">Select Soil-Color</option>
+                        <option>black</option>
+                        <option>Black</option>
+                        <option>Red</option>
+                        <option>Brown</option>
+                        <option>Yellow</option>
+                        <option>Grey</option>
+                        <option>Unsure</option>
                       </select>
                     </label>
                   </div>
