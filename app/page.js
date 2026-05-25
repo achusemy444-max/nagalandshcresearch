@@ -385,9 +385,9 @@ export default function HomePage() {
                 <h3>Research Programme Team</h3>
               </div>
               <div className="credits-list">
-                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy (P.T.Dev.)</p>
+                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy SCA(P.T.Dev.)</p>
                 <p><strong>Programming Optimizer:</strong> Er. Chentilo (Freelance Dev.)</p>
-                <p><strong>SHC Data Virtualizer and Supervisor:</strong> Shri. Kihika G Yeptho</p>
+                <p><strong>SHC Data Virtualizer and Supervisor:</strong> Directorate SHC Team</p>
                 <p><strong>Advisor:</strong> Shri. Rontilo Kent</p>
               </div>
             </div>
