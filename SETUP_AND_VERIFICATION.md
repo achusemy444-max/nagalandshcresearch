@@ -4,7 +4,7 @@
 
 ### 1. Local Environment Variables
 Your local `.env.local` now has:
-- ✅ `NEXT_PUBLIC_CONVEX_URL`: Set to `https://abundant-skunk-743.convex.cloud`
+- ✅ `NEXT_PUBLIC_CONVEX_URL`: Set to `https://savory-elk-98.convex.cloud`
 - ✅ `NEXT_PUBLIC_CONVEX_ACCESS_TOKEN`: Set to your new deployment key
 
 ### 2. Convex Backend Deployment
@@ -17,7 +17,7 @@ npx convex deploy
 ```
 
 When prompted:
-- Select deployment: `shcportalkohimateam` (dev:abundant-skunk-743)
+- Select deployment: `shcportalkohimateam` (dev:savory-elk-98)
 - This deploys: schema.ts, accounts.ts, cards.ts
 
 ### 3. Frontend Verification
@@ -92,12 +92,12 @@ This will output:
    - Look for "[Admin] Convex client initialized" or similar
 
 3. **Check internet connection:**
-   - Visit https://abundant-skunk-743.convex.cloud in browser
+   - Visit https://savory-elk-98.convex.cloud in browser
    - Should load (even if blank)
 
 4. **Redeploy backend:**
    ```bash
-   npx convex deploy --url https://abundant-skunk-743.convex.cloud
+   npx convex deploy --url https://savory-elk-98.convex.cloud
    ```
 
 5. **Clear browser cache:**
@@ -107,8 +107,8 @@ This will output:
 ### 8. Vercel Deployment (when ready)
 
 Set these environment variables in Vercel:
-- `NEXT_PUBLIC_CONVEX_URL`: https://abundant-skunk-743.convex.cloud
-- `NEXT_PUBLIC_CONVEX_ACCESS_TOKEN`: dev:abundant-skunk-743|eyJ2MiI6Ijg4MDZiMDIyNzg3NjRkYmFiZjM2OWQ2MDM5NDE4NzM3In0=
+- `NEXT_PUBLIC_CONVEX_URL`: https://savory-elk-98.convex.cloud
+- `NEXT_PUBLIC_CONVEX_ACCESS_TOKEN`: dev:savory-elk-98|eyJ2MiI6IjY3ZDI5MjNhYjMxZTQ1MzZhNWFkMzM4NDQ5NGU4NmIzIn0=
 
 Then redeploy from Vercel dashboard.
 

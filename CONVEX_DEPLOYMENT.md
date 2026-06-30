@@ -8,13 +8,13 @@ The Convex backend was missing `schema.ts`, which prevented table operations. Th
 ### 1. Set up local Convex environment for the NEW deployment
 Create `.env.local` in the project root with:
 ```
-CONVEX_DEPLOYMENT=dev:abundant-skunk-743
+CONVEX_DEPLOYMENT=dev:savory-elk-98
 ```
 
 ### 2. Link to your new Convex project (shcportalkohimateam)
 From the project root directory, run:
 ```bash
-npx convex env set CONVEX_DEPLOYMENT dev:abundant-skunk-743
+npx convex env set CONVEX_DEPLOYMENT dev:savory-elk-98
 ```
 
 Or use the Convex CLI to link:
@@ -38,8 +38,8 @@ This will:
 
 ### 4. Update environment variables in Vercel
 Set in Vercel Settings → Environment Variables:
-- `NEXT_PUBLIC_CONVEX_URL` = `https://abundant-skunk-743.convex.cloud` (or your actual deployment URL)
-- `NEXT_PUBLIC_CONVEX_ACCESS_TOKEN` = `dev:abundant-skunk-743|eyJ2MiI6Ijg4MDZiMDIyNzg3NjRkYmFiZjM2OWQ2MDM5NDE4NzM3In0=`
+- `NEXT_PUBLIC_CONVEX_URL` = `https://savory-elk-98.convex.cloud` (or your actual deployment URL)
+- `NEXT_PUBLIC_CONVEX_ACCESS_TOKEN` = `dev:savory-elk-98|eyJ2MiI6IjY3ZDI5MjNhYjMxZTQ1MzZhNWFkMzM4NDQ5NGU4NmIzIn0=`
 
 ### 5. Restart and test
 After deployment:
