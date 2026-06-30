@@ -25,8 +25,8 @@ export const defaultState = {
       role: "admin",
       district: "All Districts",
       officerName: "Administrator",
-      username: "adminkohima123",
-      password: "Adminkohima@123",
+      username: "admin",
+      password: "admin",
       address: "Department of Soil & Water Conservation, Nagaland",
       createdAt: new Date().toISOString()
     },
@@ -49,8 +49,8 @@ export function migrateState(draft) {
   if (!adminAccount) {
     draft.accounts.unshift({ ...defaultState.accounts[0] });
   } else {
-    adminAccount.username = "adminkohima123";
-    adminAccount.password = "Adminkohima@123";
+    adminAccount.username = "admin";
+    adminAccount.password = "admin";
     adminAccount.district = "All Districts";
     adminAccount.officerName = adminAccount.officerName || "Administrator";
     adminAccount.address = adminAccount.address || "Department of Soil & Water Conservation, Nagaland";
