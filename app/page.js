@@ -158,12 +158,12 @@ export default function HomePage() {
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     const { username, password } = loginForm;
-    
+
     if (!convexClient || !apiClient) {
       setMessage("login", "Database connection unavailable. Please check your internet connection and try again.", "error");
       return;
     }
-    
+
     let account = null;
     try {
       account = await convexClient.query(apiClient.accounts.login, { username, password });
@@ -217,7 +217,7 @@ export default function HomePage() {
               <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal (Independent State level)</p>
               <h2></h2>
               <p>
-                The portal is run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. For legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
+                The portal is run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only For legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
               </p>
               <div className="hero-features">
                 <span>SHC-Team,Nagaland(State Level)</span>
@@ -230,13 +230,13 @@ export default function HomePage() {
                 <span>Auto Recommendation generator</span>
               </div>
               <div className="hero-contact">
-                <p><strong>Support & Contact:</strong> achusemy444@gmail.com</p>
+                <p><strong>Support & Contact:</strong> Soilandwaterconservation123@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701</p>
-                <p><strong>This platform is currently in BETA(Demo):</strong> Integration and authorization are pending for approval.</p>                
+                <p><strong>This platform is currently in BETA(Demo):</strong> Integration and authorization are pending for approval.</p>
                 <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
               </div>
             </div>
-            
+
             <div className="login-card">
               <div className="card-head">
                 <p className="section-tag">Portal Access</p>
@@ -245,30 +245,30 @@ export default function HomePage() {
               <form onSubmit={handleLoginSubmit} className="stack-form">
                 <label>
                   <span>Username</span>
-                  <input 
-                    type="text" 
-                    value={loginForm.username} 
-                    onChange={(event) => setLoginForm((prev) => ({ ...prev, username: event.target.value }))} 
-                    placeholder="Enter your username" 
-                    required 
+                  <input
+                    type="text"
+                    value={loginForm.username}
+                    onChange={(event) => setLoginForm((prev) => ({ ...prev, username: event.target.value }))}
+                    placeholder="Enter your username"
+                    required
                   />
                 </label>
                 <label>
                   <span>Password</span>
-                  <input 
-                    type="password" 
-                    value={loginForm.password} 
-                    onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))} 
-                    placeholder="Enter your password" 
-                    required 
+                  <input
+                    type="password"
+                    value={loginForm.password}
+                    onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))}
+                    placeholder="Enter your password"
+                    required
                   />
                 </label>
                 <button type="submit" className="button button-primary">Login</button>
               </form>
               <div className="login-help">
                 <p><strong>Guest account:</strong></p>
-                <p>Username: Guest123</p>
-                <p>Password: Guest123</p>
+                <p>Username: (hint)Guestnumber</p>
+                <p>Password: Guestnumber</p>
                 <p className="help-note">Contact the programme administrator for your credentials.</p>
               </div>
               <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
@@ -293,7 +293,7 @@ export default function HomePage() {
                 <p className="section-tag">SHC Scheme</p>
                 <h3>Research and Field Support</h3>
               </div>
-                <p>
+              <p>
                 The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government SHC.
               </p>
             </article>
@@ -322,33 +322,33 @@ export default function HomePage() {
               </div>
               <div className="analysis-content">
                 <div className="pie-row">
-                    <div className="pie-grid">
-                  {parameterDefinitions.map((param) => {
-                    const counts = districtAnalysis?.overall?.[param.key] || getStatusCounts();
-                    return (
-                      <div key={param.key} className="pie-card">
-                        <div className="pie-chart" style={{ background: getPieGradient(counts) }} aria-hidden="true" />
-                        <div className="pie-label">
-                          <p><strong>{param.label}</strong></p>
-                          <div className="status-row"><span>G {counts.green}</span><span>Y {counts.yellow}</span></div>
-                          <div className="status-row"><span>O {counts.orange}</span><span>R {counts.red}</span></div>
-                          {counts.grey > 0 && <p className="status-note">N/A {counts.grey}</p>}
+                  <div className="pie-grid">
+                    {parameterDefinitions.map((param) => {
+                      const counts = districtAnalysis?.overall?.[param.key] || getStatusCounts();
+                      return (
+                        <div key={param.key} className="pie-card">
+                          <div className="pie-chart" style={{ background: getPieGradient(counts) }} aria-hidden="true" />
+                          <div className="pie-label">
+                            <p><strong>{param.label}</strong></p>
+                            <div className="status-row"><span>G {counts.green}</span><span>Y {counts.yellow}</span></div>
+                            <div className="status-row"><span>O {counts.orange}</span><span>R {counts.red}</span></div>
+                            {counts.grey > 0 && <p className="status-note">N/A {counts.grey}</p>}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
 
                 <div className="analysis-meta">
                   <p><strong>{districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0}</strong> districts reporting</p>
                   <p><strong>{districtAnalysis?.totalCards ?? 0}</strong> total soil reports analyzed</p>
                   <span>Status Color Meanings</span>
-                      <span className="status-green">🟢GREEN: SUFFICIENT</span>
-                      <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
-                      <span className="status-orange">🟠ORANGE: MODERATE</span>
-                      <span className="status-red">🔴RED: DEFICIENT</span>                      
-                      <span className="status-gray">🔘GRAY: NOT APPLICABLE</span>
+                  <span className="status-green">🟢GREEN: SUFFICIENT</span>
+                  <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
+                  <span className="status-orange">🟠ORANGE: MODERATE</span>
+                  <span className="status-red">🔴RED: DEFICIENT</span>
+                  <span className="status-gray">🔘GRAY: NOT APPLICABLE</span>
                   <div className="legend-list">
                     <div><span className="legend-dot legend-green"></span>Optimal</div>
                     <div><span className="legend-dot legend-yellow"></span>Moderate</div>
@@ -372,10 +372,10 @@ export default function HomePage() {
                 <h3>Reach the Support Team</h3>
               </div>
               <div className="contact-info">
-                <p><strong>Email:</strong> achusemy444@gmail.com</p>
+                <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
-<p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
-<p><strong>Disclaimer:</strong> This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only. The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
+                <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
+                <p><strong>Disclaimer:</strong> This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only. The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
               </div>
             </div>
 
@@ -385,10 +385,11 @@ export default function HomePage() {
                 <h3>Research Programme Team</h3>
               </div>
               <div className="credits-list">
-                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy (Sub Freelancer)</p>
-                <p><strong>Programme Optimizer:</strong> Er. Chentilo (Freelance Dev.)</p>
+                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy (Freelancer)</p>
+                <p><strong>Programme Optimizer:</strong> Er. Chentilo (Freelance and Dev.)</p>
                 <p><strong>SHC Data Virtualizer and Supervisor:</strong> Directorate SHC Team, Nagaland</p>
                 <p><strong>Programme Advisor:</strong> SHC Team Advisor</p>
+                <p><strong>Programme Supporter:</strong> Directorate SHC Team, Nagaland</p>
               </div>
             </div>
           </div>
