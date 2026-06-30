@@ -113,7 +113,7 @@ export default function DistrictDashboard() {
       return result;
     } catch (error) {
       console.error("Failed to save card to Convex:", error);
-      throw new Error("Failed to save card. Please try again.");
+      throw new Error(error.message || "Failed to save card. Please try again.");
     }
   }
 
@@ -214,7 +214,7 @@ export default function DistrictDashboard() {
       setMessage("soilCard", `Soil Health Report ${card.id} saved successfully to cloud database.`, "success");
     } catch (error) {
       console.error("Save card error:", error);
-      setMessage("soilCard", error.message || "Failed to save card. Please try again.", "error");
+      setMessage("soilCard", `Failed to save: ${error.message}`, "error");
     }
   };
 
