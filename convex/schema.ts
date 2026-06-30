@@ -32,7 +32,7 @@ export default defineSchema({
     farmerName: v.string(),
     farmerVillage: v.string(),
     soilTexture: v.string(),
-    moistureContext: v.string(),
+    soilColor: v.string(),
     parameters: v.object({
       ph: v.string(),
       ec: v.string(),
