@@ -217,7 +217,7 @@ export default function HomePage() {
               <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal (Independent State level)</p>
               <h2></h2>
               <p>
-                The portal is run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only For legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
+                The portal is run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
               </p>
               <div className="hero-features">
                 <span>SHC-Team,Nagaland(State Level)</span>
@@ -232,7 +232,7 @@ export default function HomePage() {
               <div className="hero-contact">
                 <p><strong>Support & Contact:</strong> Soilandwaterconservation123@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701</p>
-                <p><strong>This platform is currently in BETA(Demo):</strong> Integration and authorization are pending for approval.</p>
+                <p><strong>This platform is currently in Demo:</strong> Integration or authorization are pending for approval.</p>
                 <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function HomePage() {
                 <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
                 <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
-                <p><strong>Disclaimer:</strong> This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only. The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
+                <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
               </div>
             </div>
 
@@ -385,6 +385,7 @@ export default function HomePage() {
                 <h3>Research Programme Team</h3>
               </div>
               <div className="credits-list">
+                <p><strong>Developer Company:</strong> Magnura Oftech Pvt. Ltd.</p>
                 <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy (Freelancer)</p>
                 <p><strong>Programme Optimizer:</strong> Er. Chentilo (Freelance and Dev.)</p>
                 <p><strong>SHC Data Virtualizer and Supervisor:</strong> Directorate SHC Team, Nagaland</p>
