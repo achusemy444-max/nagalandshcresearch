@@ -208,12 +208,6 @@ export default function DistrictDashboard() {
     }
     
     try {
-      // Confirm farmer consent before saving to the cloud
-      const consent = confirm("Confirm: you have the farmer's explicit consent to store and process their soil data for advisory purposes? (Required)");
-      if (!consent) {
-        setMessage("soilCard", "Consent is required to save this soil report.", "error");
-        return;
-      }
       await remoteSaveCard(card);
       setSelectedCard(card);
       setPreviewHtml(buildCardPreviewHtml(card));
@@ -225,11 +219,6 @@ export default function DistrictDashboard() {
   };
 
   const handlePreviewCard = () => {
-    const consent = confirm("Confirm: you have the farmer's explicit consent to process and preview their soil data? (Required)");
-    if (!consent) {
-      setMessage("soilCard", "Consent is required to preview soil data.", "error");
-      return;
-    }
     const previewCard = buildCardRecord(soilCardForm);
     setSelectedCard(previewCard);
     setPreviewHtml(buildCardPreviewHtml(previewCard));
@@ -338,8 +327,6 @@ export default function DistrictDashboard() {
       alert("No report selected to download.");
       return;
     }
-    const consent = confirm("Confirm: you have the farmer's explicit consent to download/print their soil report? (Required)");
-    if (!consent) return;
     const html = buildCardPreviewHtml(card).replace("</body>", "<script>window.onload = () => window.print();</script></body>");
     const win = window.open("", "_blank");
     if (!win) {
