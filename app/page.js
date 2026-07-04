@@ -215,6 +215,7 @@ export default function HomePage() {
         <div className="container" style={{ paddingTop: '2rem' }}>
           <div className="admin-navbar">
             <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+            <button className={`nav-tab ${activeTab === 'analysis' ? 'active' : ''}`} onClick={() => setActiveTab('analysis')}>State Level Nutrient Analysis</button>
             <button className={`nav-tab ${activeTab === 'manuals' ? 'active' : ''}`} onClick={() => setActiveTab('manuals')}>Manuals</button>
             <button className={`nav-tab ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>Downloads</button>
             <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
@@ -325,7 +326,10 @@ export default function HomePage() {
             </article>
           </div>
         </section>
+        </>
+        )}
 
+        {activeTab === 'analysis' && (
         <section className="analysis-section">
           <div className="container analysis-grid">
             <article className="panel-card">
@@ -376,7 +380,6 @@ export default function HomePage() {
             </article>
           </div>
         </section>
-        </>
         )}
 
         {activeTab === 'manuals' && (
