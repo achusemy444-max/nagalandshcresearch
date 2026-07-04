@@ -28,6 +28,7 @@ export default function AdminDashboard() {
   const [apiClient, setApiClient] = useState(null);
   const [districtAccountForm, setDistrictAccountForm] = useState({ district: "", officerName: "", username: "", password: "", address: "" });
   const [messages, setMessages] = useState({ districtAccount: "", districtAccountType: "", bulkUpload: "", bulkUploadType: "" });
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   useEffect(() => {
     const user = loadCurrentUser();
@@ -377,13 +378,28 @@ export default function AdminDashboard() {
       return;
     }
     const html = buildCardPreviewHtml(card).replace("</body>", "<script>window.onload = () => window.print();</script></body>");
-    const win = window.open("", "_blank");
-    if (!win) {
-      alert("Popup blocked. Please allow popups to download PDF.");
-      return;
-    }
-    win.document.write(html);
-    win.document.close();
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    document.body.appendChild(iframe);
+
+    iframe.contentWindow.document.open();
+    iframe.contentWindow.document.write(html);
+    iframe.contentWindow.document.close();
+
+    iframe.onload = function() {
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+      setTimeout(() => {
+        if (document.body.contains(iframe)) {
+          document.body.removeChild(iframe);
+        }
+      }, 10000);
+    };
   };
 
   const accountActionButtons = (account) => (
@@ -428,6 +444,16 @@ export default function AdminDashboard() {
               </div>
             </div>
 
+            <div className="admin-navbar">
+              <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+              <button className={`nav-tab ${activeTab === 'manuals' ? 'active' : ''}`} onClick={() => setActiveTab('manuals')}>Manuals</button>
+              <button className={`nav-tab ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>Downloads</button>
+              <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
+              <button className={`nav-tab ${activeTab === 'contact' ? 'active' : ''}`} onClick={() => setActiveTab('contact')}>Contact Us</button>
+            </div>
+
+            {activeTab === 'dashboard' && (
+              <>
             <div className="stats-grid">
               {adminStats.map((item) => (
                 <article key={item.label} className="stat-card">
@@ -580,6 +606,60 @@ export default function AdminDashboard() {
                   )}
                 </div>
               </article>
+            )}
+            </>
+            )}
+
+            {activeTab === 'manuals' && (
+              <div className="panel-grid">
+                <article className="panel-card wide-card">
+                  <div className="card-head">
+                    <p className="section-tag">Resources</p>
+                    <h3>Manuals & Guidelines</h3>
+                  </div>
+                  <p>Training materials, operation guidelines, and scheme manuals will be available here.</p>
+                </article>
+              </div>
+            )}
+
+            {activeTab === 'downloads' && (
+              <div className="panel-grid">
+                <article className="panel-card wide-card">
+                  <div className="card-head">
+                    <p className="section-tag">Resources</p>
+                    <h3>Downloads</h3>
+                  </div>
+                  <p>Downloadable report templates, offline forms, and other assets will be available here.</p>
+                </article>
+              </div>
+            )}
+
+            {activeTab === 'feedback' && (
+              <div className="panel-grid">
+                <article className="panel-card wide-card">
+                  <div className="card-head">
+                    <p className="section-tag">Communication</p>
+                    <h3>Feedback & Reports</h3>
+                  </div>
+                  <p>Review feedback, bug reports, and suggestions submitted by district users.</p>
+                </article>
+              </div>
+            )}
+
+            {activeTab === 'contact' && (
+              <div className="panel-grid">
+                <article className="panel-card wide-card">
+                  <div className="card-head">
+                    <p className="section-tag">Support</p>
+                    <h3>Contact Us</h3>
+                  </div>
+                  <div className="contact-info" style={{ marginTop: '1rem', display: 'grid', gap: '0.75rem' }}>
+                    <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
+                    <p><strong>Phone:</strong> 7005303701</p>
+                    <p><strong>Address:</strong> Department of Soil & Water Conservation, Nagaland</p>
+                  </div>
+                </article>
+              </div>
             )}
           </div>
         </section>

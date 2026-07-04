@@ -25,6 +25,36 @@
   --grey-bg: #eef1f4;
 }
 
+.admin-navbar {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  overflow-x: auto;
+}
+
+.nav-tab {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+  color: var(--primary);
+}
+
+.nav-tab.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -161,9 +191,17 @@ a {
   box-shadow: 0 0 0 6px rgba(143, 179, 79, 0.14);
 }
 
-.hero-section,
+.hero-section {
+  padding: 3rem 0;
+}
+
 .workspace-section {
   padding: 3rem 0;
+  position: relative;
+  background: 
+    linear-gradient(rgba(246, 250, 243, 0.85), rgba(246, 250, 243, 0.95)),
+    url('/assets/dashboard-bg.jpg') center/cover no-repeat;
+  background-attachment: fixed;
 }
 
 .hero-grid,

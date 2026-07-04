@@ -619,14 +619,28 @@ function openPrintWindow(card) {
     </html>
   `;
 
-  const win = window.open("", "_blank");
-  if (!win) {
-    alert("Popup blocked. Please allow popups to download PDF.");
-    return;
-  }
-  win.document.open();
-  win.document.write(html);
-  win.document.close();
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'fixed';
+  iframe.style.right = '0';
+  iframe.style.bottom = '0';
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.border = '0';
+  document.body.appendChild(iframe);
+
+  iframe.contentWindow.document.open();
+  iframe.contentWindow.document.write(html);
+  iframe.contentWindow.document.close();
+
+  iframe.onload = function() {
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+    setTimeout(() => {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe);
+      }
+    }, 10000);
+  };
 }
 
 function downloadExampleCsv() {

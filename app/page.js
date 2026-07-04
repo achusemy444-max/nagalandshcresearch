@@ -214,13 +214,13 @@ export default function HomePage() {
         <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal (Independent State level)</p>
+              <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal</p>
               <h2></h2>
               <p>
-                The portal is run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
+                The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
               </p>
               <div className="hero-features">
-                <span>SHC-Team,Nagaland(State Level)</span>
+                <span>Autonomous SHC-Team Nagaland</span>
                 <span>Scheme Supervise under administration</span>
                 <span>District account creation</span>
                 <span>12 soil parameters</span>
@@ -385,7 +385,7 @@ export default function HomePage() {
                 <h3>Research Programme Team</h3>
               </div>
               <div className="credits-list">
-                <p><strong>Developer Company:</strong> Magnura Oftech Pvt. Ltd.</p>
+                <p><strong>Developer Company:</strong> Magnurasdigital</p>
                 <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy (Freelancer)</p>
                 <p><strong>Programme Optimizer:</strong> Er. Chentilo (Freelance and Dev.)</p>
                 <p><strong>SHC Data Virtualizer and Supervisor:</strong> Directorate SHC Team, Nagaland</p>
