@@ -15,6 +15,7 @@ export default function HomePage() {
   const router = useRouter();
   const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [messages, setMessages] = useState({ login: "", loginType: "" });
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [backendStatus, setBackendStatus] = useState("checking");
   const [convexReady, setConvexReady] = useState(false);
   const [convexClient, setConvexClient] = useState(null);
@@ -210,8 +211,20 @@ export default function HomePage() {
           {/* logo removed to avoid implication of official government branding */}
         </div>
       </header>
-      <main>
-        <section className="hero-section">
+      <main className="home-main">
+        <div className="container" style={{ paddingTop: '2rem' }}>
+          <div className="admin-navbar">
+            <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+            <button className={`nav-tab ${activeTab === 'manuals' ? 'active' : ''}`} onClick={() => setActiveTab('manuals')}>Manuals</button>
+            <button className={`nav-tab ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>Downloads</button>
+            <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
+            <button className={`nav-tab ${activeTab === 'contact' ? 'active' : ''}`} onClick={() => setActiveTab('contact')}>Support and Contact Us</button>
+          </div>
+        </div>
+
+        {activeTab === 'dashboard' && (
+          <>
+            <section className="hero-section">
           <div className="container hero-grid">
             <div className="hero-copy">
               <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal</p>
@@ -220,7 +233,7 @@ export default function HomePage() {
                 The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
               </p>
               <div className="hero-features">
-                <span>Autonomous SHC-Team Nagaland</span>
+                <span>Autonomous Soil Health Project Team Nagaland</span>
                 <span>Scheme Supervise under administration</span>
                 <span>District account creation</span>
                 <span>12 soil parameters</span>
@@ -363,8 +376,53 @@ export default function HomePage() {
             </article>
           </div>
         </section>
+        </>
+        )}
 
-        <section className="contact-section">
+        {activeTab === 'manuals' && (
+          <section className="workspace-section" style={{ minHeight: '50vh' }}>
+            <div className="container panel-grid">
+              <article className="panel-card wide-card">
+                <div className="card-head">
+                  <p className="section-tag">Resources</p>
+                  <h3>Manuals & Guidelines</h3>
+                </div>
+                <p>Training materials, operation guidelines, and scheme manuals will be available here.</p>
+              </article>
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'downloads' && (
+          <section className="workspace-section" style={{ minHeight: '50vh' }}>
+            <div className="container panel-grid">
+              <article className="panel-card wide-card">
+                <div className="card-head">
+                  <p className="section-tag">Resources</p>
+                  <h3>Downloads</h3>
+                </div>
+                <p>Downloadable report templates, offline forms, and other assets will be available here.</p>
+              </article>
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'feedback' && (
+          <section className="workspace-section" style={{ minHeight: '50vh' }}>
+            <div className="container panel-grid">
+              <article className="panel-card wide-card">
+                <div className="card-head">
+                  <p className="section-tag">Communication</p>
+                  <h3>Feedback & Reports</h3>
+                </div>
+                <p>Review feedback, bug reports, and suggestions submitted by district users.</p>
+              </article>
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'contact' && (
+          <section className="contact-section">
           <div className="container contact-grid">
             <div className="contact-card">
               <div className="card-head">
@@ -375,7 +433,7 @@ export default function HomePage() {
                 <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
                 <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
                 <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
-                <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
+                <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
               </div>
             </div>
 
@@ -385,16 +443,16 @@ export default function HomePage() {
                 <h3>Research Programme Team</h3>
               </div>
               <div className="credits-list">
-                <p><strong>Developer Company:</strong> Magnurasdigital</p>
-                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy (Freelancer)</p>
-                <p><strong>Programme Optimizer:</strong> Er. Chentilo (Freelance and Dev.)</p>
-                <p><strong>SHC Data Virtualizer and Supervisor:</strong> Directorate SHC Team, Nagaland</p>
-                <p><strong>Programme Advisor:</strong> SHC Team Advisor</p>
-                <p><strong>Programme Supporter:</strong> Directorate SHC Team, Nagaland</p>
+                <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy</p>
+                <p><strong>Programme Optimizer:</strong> Er. Chentilo</p>
+                <p><strong>SHC Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
+                <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
+                <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
               </div>
             </div>
           </div>
         </section>
+        )}
       </main>
       <footer className="site-footer">
         <div className="container footer-row">
