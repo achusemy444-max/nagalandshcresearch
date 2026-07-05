@@ -30,6 +30,7 @@ export default function AdminDashboard() {
   const [messages, setMessages] = useState({ districtAccount: "", districtAccountType: "", bulkUpload: "", bulkUploadType: "" });
   const [activeTab, setActiveTab] = useState("dashboard");
   const [apiKey, setApiKey] = useState("");
+  const [districtFilter, setDistrictFilter] = useState("All");
 
   const handleGenerateApiKey = () => {
     const newKey = 'shc_api_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -484,6 +485,8 @@ export default function AdminDashboard() {
 
             <div className="admin-navbar">
               <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Admin Dashboard</button>
+              <button className={`nav-tab ${activeTab === 'district-accounts' ? 'active' : ''}`} onClick={() => setActiveTab('district-accounts')}>District Accounts</button>
+              <button className={`nav-tab ${activeTab === 'all-district-data' ? 'active' : ''}`} onClick={() => setActiveTab('all-district-data')}>All District Data</button>
               <button className={`nav-tab ${activeTab === 'api-integration' ? 'active' : ''}`} onClick={() => setActiveTab('api-integration')}>API Integration</button>
             </div>
 
@@ -549,42 +552,65 @@ export default function AdminDashboard() {
                   </article>
                 </div>
 
-                <div className="panel-grid">
-                  <article className="panel-card">
-                    <div className="card-head">
-                      <p className="section-tag">District Accounts</p>
-                      <h3>Managed Users</h3>
-                    </div>
-                    <div className="table-wrap">
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>District</th>
-                            <th>Officer</th>
-                            <th>Username</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {districtAccounts.length ? districtAccounts.map((account) => (
-                            <tr key={account.id}>
-                              <td>{account.district}</td>
-                              <td>{account.officerName}</td>
-                              <td>{account.username}</td>
-                              <td>{accountActionButtons(account)}</td>
-                            </tr>
-                          )) : (
-                            <tr><td colSpan="4">No district accounts created yet.</td></tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </article>
+              </>
+            )}
 
+            {activeTab === 'district-accounts' && (
+              <div className="panel-grid">
+                <article className="panel-card wide-card">
+                  <div className="card-head">
+                    <p className="section-tag">District Accounts</p>
+                    <h3>Managed Users</h3>
+                  </div>
+                  <div className="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>District</th>
+                          <th>Officer</th>
+                          <th>Username</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {districtAccounts.length ? districtAccounts.map((account) => (
+                          <tr key={account.id}>
+                            <td>{account.district}</td>
+                            <td>{account.officerName}</td>
+                            <td>{account.username}</td>
+                            <td>{accountActionButtons(account)}</td>
+                          </tr>
+                        )) : (
+                          <tr><td colSpan="4">No district accounts created yet.</td></tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </article>
+              </div>
+            )}
+
+            {activeTab === 'all-district-data' && (
+              <>
+                <div className="panel-grid">
                   <article className="panel-card wide-card">
-                    <div className="card-head">
-                      <p className="section-tag">All District Data</p>
-                      <h3>Generated Soil Health Reports</h3>
+                    <div className="card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                      <div>
+                        <p className="section-tag">All District Data</p>
+                        <h3>Generated Soil Health Reports</h3>
+                      </div>
+                      <div>
+                        <select 
+                          value={districtFilter} 
+                          onChange={(e) => setDistrictFilter(e.target.value)} 
+                          style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#fff', cursor: 'pointer' }}
+                        >
+                          <option value="All">All Districts</option>
+                          {Array.from(new Set(state.cards.map(c => c.district))).sort().map(dist => (
+                            <option key={dist} value={dist}>{dist}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className="table-wrap">
                       <table>
@@ -599,20 +625,21 @@ export default function AdminDashboard() {
                           </tr>
                         </thead>
                         <tbody>
-                          {state.cards.length ? [...state.cards].reverse().map((card) => (
-                            <tr key={card.id}>
-                              <td>{card.id}</td>
-                              <td>{card.district}</td>
-                              <td>{card.farmerName}</td>
-                              <td>{card.surveyNo}</td>
-                              <td>{formatDate(card.testingDate)}</td>
-                              <td>
-                                <button type="button" className="button button-secondary" onClick={() => handleViewCard(card.id)}>Inspect</button>
-                                <button type="button" className="button button-secondary" onClick={() => handleDeleteCard(card.id)}>Delete</button>
-                              </td>
-                            </tr>
+                          {state.cards.filter(c => districtFilter === "All" || c.district === districtFilter).length ? 
+                            [...state.cards].filter(c => districtFilter === "All" || c.district === districtFilter).reverse().map((card) => (
+                              <tr key={card.id}>
+                                <td>{card.id}</td>
+                                <td>{card.district}</td>
+                                <td>{card.farmerName}</td>
+                                <td>{card.surveyNo}</td>
+                                <td>{formatDate(card.testingDate)}</td>
+                                <td>
+                                  <button type="button" className="button button-secondary" onClick={() => handleViewCard(card.id)}>Inspect</button>
+                                  <button type="button" className="button button-secondary" onClick={() => handleDeleteCard(card.id)}>Delete</button>
+                                </td>
+                              </tr>
                           )) : (
-                            <tr><td colSpan="6">No Soil Health Reports generated yet.</td></tr>
+                            <tr><td colSpan="6">No Soil Health Reports found.</td></tr>
                           )}
                         </tbody>
                       </table>
