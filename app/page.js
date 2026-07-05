@@ -13,7 +13,7 @@ import {
 
 export default function HomePage() {
   const router = useRouter();
-  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
+  const [loginForm, setLoginForm] = useState({ username: "", password: "", role: "district" });
   const [messages, setMessages] = useState({ login: "", loginType: "" });
   const [activeTab, setActiveTab] = useState("dashboard");
   const [backendStatus, setBackendStatus] = useState("checking");
@@ -158,7 +158,7 @@ export default function HomePage() {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-    const { username, password } = loginForm;
+    const { username, password, role } = loginForm;
 
     if (!convexClient || !apiClient) {
       setMessage("login", "Database connection unavailable. Please check your internet connection and try again.", "error");
@@ -187,6 +187,11 @@ export default function HomePage() {
       return;
     }
 
+    if (account.role !== role) {
+      setMessage("login", "Account type mismatch. Please select the correct account type.", "error");
+      return;
+    }
+
     saveCurrentUser(account);
     setMessage("login", `Login successful! Redirecting...`, "success");
     setTimeout(() => {
@@ -207,6 +212,8 @@ export default function HomePage() {
           <div className="session-box">
             <span className={`status-dot ${backendStatus}`}></span>
             <span>Main Server Status: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Synchronizing..."}</span>
+            <button onClick={() => { setActiveTab('dashboard'); setTimeout(() => document.getElementById('loginForm')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="button button-secondary" style={{ marginLeft: "10px", padding: "4px 12px", fontSize: "14px", minHeight: "auto" }}>Login</button>
+            <button onClick={() => { setActiveTab('dashboard'); setTimeout(() => document.getElementById('aboutUs')?.scrollIntoView({ behavior: 'smooth' }), 100); }} className="button button-secondary" style={{ marginLeft: "5px", padding: "4px 12px", fontSize: "14px", minHeight: "auto" }}>About Us</button>
           </div>
           {/* logo removed to avoid implication of official government branding */}
         </div>
@@ -256,7 +263,18 @@ export default function HomePage() {
                 <p className="section-tag">Portal Access</p>
                 <h3>Login to Soil Health Report System</h3>
               </div>
-              <form onSubmit={handleLoginSubmit} className="stack-form">
+              <form id="loginForm" onSubmit={handleLoginSubmit} className="stack-form">
+                <label>
+                  <span>Account Type</span>
+                  <select
+                    value={loginForm.role}
+                    onChange={(event) => setLoginForm((prev) => ({ ...prev, role: event.target.value }))}
+                    required
+                  >
+                    <option value="district">District Account</option>
+                    <option value="admin">Administrator Account</option>
+                  </select>
+                </label>
                 <label>
                   <span>Username</span>
                   <input
@@ -292,7 +310,7 @@ export default function HomePage() {
 
         <section className="info-section">
           <div className="container info-grid">
-            <article className="panel-card">
+            <article className="panel-card" id="aboutUs">
               <div className="card-head">
                 <p className="section-tag">About Us</p>
                 <h3>Soil Health Report Team Center</h3>
