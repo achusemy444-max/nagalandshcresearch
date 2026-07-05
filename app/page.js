@@ -24,6 +24,7 @@ export default function HomePage() {
   const [districtAnalysis, setDistrictAnalysis] = useState(null);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [downloadReportId, setDownloadReportId] = useState("");
+  const [analysisDistrictFilter, setAnalysisDistrictFilter] = useState("All");
 
   useEffect(() => {
     // Check if user is already logged in
@@ -175,7 +176,7 @@ export default function HomePage() {
         setMessage("download", `Report ID ${downloadReportId} not found.`, "error");
         return;
       }
-      
+
       const html = buildCardPreviewHtml(card).replace("</body>", "<script>window.onload = () => window.print();</script></body>");
       const iframe = document.createElement('iframe');
       iframe.style.position = 'fixed';
@@ -288,7 +289,7 @@ export default function HomePage() {
                   <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal</p>
                   <h2></h2>
                   <p>
-                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland SHC Team (State Level), Department of Soil & Water Conservation, Government of Nagaland for research and training purposes only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
+                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland Soil Health Team, Department of Soil & Water Conservation, Government of Nagaland for research and training Services only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
                   </p>
                   <div className="hero-features">
                     <span>Autonomous Soil Health Project Team Nagaland</span>
@@ -353,15 +354,29 @@ export default function HomePage() {
           <section className="analysis-section">
             <div className="container analysis-grid">
               <article className="panel-card">
-                <div className="card-head">
-                  <p className="section-tag">State Level Nutrient Analysis</p>
-                  <h3>Nutrient Analysis result from all District</h3>
+                <div className="card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div>
+                    <p className="section-tag">State Level Nutrient Analysis</p>
+                    <h3>{analysisDistrictFilter === "All" ? "Nutrient Analysis result from all Districts" : `Nutrient Analysis result for ${analysisDistrictFilter}`}</h3>
+                  </div>
+                  <div>
+                    <select 
+                      value={analysisDistrictFilter} 
+                      onChange={(e) => setAnalysisDistrictFilter(e.target.value)} 
+                      style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#fff', cursor: 'pointer' }}
+                    >
+                      <option value="All">All Districts</option>
+                      {districtAnalysis?.districts && Object.keys(districtAnalysis.districts).sort().map(dist => (
+                        <option key={dist} value={dist}>{dist}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <div className="analysis-content">
                   <div className="pie-row">
                     <div className="pie-grid">
                       {parameterDefinitions.map((param) => {
-                        const counts = districtAnalysis?.overall?.[param.key] || getStatusCounts();
+                        const counts = (analysisDistrictFilter === "All" ? districtAnalysis?.overall?.[param.key] : districtAnalysis?.districts?.[analysisDistrictFilter]?.[param.key]) || getStatusCounts();
                         return (
                           <div key={param.key} className="pie-card">
                             <div className="pie-chart" style={{ background: getPieGradient(counts) }} aria-hidden="true" />
@@ -378,8 +393,8 @@ export default function HomePage() {
                   </div>
 
                   <div className="analysis-meta">
-                    <p><strong>{districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0}</strong> districts reporting</p>
-                    <p><strong>{districtAnalysis?.totalCards ?? 0}</strong> total soil reports analyzed</p>
+                    <p><strong>{analysisDistrictFilter === "All" ? (districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0) : 1}</strong> district(s) reporting</p>
+                    <p><strong>{analysisDistrictFilter === "All" ? (districtAnalysis?.totalCards ?? 0) : (districtAnalysis?.districts?.[analysisDistrictFilter]?.totalCards ?? 0)}</strong> total soil reports analyzed</p>
                     <span>Status Color Meanings</span>
                     <span className="status-green">🟢GREEN: SUFFICIENT</span>
                     <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
@@ -427,13 +442,13 @@ export default function HomePage() {
                 <p style={{ marginBottom: '1.5rem' }}>Download Soil Health Report pdf by entering 'Report ID' below, or find downloadable report templates, offline forms, and other assets here.</p>
                 <form onSubmit={handleDownloadPdfById} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', maxWidth: '500px', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1, minWidth: '200px' }}>
-                    <input 
-                      type="text" 
-                      placeholder="Enter Report ID" 
-                      value={downloadReportId} 
-                      onChange={(e) => setDownloadReportId(e.target.value)} 
-                      style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }} 
-                      required 
+                    <input
+                      type="text"
+                      placeholder="Enter Report ID"
+                      value={downloadReportId}
+                      onChange={(e) => setDownloadReportId(e.target.value)}
+                      style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                      required
                     />
                     {messages.download && (
                       <p className={`form-message ${messages.downloadType === "success" ? "message-success" : messages.downloadType === "error" ? "message-error" : ""}`} style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>

@@ -333,8 +333,8 @@ function renderAccountsTable() {
   const districtAccounts = state.accounts.filter((account) => account.role === "district");
   ui.districtAccountsTable.innerHTML = districtAccounts.length
     ? districtAccounts
-        .map(
-          (account) => `
+      .map(
+        (account) => `
             <tr>
               <td>${account.district}</td>
               <td>${account.officerName}</td>
@@ -346,8 +346,8 @@ function renderAccountsTable() {
               </td>
             </tr>
           `
-        )
-        .join("")
+      )
+      .join("")
     : `<tr><td colspan="5">No district accounts created yet.</td></tr>`;
 }
 
@@ -482,10 +482,10 @@ function buildCardMarkup(card) {
 function renderAdminCardsTable() {
   ui.adminCardsTable.innerHTML = state.cards.length
     ? state.cards
-        .slice()
-        .reverse()
-        .map(
-          (card) => `
+      .slice()
+      .reverse()
+      .map(
+        (card) => `
             <tr>
               <td>${card.id}</td>
               <td>${card.district}</td>
@@ -498,8 +498,8 @@ function renderAdminCardsTable() {
               </td>
             </tr>
           `
-        )
-        .join("")
+      )
+      .join("")
     : `<tr><td colspan="6">No Soil Health Reports generated yet.</td></tr>`;
 }
 
@@ -507,10 +507,10 @@ function renderDistrictCardsTable() {
   const districtCards = state.cards.filter((card) => card.district === currentUser?.district);
   ui.districtCardsTable.innerHTML = districtCards.length
     ? districtCards
-        .slice()
-        .reverse()
-        .map(
-          (card) => `
+      .slice()
+      .reverse()
+      .map(
+        (card) => `
             <tr>
               <td>${card.id}</td>
               <td>${card.farmerName}</td>
@@ -522,8 +522,8 @@ function renderDistrictCardsTable() {
               </td>
             </tr>
           `
-        )
-        .join("")
+      )
+      .join("")
     : `<tr><td colspan="5">No cards saved for this district yet.</td></tr>`;
 }
 
@@ -633,7 +633,7 @@ function openPrintWindow(card) {
   iframe.contentWindow.document.write(html);
   iframe.contentWindow.document.close();
 
-  iframe.onload = function() {
+  iframe.onload = function () {
     iframe.contentWindow.focus();
     iframe.contentWindow.print();
     setTimeout(() => {
@@ -672,7 +672,7 @@ function handleBulkUpload() {
   reader.onload = (event) => {
     const csvText = event.target.result;
     const lines = csvText.split('\n').filter(line => line.trim());
-    
+
     if (lines.length < 2) {
       setMessage(ui.bulkUploadMessage, "CSV file must contain at least a header row and one data row.", "error");
       return;
@@ -680,7 +680,7 @@ function handleBulkUpload() {
 
     const headers = lines[0].split(',').map(h => h.trim());
     const expectedHeaders = ['District', 'Officer Name', 'Username', 'Password', 'Address'];
-    
+
     if (!expectedHeaders.every(header => headers.includes(header))) {
       setMessage(ui.bulkUploadMessage, "CSV headers must be: District, Officer Name, Username, Password, Address", "error");
       return;
@@ -763,7 +763,7 @@ function handleBulkCardsUpload() {
   reader.onload = (event) => {
     const csvText = event.target.result;
     const lines = csvText.split('\n').filter(line => line.trim());
-    
+
     if (lines.length < 2) {
       setMessage(ui.bulkCardsUploadMessage, "CSV file must contain at least a header row and one data row.", "error");
       return;
@@ -771,7 +771,7 @@ function handleBulkCardsUpload() {
 
     const headers = lines[0].split(',').map(h => h.trim());
     const expectedHeaders = ['District', 'Testing Date', 'Test Center Address', 'Test Center ID', 'Survey No.', 'Farmer Name', 'Farmer Village', 'Soil Texture', 'Soil-Color', 'pH', 'EC', 'Organic Carbon', 'Nitrogen', 'Phosphorous', 'Potassium', 'Sulphur', 'Zinc', 'Boron', 'Iron', 'Manganese', 'Copper', 'Manual Recommendation'];
-    
+
     if (!expectedHeaders.every(header => headers.includes(header))) {
       setMessage(ui.bulkCardsUploadMessage, "CSV headers must match the expected format. Please check the example CSV.", "error");
       return;
