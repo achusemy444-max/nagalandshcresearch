@@ -471,7 +471,7 @@ export default function HomePage() {
                   <p className="section-tag">Communication</p>
                   <h3>Feedback & Reports</h3>
                 </div>
-                <p>Review feedback, bug reports, and suggestions submitted by district users.</p>
+                <p>Review feedback, bug reports, and change needed suggestions submitted by Soil Health Team, Directorate of Soil and Water Conservation, Nagaland</p>
               </article>
             </div>
           </section>
