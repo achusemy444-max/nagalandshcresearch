@@ -303,7 +303,7 @@ export default function HomePage() {
                   </div>
                   <div className="hero-contact">
                     <p><strong>Support & Contact:</strong> Soilandwaterconservation123@gmail.com</p>
-                    <p><strong>Phone:</strong> 7005303701</p>
+                    <p><strong>Phone:</strong> xxx-xxx-xxxx</p>
                     <p><strong>This platform is currently in Demo:</strong> Integration or authorization are pending for approval.</p>
                     <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
                   </div>
@@ -487,8 +487,7 @@ export default function HomePage() {
                 </div>
                 <div className="contact-info">
                   <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
-                  <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
-                  <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
+                  <p><strong>Send Us Feedback:</strong>Report any errors, bugs, or needed changes</p>
                   <p><strong>API Integration:</strong> Secure API keys and bulk data export capabilities are now available in the Administrator dashboard for integrating Soil Health Report data with external systems.</p>
                   <p><strong>Autonomous State Initiative:</strong> Please note that this Research & Training Service is an autonomous state-level project developed independently for the state of Nagaland. It is not affiliated with or part of any central scheme.</p>
                   <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
