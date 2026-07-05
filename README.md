@@ -1,5 +1,5 @@
 # nagalandshcresearch
-Nagaland SHC research team
+Nagaland Soil Health research team
 
 ## Convex and Vercel setup
 

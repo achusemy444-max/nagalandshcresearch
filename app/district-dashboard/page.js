@@ -176,7 +176,7 @@ export default function DistrictDashboard() {
     const recLines = getRecommendationLines(evaluations, form.soilTexture, form.soilColor);
     const autoRecommendation = recLines.join(", ");
     return {
-      id: `SHC-${Date.now()}`,
+      id: `Soil Health-${Date.now()}`,
       district: currentUser?.role === "district" ? currentUser.district : form.district.trim(),
       testCenterAddress: form.testCenterAddress.trim(),
       testCenterId: form.testCenterId.trim(),
@@ -289,7 +289,7 @@ export default function DistrictDashboard() {
         ? manualRecommendation
         : autoRecommendation;
       const card = {
-        id: `SHC-${Date.now()}-${i}`,
+        id: `Soil Health-${Date.now()}-${i}`,
         district,
         testCenterAddress,
         testCenterId,

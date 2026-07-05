@@ -1,4 +1,4 @@
-# Convex Backend for SHC Project
+# Convex Backend for Soil Health Project
 
 This folder contains Convex server functions for the Soil Health Card portal.
 
