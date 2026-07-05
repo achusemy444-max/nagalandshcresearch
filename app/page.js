@@ -289,7 +289,7 @@ export default function HomePage() {
                   <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal</p>
                   <h2></h2>
                   <p>
-                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland Soil Health Team, Department of Soil & Water Conservation, Government of Nagaland for research and training Services only</strong> for legally recognised Soil Healths, use the official portal at soilhealth.dac.gov.in
+                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland Soil Health Team, Department of Soil & Water Conservation, Government of Nagaland for research and training Services only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
                   </p>
                   <div className="hero-features">
                     <span>Autonomous Soil Health Project Team Nagaland</span>
@@ -305,7 +305,7 @@ export default function HomePage() {
                     <p><strong>Support & Contact:</strong> Soilandwaterconservation123@gmail.com</p>
                     <p><strong>Phone:</strong> 7005303701</p>
                     <p><strong>This platform is currently in Demo:</strong> Integration or authorization are pending for approval.</p>
-                    <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official Soil Health, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
+                    <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
                   </div>
                 </div>
               </div>
@@ -319,7 +319,7 @@ export default function HomePage() {
                     <h3>Soil Health Report Team Center</h3>
                   </div>
                   <p>
-                    This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme. For official Soil Health issuance, visit soilhealth.dac.gov.in.
+                    This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme. For official SHC issuance, visit soilhealth.dac.gov.in.
                   </p>
                 </article>
 
@@ -329,7 +329,7 @@ export default function HomePage() {
                     <h3>Research and Field Support</h3>
                   </div>
                   <p>
-                    The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government Soil Health.
+                    The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government SHC.
                   </p>
                 </article>
 
@@ -488,9 +488,9 @@ export default function HomePage() {
                 <div className="contact-info">
                   <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
                   <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
-                  <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official Soil Health, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
+                  <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
                   <p><strong>API Integration:</strong> Secure API keys and bulk data export capabilities are now available in the Administrator dashboard for integrating Soil Health Report data with external systems.</p>
-                  <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official Soil Health, please visit soilhealth.dac.gov.in</p>
+                  <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
                 </div>
               </div>
 
