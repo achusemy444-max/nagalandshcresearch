@@ -8,13 +8,14 @@ import {
   loadCurrentUser,
   saveCurrentUser,
   buildConvexClient,
-  parameterDefinitions
+  parameterDefinitions,
+  buildCardPreviewHtml
 } from "./utils/shc-helpers";
 
 export default function HomePage() {
   const router = useRouter();
   const [loginForm, setLoginForm] = useState({ username: "", password: "", role: "district" });
-  const [messages, setMessages] = useState({ login: "", loginType: "" });
+  const [messages, setMessages] = useState({ login: "", loginType: "", download: "", downloadType: "" });
   const [activeTab, setActiveTab] = useState("dashboard");
   const [backendStatus, setBackendStatus] = useState("checking");
   const [convexReady, setConvexReady] = useState(false);
@@ -22,6 +23,7 @@ export default function HomePage() {
   const [apiClient, setApiClient] = useState(null);
   const [districtAnalysis, setDistrictAnalysis] = useState(null);
   const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [downloadReportId, setDownloadReportId] = useState("");
 
   useEffect(() => {
     // Check if user is already logged in
@@ -154,6 +156,54 @@ export default function HomePage() {
       [field]: text,
       [`${field}Type`]: type
     }));
+  };
+
+  const handleDownloadPdfById = async (event) => {
+    event.preventDefault();
+    if (!downloadReportId.trim()) {
+      setMessage("download", "Please enter a valid Report ID.", "error");
+      return;
+    }
+    if (!convexClient || !apiClient) {
+      setMessage("download", "Database connection unavailable.", "error");
+      return;
+    }
+    try {
+      const cardList = await convexClient.query(apiClient.cards.list, {});
+      const card = cardList?.find(c => c.id === downloadReportId.trim());
+      if (!card) {
+        setMessage("download", `Report ID ${downloadReportId} not found.`, "error");
+        return;
+      }
+      
+      const html = buildCardPreviewHtml(card).replace("</body>", "<script>window.onload = () => window.print();</script></body>");
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = '0';
+      document.body.appendChild(iframe);
+
+      iframe.contentWindow.document.open();
+      iframe.contentWindow.document.write(html);
+      iframe.contentWindow.document.close();
+
+      iframe.onload = function () {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        setTimeout(() => {
+          if (document.body.contains(iframe)) {
+            document.body.removeChild(iframe);
+          }
+        }, 10000);
+      };
+      setMessage("download", "Download initiated.", "success");
+    } catch (err) {
+      console.error(err);
+      setMessage("download", "Failed to retrieve report.", "error");
+    }
   };
 
   const handleLoginSubmit = async (event) => {
@@ -374,7 +424,25 @@ export default function HomePage() {
                   <p className="section-tag">Resources</p>
                   <h3>Downloads</h3>
                 </div>
-                <p>Downloadable report templates, offline forms, and other assets will be available here.</p>
+                <p style={{ marginBottom: '1.5rem' }}>Download Soil Health Report pdf by entering 'Report ID' below, or find downloadable report templates, offline forms, and other assets here.</p>
+                <form onSubmit={handleDownloadPdfById} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', maxWidth: '500px', flexWrap: 'wrap' }}>
+                  <div style={{ flex: 1, minWidth: '200px' }}>
+                    <input 
+                      type="text" 
+                      placeholder="Enter Report ID" 
+                      value={downloadReportId} 
+                      onChange={(e) => setDownloadReportId(e.target.value)} 
+                      style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }} 
+                      required 
+                    />
+                    {messages.download && (
+                      <p className={`form-message ${messages.downloadType === "success" ? "message-success" : messages.downloadType === "error" ? "message-error" : ""}`} style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                        {messages.download}
+                      </p>
+                    )}
+                  </div>
+                  <button type="submit" className="button button-primary">Download PDF</button>
+                </form>
               </article>
             </div>
           </section>

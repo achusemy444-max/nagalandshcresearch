@@ -31,6 +31,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [apiKey, setApiKey] = useState("");
   const [districtFilter, setDistrictFilter] = useState("All");
+  const [editingAccountId, setEditingAccountId] = useState(null);
+  const [editAccountForm, setEditAccountForm] = useState({ district: "", officerName: "", username: "" });
 
   const handleGenerateApiKey = () => {
     const newKey = 'shc_api_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -316,25 +318,24 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleEditAccount = async (accountId) => {
+  const handleEditAccountClick = (account) => {
+    setEditingAccountId(account.id);
+    setEditAccountForm({ district: account.district, officerName: account.officerName, username: account.username });
+  };
+
+  const handleSaveAccountEdit = async (accountId) => {
     const account = state.accounts.find((entry) => entry.id === accountId);
     if (!account) return;
-    const district = prompt("District name:", account.district) ?? account.district;
-    const officerName = prompt("Officer name:", account.officerName) ?? account.officerName;
-    const username = prompt("Username:", account.username) ?? account.username;
-    const password = prompt("Password:", account.password) ?? account.password;
-    const address = prompt("Test center address:", account.address) ?? account.address;
-    if (state.accounts.some((entry) => entry.id !== accountId && entry.username.toLowerCase() === username.trim().toLowerCase())) {
+
+    if (state.accounts.some((entry) => entry.id !== accountId && entry.username.toLowerCase() === editAccountForm.username.trim().toLowerCase())) {
       setMessage("districtAccount", "Username already exists. Choose another username.", "error");
       return;
     }
     const updatedAccount = {
       ...account,
-      district: district.trim() || account.district,
-      officerName: officerName.trim() || account.officerName,
-      username: username.trim() || account.username,
-      password: password.trim() || account.password,
-      address: address.trim() || account.address
+      district: editAccountForm.district.trim() || account.district,
+      officerName: editAccountForm.officerName.trim() || account.officerName,
+      username: editAccountForm.username.trim() || account.username
     };
     if (!convexClient || !apiClient) {
       setMessage("districtAccount", "Database connection unavailable. Please check your internet connection and try again.", "error");
@@ -343,6 +344,7 @@ export default function AdminDashboard() {
     try {
       await remoteUpdateAccount(updatedAccount);
       setState((prev) => ({ ...prev, accounts: prev.accounts.map((entry) => (entry.id === accountId ? updatedAccount : entry)) }));
+      setEditingAccountId(null);
       setMessage("districtAccount", `Updated account for ${updatedAccount.district}.`, "success");
     } catch (error) {
       console.error("Update account error:", error);
@@ -441,12 +443,7 @@ export default function AdminDashboard() {
     };
   };
 
-  const accountActionButtons = (account) => (
-    <>
-      <button type="button" className="button button-secondary" onClick={() => handleEditAccount(account.id)}>Edit</button>
-      <button type="button" className="button button-secondary" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
-    </>
-  );
+
 
   if (!currentUser) {
     return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>;
@@ -575,10 +572,27 @@ export default function AdminDashboard() {
                       <tbody>
                         {districtAccounts.length ? districtAccounts.map((account) => (
                           <tr key={account.id}>
-                            <td>{account.district}</td>
-                            <td>{account.officerName}</td>
-                            <td>{account.username}</td>
-                            <td>{accountActionButtons(account)}</td>
+                            {editingAccountId === account.id ? (
+                              <>
+                                <td><input type="text" value={editAccountForm.district} onChange={(e) => setEditAccountForm(prev => ({...prev, district: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.officerName} onChange={(e) => setEditAccountForm(prev => ({...prev, officerName: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.username} onChange={(e) => setEditAccountForm(prev => ({...prev, username: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td>
+                                  <button type="button" className="button button-primary" onClick={() => handleSaveAccountEdit(account.id)} style={{ marginRight: '5px' }}>Save</button>
+                                  <button type="button" className="button button-secondary" onClick={() => setEditingAccountId(null)}>Cancel</button>
+                                </td>
+                              </>
+                            ) : (
+                              <>
+                                <td>{account.district}</td>
+                                <td>{account.officerName}</td>
+                                <td>{account.username}</td>
+                                <td>
+                                  <button type="button" className="button button-secondary" onClick={() => handleEditAccountClick(account)} style={{ marginRight: '5px' }}>Edit</button>
+                                  <button type="button" className="button button-secondary" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
+                                </td>
+                              </>
+                            )}
                           </tr>
                         )) : (
                           <tr><td colSpan="4">No district accounts created yet.</td></tr>
