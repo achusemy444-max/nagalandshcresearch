@@ -47,6 +47,7 @@ const ui = {
   dashboardTitle: document.getElementById("dashboardTitle"),
   dashboardSubtitle: document.getElementById("dashboardSubtitle"),
   loginForm: document.getElementById("loginForm"),
+  loginRole: document.getElementById("loginRole"),
   loginUsername: document.getElementById("loginUsername"),
   loginPassword: document.getElementById("loginPassword"),
   loginMessage: document.getElementById("loginMessage"),
@@ -861,11 +862,12 @@ function handleBulkCardsUpload() {
 
 ui.loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  const role = ui.loginRole.value;
   const username = ui.loginUsername.value.trim();
   const password = ui.loginPassword.value.trim();
 
   const account = state.accounts.find(
-    (entry) => entry.username === username && entry.password === password
+    (entry) => entry.role === role && entry.username === username && entry.password === password
   );
 
   if (!account) {

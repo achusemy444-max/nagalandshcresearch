@@ -24,6 +24,7 @@
       <div class="session-box" id="sessionBox">
         <span class="status-dot"></span>
         <span id="sessionText">Secure role-based access</span>
+        <a href="#loginForm" id="topLoginBtn" class="button button-secondary" style="margin-left: 10px; padding: 4px 12px; font-size: 14px; min-height: auto;">Login</a>
       </div>
 
       <img src="assets/soil-logo.jpg" alt="Department of Soil & Water Conservation, Nagaland logo" class="top-logo top-logo-right">
@@ -61,6 +62,13 @@
             <h3>Access the portal</h3>
           </div>
           <form id="loginForm" class="stack-form">
+            <label>
+              <span>Account Type</span>
+              <select id="loginRole" required>
+                <option value="district">District Account</option>
+                <option value="admin">Administrator Account</option>
+              </select>
+            </label>
             <label>
               <span>Username</span>
               <input type="text" id="loginUsername" placeholder="Enter username" required>
