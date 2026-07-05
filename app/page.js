@@ -360,9 +360,9 @@ export default function HomePage() {
                     <h3>{analysisDistrictFilter === "All" ? "Nutrient Analysis result from all Districts" : `Nutrient Analysis result for ${analysisDistrictFilter}`}</h3>
                   </div>
                   <div>
-                    <select 
-                      value={analysisDistrictFilter} 
-                      onChange={(e) => setAnalysisDistrictFilter(e.target.value)} 
+                    <select
+                      value={analysisDistrictFilter}
+                      onChange={(e) => setAnalysisDistrictFilter(e.target.value)}
                       style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#fff', cursor: 'pointer' }}
                     >
                       <option value="All">All Districts</option>
@@ -521,14 +521,14 @@ export default function HomePage() {
                 </div>
                 <form id="loginForm" onSubmit={handleLoginSubmit} className="stack-form">
                   <label>
-                    <span>Account Type</span>
+                    <span>Select Account</span>
                     <select
                       value={loginForm.role}
                       onChange={(event) => setLoginForm((prev) => ({ ...prev, role: event.target.value }))}
                       required
                     >
-                      <option value="district">District Account</option>
-                      <option value="admin">Administrator Account</option>
+                      <option value="district">District</option>
+                      <option value="admin">Administrator</option>
                     </select>
                   </label>
                   <label>
@@ -554,9 +554,7 @@ export default function HomePage() {
                   <button type="submit" className="button button-primary">Login</button>
                 </form>
                 <div className="login-help">
-                  <p><strong>Guest account:</strong></p>
-                  <p>Username: (hint)Guestnumber</p>
-                  <p>Password: Guestnumber</p>
+                  <p><strong>Forgot Login Details? Contact Administrator</strong></p>
                   <p className="help-note">Contact the programme administrator for your credentials.</p>
                 </div>
                 <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
