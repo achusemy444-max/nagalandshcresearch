@@ -225,7 +225,7 @@ export default function HomePage() {
             <button className={`nav-tab ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>Downloads</button>
             <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
             <button className={`nav-tab ${activeTab === 'contact' ? 'active' : ''}`} onClick={() => setActiveTab('contact')}>Support and Contact Us</button>
-            <button className="nav-tab" onClick={() => { setActiveTab('dashboard'); setTimeout(() => document.getElementById('loginForm')?.scrollIntoView({ behavior: 'smooth' }), 100); }}>Login</button>
+            <button className={`nav-tab ${activeTab === 'login' ? 'active' : ''}`} onClick={() => setActiveTab('login')}>Login</button>
             <button className="nav-tab" onClick={() => { setActiveTab('dashboard'); setTimeout(() => document.getElementById('aboutUs')?.scrollIntoView({ behavior: 'smooth' }), 100); }}>About Us</button>
           </div>
         </div>
@@ -233,7 +233,7 @@ export default function HomePage() {
         {activeTab === 'dashboard' && (
           <>
             <section className="hero-section">
-              <div className="container hero-grid">
+              <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr' }}>
                 <div className="hero-copy">
                   <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal</p>
                   <h2></h2>
@@ -256,54 +256,6 @@ export default function HomePage() {
                     <p><strong>This platform is currently in Demo:</strong> Integration or authorization are pending for approval.</p>
                     <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
                   </div>
-                </div>
-
-                <div className="login-card">
-                  <div className="card-head">
-                    <p className="section-tag">Portal Access</p>
-                    <h3>Login to Soil Health Report System</h3>
-                  </div>
-                  <form id="loginForm" onSubmit={handleLoginSubmit} className="stack-form">
-                    <label>
-                      <span>Account Type</span>
-                      <select
-                        value={loginForm.role}
-                        onChange={(event) => setLoginForm((prev) => ({ ...prev, role: event.target.value }))}
-                        required
-                      >
-                        <option value="district">District Account</option>
-                        <option value="admin">Administrator Account</option>
-                      </select>
-                    </label>
-                    <label>
-                      <span>Username</span>
-                      <input
-                        type="text"
-                        value={loginForm.username}
-                        onChange={(event) => setLoginForm((prev) => ({ ...prev, username: event.target.value }))}
-                        placeholder="Enter your username"
-                        required
-                      />
-                    </label>
-                    <label>
-                      <span>Password</span>
-                      <input
-                        type="password"
-                        value={loginForm.password}
-                        onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))}
-                        placeholder="Enter your password"
-                        required
-                      />
-                    </label>
-                    <button type="submit" className="button button-primary">Login</button>
-                  </form>
-                  <div className="login-help">
-                    <p><strong>Guest account:</strong></p>
-                    <p>Username: (hint)Guestnumber</p>
-                    <p>Password: Guestnumber</p>
-                    <p className="help-note">Contact the programme administrator for your credentials.</p>
-                  </div>
-                  <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
                 </div>
               </div>
             </section>
@@ -470,6 +422,60 @@ export default function HomePage() {
                   <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
                   <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
                 </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'login' && (
+          <section className="hero-section" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+            <div className="container" style={{ maxWidth: '450px', width: '100%' }}>
+              <div className="login-card" style={{ margin: '0' }}>
+                <div className="card-head">
+                  <p className="section-tag">Portal Access</p>
+                  <h3>Login to Soil Health Report System</h3>
+                </div>
+                <form id="loginForm" onSubmit={handleLoginSubmit} className="stack-form">
+                  <label>
+                    <span>Account Type</span>
+                    <select
+                      value={loginForm.role}
+                      onChange={(event) => setLoginForm((prev) => ({ ...prev, role: event.target.value }))}
+                      required
+                    >
+                      <option value="district">District Account</option>
+                      <option value="admin">Administrator Account</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Username</span>
+                    <input
+                      type="text"
+                      value={loginForm.username}
+                      onChange={(event) => setLoginForm((prev) => ({ ...prev, username: event.target.value }))}
+                      placeholder="Enter your username"
+                      required
+                    />
+                  </label>
+                  <label>
+                    <span>Password</span>
+                    <input
+                      type="password"
+                      value={loginForm.password}
+                      onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))}
+                      placeholder="Enter your password"
+                      required
+                    />
+                  </label>
+                  <button type="submit" className="button button-primary">Login</button>
+                </form>
+                <div className="login-help">
+                  <p><strong>Guest account:</strong></p>
+                  <p>Username: (hint)Guestnumber</p>
+                  <p>Password: Guestnumber</p>
+                  <p className="help-note">Contact the programme administrator for your credentials.</p>
+                </div>
+                <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
               </div>
             </div>
           </section>
