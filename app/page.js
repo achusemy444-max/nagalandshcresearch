@@ -489,6 +489,7 @@ export default function HomePage() {
                   <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
                   <p><strong>Phone:</strong> 7005303701 (Report any errors, bugs, or needed changes)</p>
                   <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a>.</p>
+                  <p><strong>API Integration:</strong> Secure API keys and bulk data export capabilities are now available in the Administrator dashboard for integrating Soil Health Report data with external systems.</p>
                   <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
                 </div>
               </div>
