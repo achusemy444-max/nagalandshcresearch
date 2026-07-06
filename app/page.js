@@ -289,8 +289,7 @@ export default function HomePage() {
                   <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal</p>
                   <h2></h2>
                   <p>
-                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland Soil Health Team, Department of Soil & Water Conservation, Government of Nagaland for research and training Services only</strong> for legally recognised SHCs, use the official portal at soilhealth.dac.gov.in
-                  </p>
+                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland Soil Health Team, Department of Soil & Water Conservation, Government of Nagaland for research and training Services only</strong></p>
                   <div className="hero-features">
                     <span>Autonomous Soil Health Project Team Nagaland</span>
                     <span>Scheme Supervise under administration</span>
@@ -305,264 +304,265 @@ export default function HomePage() {
                     <p><strong>Support & Contact:</strong> Soilandwaterconservation123@gmail.com</p>
                     <p><strong>Phone:</strong> xxx-xxx-xxxx</p>
                     <p><strong>This platform is currently in Demo:</strong> Integration or authorization are pending for approval.</p>
-                    <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For the official SHC, visit <a href="https://soilhealth.dac.gov.in" target="_blank" rel="noopener">soilhealth.dac.gov.in</a></p>
-                  </div>
+                    <p><strong>Note:</strong> This is a research and training service run by the Department of Soil & Water Conservation, Nagaland. For disclaimer check support and contact us section</a></p>
                 </div>
               </div>
-            </section>
+            </div>
+          </section>
 
-            <section className="info-section">
-              <div className="container info-grid">
-                <article className="panel-card" id="aboutUs">
-                  <div className="card-head">
-                    <p className="section-tag">About Us</p>
-                    <h3>Soil Health Report Team Center</h3>
-                  </div>
-                  <p>
-                    This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme. For official SHC issuance, visit soilhealth.dac.gov.in.
-                  </p>
-                </article>
-
-                <article className="panel-card">
-                  <div className="card-head">
-                    <p className="section-tag">Soil Health Scheme</p>
-                    <h3>Research and Field Support</h3>
-                  </div>
-                  <p>
-                    The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government SHC.
-                  </p>
-                </article>
-
-                <article className="panel-card">
-                  <div className="card-head">
-                    <p className="section-tag">Benefits</p>
-                    <h3>Why This Programme Matters</h3>
-                  </div>
-                  <ul className="check-list compact">
-                    <li>Supports accurate fertilizer and nutrient planning.</li>
-                    <li>Improves soil health monitoring across districts.</li>
-                    <li>Helps generate recommendation-based soil health reports.</li>
-                    <li>Provides programme-wide inspection for the scheme administrator.</li>
-                  </ul>
-                </article>
+        <section className="info-section">
+          <div className="container info-grid">
+            <article className="panel-card" id="aboutUs">
+              <div className="card-head">
+                <p className="section-tag">About Us</p>
+                <h3>Soil Health Report Team Center</h3>
               </div>
-            </section>
-          </>
+              <p>
+                This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme.
+              </p>
+            </article>
+
+            <article className="panel-card">
+              <div className="card-head">
+                <p className="section-tag">Soil Health Scheme</p>
+                <h3>Research and Field Support</h3>
+              </div>
+              <p>
+                The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government.
+              </p>
+            </article>
+
+            <article className="panel-card">
+              <div className="card-head">
+                <p className="section-tag">Benefits</p>
+                <h3>Why This Programme Matters</h3>
+              </div>
+              <ul className="check-list compact">
+                <li>Supports accurate fertilizer and nutrient planning.</li>
+                <li>Improves soil health monitoring across districts.</li>
+                <li>Helps generate recommendation-based soil health reports.</li>
+                <li>Provides programme-wide inspection for the scheme administrator.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </>
         )}
 
-        {activeTab === 'analysis' && (
-          <section className="analysis-section">
-            <div className="container analysis-grid">
-              <article className="panel-card">
-                <div className="card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                  <div>
-                    <p className="section-tag">State Level Nutrient Analysis</p>
-                    <h3>{analysisDistrictFilter === "All" ? "Nutrient Analysis result from all Districts" : `Nutrient Analysis result for ${analysisDistrictFilter}`}</h3>
-                  </div>
-                  <div>
-                    <select
-                      value={analysisDistrictFilter}
-                      onChange={(e) => setAnalysisDistrictFilter(e.target.value)}
-                      style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#fff', cursor: 'pointer' }}
-                    >
-                      <option value="All">All Districts</option>
-                      {districtAnalysis?.districts && Object.keys(districtAnalysis.districts).sort().map(dist => (
-                        <option key={dist} value={dist}>{dist}</option>
-                      ))}
-                    </select>
-                  </div>
+      {activeTab === 'analysis' && (
+        <section className="analysis-section">
+          <div className="container analysis-grid">
+            <article className="panel-card">
+              <div className="card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <p className="section-tag">State Level Nutrient Analysis</p>
+                  <h3>{analysisDistrictFilter === "All" ? "Nutrient Analysis result from all Districts" : `Nutrient Analysis result for ${analysisDistrictFilter}`}</h3>
                 </div>
-                <div className="analysis-content">
-                  <div className="pie-row">
-                    <div className="pie-grid">
-                      {parameterDefinitions.map((param) => {
-                        const counts = (analysisDistrictFilter === "All" ? districtAnalysis?.overall?.[param.key] : districtAnalysis?.districts?.[analysisDistrictFilter]?.[param.key]) || getStatusCounts();
-                        return (
-                          <div key={param.key} className="pie-card">
-                            <div className="pie-chart" style={{ background: getPieGradient(counts) }} aria-hidden="true" />
-                            <div className="pie-label">
-                              <p><strong>{param.label}</strong></p>
-                              <div className="status-row"><span>G {counts.green}</span><span>Y {counts.yellow}</span></div>
-                              <div className="status-row"><span>O {counts.orange}</span><span>R {counts.red}</span></div>
-                              {counts.grey > 0 && <p className="status-note">N/A {counts.grey}</p>}
-                            </div>
+                <div>
+                  <select
+                    value={analysisDistrictFilter}
+                    onChange={(e) => setAnalysisDistrictFilter(e.target.value)}
+                    style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#fff', cursor: 'pointer' }}
+                  >
+                    <option value="All">All Districts</option>
+                    {districtAnalysis?.districts && Object.keys(districtAnalysis.districts).sort().map(dist => (
+                      <option key={dist} value={dist}>{dist}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="analysis-content">
+                <div className="pie-row">
+                  <div className="pie-grid">
+                    {parameterDefinitions.map((param) => {
+                      const counts = (analysisDistrictFilter === "All" ? districtAnalysis?.overall?.[param.key] : districtAnalysis?.districts?.[analysisDistrictFilter]?.[param.key]) || getStatusCounts();
+                      return (
+                        <div key={param.key} className="pie-card">
+                          <div className="pie-chart" style={{ background: getPieGradient(counts) }} aria-hidden="true" />
+                          <div className="pie-label">
+                            <p><strong>{param.label}</strong></p>
+                            <div className="status-row"><span>G {counts.green}</span><span>Y {counts.yellow}</span></div>
+                            <div className="status-row"><span>O {counts.orange}</span><span>R {counts.red}</span></div>
+                            {counts.grey > 0 && <p className="status-note">N/A {counts.grey}</p>}
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="analysis-meta">
-                    <p><strong>{analysisDistrictFilter === "All" ? (districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0) : 1}</strong> district(s) reporting</p>
-                    <p><strong>{analysisDistrictFilter === "All" ? (districtAnalysis?.totalCards ?? 0) : (districtAnalysis?.districts?.[analysisDistrictFilter]?.totalCards ?? 0)}</strong> total soil reports analyzed</p>
-                    <span>Status Color Meanings</span>
-                    <span className="status-green">🟢GREEN: SUFFICIENT</span>
-                    <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
-                    <span className="status-orange">🟠ORANGE: MODERATE</span>
-                    <span className="status-red">🔴RED: DEFICIENT</span>
-                    <span className="status-gray">🔘GRAY: NOT APPLICABLE</span>
-                    <div className="legend-list">
-                      <div><span className="legend-dot legend-green"></span>Optimal</div>
-                      <div><span className="legend-dot legend-yellow"></span>Moderate</div>
-                      <div><span className="legend-dot legend-red"></span>Attention</div>
-                    </div>
-                    {analysisLoading && <p className="analysis-note">Loading nutrient summary…</p>}
-                    {!analysisLoading && !districtAnalysis?.totalCards && (
-                      <p className="analysis-note">No district nutrient data available yet. Once soil reports are added, this chart will update automatically.</p>
-                    )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-              </article>
-            </div>
-          </section>
-        )}
 
-        {activeTab === 'manuals' && (
-          <section className="workspace-section" style={{ minHeight: '50vh' }}>
-            <div className="container panel-grid">
-              <article className="panel-card wide-card">
-                <div className="card-head">
-                  <p className="section-tag">Resources</p>
-                  <h3>Manuals & Guidelines</h3>
-                </div>
-                <p>Training materials, operation guidelines, and scheme manuals will be available here.</p>
-              </article>
-            </div>
-          </section>
-        )}
-
-        {activeTab === 'downloads' && (
-          <section className="workspace-section" style={{ minHeight: '50vh' }}>
-            <div className="container panel-grid">
-              <article className="panel-card wide-card">
-                <div className="card-head">
-                  <p className="section-tag">Resources</p>
-                  <h3>Downloads</h3>
-                </div>
-                <p style={{ marginBottom: '1.5rem' }}>Download Soil Health Report pdf by entering 'Report ID' below, or find downloadable report templates, offline forms, and other assets here.</p>
-                <form onSubmit={handleDownloadPdfById} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', maxWidth: '500px', flexWrap: 'wrap' }}>
-                  <div style={{ flex: 1, minWidth: '200px' }}>
-                    <input
-                      type="text"
-                      placeholder="Enter Report ID"
-                      value={downloadReportId}
-                      onChange={(e) => setDownloadReportId(e.target.value)}
-                      style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-                      required
-                    />
-                    {messages.download && (
-                      <p className={`form-message ${messages.downloadType === "success" ? "message-success" : messages.downloadType === "error" ? "message-error" : ""}`} style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
-                        {messages.download}
-                      </p>
-                    )}
+                <div className="analysis-meta">
+                  <p><strong>{analysisDistrictFilter === "All" ? (districtAnalysis ? Object.keys(districtAnalysis.districts).length : 0) : 1}</strong> district(s) reporting</p>
+                  <p><strong>{analysisDistrictFilter === "All" ? (districtAnalysis?.totalCards ?? 0) : (districtAnalysis?.districts?.[analysisDistrictFilter]?.totalCards ?? 0)}</strong> total soil reports analyzed</p>
+                  <span>Status Color Meanings</span>
+                  <span className="status-green">🟢GREEN: SUFFICIENT</span>
+                  <span className="status-yellow">🟡YELLOW: NEARLY DEFICIENT</span>
+                  <span className="status-orange">🟠ORANGE: MODERATE</span>
+                  <span className="status-red">🔴RED: DEFICIENT</span>
+                  <span className="status-gray">🔘GRAY: NOT APPLICABLE</span>
+                  <div className="legend-list">
+                    <div><span className="legend-dot legend-green"></span>Optimal</div>
+                    <div><span className="legend-dot legend-yellow"></span>Moderate</div>
+                    <div><span className="legend-dot legend-red"></span>Attention</div>
                   </div>
-                  <button type="submit" className="button button-primary">Download PDF</button>
-                </form>
-              </article>
-            </div>
-          </section>
-        )}
-
-        {activeTab === 'feedback' && (
-          <section className="workspace-section" style={{ minHeight: '50vh' }}>
-            <div className="container panel-grid">
-              <article className="panel-card wide-card">
-                <div className="card-head">
-                  <p className="section-tag">Communication</p>
-                  <h3>Feedback & Reports</h3>
-                </div>
-                <p>Review feedback, bug reports, and change needed suggestions submitted by Soil Health Team, Directorate of Soil and Water Conservation, Nagaland</p>
-              </article>
-            </div>
-          </section>
-        )}
-
-        {activeTab === 'contact' && (
-          <section className="contact-section">
-            <div className="container contact-grid">
-              <div className="contact-card">
-                <div className="card-head">
-                  <p className="section-tag">Support & Contact</p>
-                  <h3>Reach the Support Team</h3>
-                </div>
-                <div className="contact-info">
-                  <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
-                  <p><strong>Send Us Feedback:</strong>Report any errors, bugs, or needed changes</p>
-                  <p><strong>API Integration:</strong> Secure API keys and bulk data export capabilities are now available in the Administrator dashboard for integrating Soil Health Report data with external systems.</p>
-                  <p><strong>Autonomous State Initiative:</strong> Please note that this Research & Training Service is an autonomous state-level project developed independently for the state of Nagaland. It is not affiliated with or part of any central scheme.</p>
-                  <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official SHC, please visit soilhealth.dac.gov.in</p>
+                  {analysisLoading && <p className="analysis-note">Loading nutrient summary…</p>}
+                  {!analysisLoading && !districtAnalysis?.totalCards && (
+                    <p className="analysis-note">No district nutrient data available yet. Once soil reports are added, this chart will update automatically.</p>
+                  )}
                 </div>
               </div>
+            </article>
+          </div>
+        </section>
+      )}
 
-              <div className="contact-card">
-                <div className="card-head">
-                  <p className="section-tag">Programme Credits</p>
-                  <h3>Research Programme Team</h3>
+      {activeTab === 'manuals' && (
+        <section className="workspace-section" style={{ minHeight: '50vh' }}>
+          <div className="container panel-grid">
+            <article className="panel-card wide-card">
+              <div className="card-head">
+                <p className="section-tag">Resources</p>
+                <h3>Manuals & Guidelines</h3>
+              </div>
+              <p>Training materials, operation guidelines, and scheme manuals will be available here.</p>
+            </article>
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'downloads' && (
+        <section className="workspace-section" style={{ minHeight: '50vh' }}>
+          <div className="container panel-grid">
+            <article className="panel-card wide-card">
+              <div className="card-head">
+                <p className="section-tag">Resources</p>
+                <h3>Downloads</h3>
+              </div>
+              <p style={{ marginBottom: '1.5rem' }}>Download Soil Health Report pdf by entering 'Report ID' below, or find downloadable report templates, offline forms, and other assets here.</p>
+              <form onSubmit={handleDownloadPdfById} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', maxWidth: '500px', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: '200px' }}>
+                  <input
+                    type="text"
+                    placeholder="Enter Report ID"
+                    value={downloadReportId}
+                    onChange={(e) => setDownloadReportId(e.target.value)}
+                    style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                    required
+                  />
+                  {messages.download && (
+                    <p className={`form-message ${messages.downloadType === "success" ? "message-success" : messages.downloadType === "error" ? "message-error" : ""}`} style={{ marginTop: '0.5rem', fontSize: '0.85rem' }}>
+                      {messages.download}
+                    </p>
+                  )}
                 </div>
-                <div className="credits-list">
-                  <p><strong>Int. Developer and Cyber Security:</strong> Shri. Khanchulo Semy</p>
-                  <p><strong>Programme Optimizer:</strong> Er. Chentilo</p>
-                  <p><strong>Soil Health Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
-                  <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
-                  <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
-                </div>
+                <button type="submit" className="button button-primary">Download PDF</button>
+              </form>
+            </article>
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'feedback' && (
+        <section className="workspace-section" style={{ minHeight: '50vh' }}>
+          <div className="container panel-grid">
+            <article className="panel-card wide-card">
+              <div className="card-head">
+                <p className="section-tag">Communication</p>
+                <h3>Feedback & Reports</h3>
+              </div>
+              <p>Review feedback, bug reports, and change needed suggestions submitted by Soil Health Team, Directorate of Soil and Water Conservation, Nagaland</p>
+            </article>
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'contact' && (
+        <section className="contact-section">
+          <div className="container contact-grid">
+            <div className="contact-card">
+              <div className="card-head">
+                <p className="section-tag">Support & Contact</p>
+                <h3>Reach the Support Team</h3>
+              </div>
+              <div className="contact-info">
+                <p><strong>Email:</strong> Soilandwaterconservation123@gmail.com</p>
+                <p><strong>Send Us Feedback:</strong>Report any errors, bugs, or needed changes</p>
+                <p><strong>API Integration:</strong> Secure API keys and bulk data export capabilities are now available in the Administrator dashboard for integrating Soil Health Report data with external systems.</p>
+                <p><strong>Autonomous State Initiative:</strong> Please note that this Research & Training Service is an autonomous state scheme developed independently for the state of Nagaland. It is not affiliated with or part of any central scheme.</p>
+                <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official Soil Health Card, please visit soilhealth.dac.gov.in</p>
               </div>
             </div>
-          </section>
-        )}
 
-        {activeTab === 'login' && (
-          <section className="hero-section" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <div className="container" style={{ maxWidth: '450px', width: '100%' }}>
-              <div className="login-card" style={{ margin: '0' }}>
-                <div className="card-head">
-                  <p className="section-tag">Portal Access</p>
-                  <h3>Login to Soil Health Report System</h3>
-                </div>
-                <form id="loginForm" onSubmit={handleLoginSubmit} className="stack-form">
-                  <label>
-                    <span>Select Account</span>
-                    <select
-                      value={loginForm.role}
-                      onChange={(event) => setLoginForm((prev) => ({ ...prev, role: event.target.value }))}
-                      required
-                    >
-                      <option value="district">District</option>
-                      <option value="admin">Administrator</option>
-                    </select>
-                  </label>
-                  <label>
-                    <span>Username</span>
-                    <input
-                      type="text"
-                      value={loginForm.username}
-                      onChange={(event) => setLoginForm((prev) => ({ ...prev, username: event.target.value }))}
-                      placeholder="Enter your username"
-                      required
-                    />
-                  </label>
-                  <label>
-                    <span>Password</span>
-                    <input
-                      type="password"
-                      value={loginForm.password}
-                      onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))}
-                      placeholder="Enter your password"
-                      required
-                    />
-                  </label>
-                  <button type="submit" className="button button-primary">Login</button>
-                </form>
-                <div className="login-help">
-                  <p><strong>Forgot Login Details? Contact Administrator</strong></p>
-                  <p className="help-note">Contact the programme administrator for your credentials.</p>
-                </div>
-                <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
+            <div className="contact-card">
+              <div className="card-head">
+                <p className="section-tag">Programme Credits</p>
+                <h3>Research Programme Team</h3>
+              </div>
+              <div className="credits-list">
+                <p><strong>Developer Team</strong> MagnuraSDigital Team</p>
+                <p><strong>Int. Developer and Cyber Security:</strong> XXXXXXXlo Semy</p>
+                <p><strong>Programme Optimizer:</strong> XXXXXXXlo Semy</p>
+                <p><strong>Soil Health Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
+                <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
+                <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
               </div>
             </div>
-          </section>
-        )}
-      </main>
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'login' && (
+        <section className="hero-section" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+          <div className="container" style={{ maxWidth: '450px', width: '100%' }}>
+            <div className="login-card" style={{ margin: '0' }}>
+              <div className="card-head">
+                <p className="section-tag">Portal Access</p>
+                <h3>Login to Soil Health Report System</h3>
+              </div>
+              <form id="loginForm" onSubmit={handleLoginSubmit} className="stack-form">
+                <label>
+                  <span>Select Account</span>
+                  <select
+                    value={loginForm.role}
+                    onChange={(event) => setLoginForm((prev) => ({ ...prev, role: event.target.value }))}
+                    required
+                  >
+                    <option value="district">District</option>
+                    <option value="admin">Administrator</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Username</span>
+                  <input
+                    type="text"
+                    value={loginForm.username}
+                    onChange={(event) => setLoginForm((prev) => ({ ...prev, username: event.target.value }))}
+                    placeholder="Enter your username"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>Password</span>
+                  <input
+                    type="password"
+                    value={loginForm.password}
+                    onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))}
+                    placeholder="Enter your password"
+                    required
+                  />
+                </label>
+                <button type="submit" className="button button-primary">Login</button>
+              </form>
+              <div className="login-help">
+                <p><strong>Forgot Login Details? Contact Administrator</strong></p>
+                <p className="help-note">Contact the programme administrator for your credentials.</p>
+              </div>
+              <p className={`form-message ${messages.loginType === "success" ? "message-success" : messages.loginType === "error" ? "message-error" : ""}`} aria-live="polite">{messages.login}</p>
+            </div>
+          </div>
+        </section>
+      )}
+    </main >
       <footer className="site-footer">
         <div className="container footer-row">
           <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
