@@ -46,7 +46,7 @@ export default function AdminDashboard() {
     }
     const headers = [
       "Report ID", "District", "Test Center Address", "Test Center ID", "Testing Date",
-      "Survey No", "Farmer Name", "Farmer Village", "Soil Texture", "Moisture Content",
+      "Sample No", "Name", "Address", "Soil Texture", "Moisture Content",
       "pH", "EC", "Organic Carbon", "Nitrogen", "Phosphorous", "Potassium", "Sulphur", "Zinc", "Boron", "Iron", "Manganese", "Copper",
       "Recommendation", "Created At"
     ];

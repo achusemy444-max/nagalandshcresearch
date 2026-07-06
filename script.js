@@ -297,7 +297,7 @@ function buildCardRecord(fromPreview = false) {
   ).join(", ");
 
   return {
-    id: fromPreview ? "Preview" : `Soil Health-${Date.now()}`,
+    id: fromPreview ? "Preview" : `SHR-${Date.now()}`,
     district: currentUser?.role === "district" ? currentUser.district : ui.formDistrict.value.trim(),
     testCenterAddress: ui.testCenterAddress.value.trim(),
     testCenterId: ui.testCenterId.value.trim(),
@@ -828,7 +828,7 @@ function handleBulkCardsUpload() {
       ).join(", ");
 
       newCards.push({
-        id: `Soil Health-${Date.now()}-${i}`,
+        id: `SHR-${Date.now()}-${i}`,
         district,
         testCenterAddress,
         testCenterId,
