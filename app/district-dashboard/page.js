@@ -422,15 +422,15 @@ export default function DistrictDashboard() {
                       <input type="text" value={soilCardForm.testCenterId} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, testCenterId: event.target.value }))} required />
                     </label>
                     <label>
-                      <span>Survey No.</span>
+                      <span>Sample No.</span>
                       <input type="text" value={soilCardForm.surveyNo} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, surveyNo: event.target.value }))} required />
                     </label>
                     <label>
-                      <span>Farmer Name</span>
+                      <span>Name</span>
                       <input type="text" value={soilCardForm.farmerName} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, farmerName: event.target.value }))} required />
                     </label>
                     <label>
-                      <span>Farmer Village</span>
+                      <span>Address</span>
                       <input type="text" value={soilCardForm.farmerVillage} onChange={(event) => setSoilCardForm((prev) => ({ ...prev, farmerVillage: event.target.value }))} required />
                     </label>
                     <label>
@@ -553,8 +553,8 @@ export default function DistrictDashboard() {
                     <thead>
                       <tr>
                         <th>Report ID</th>
-                        <th>Farmer</th>
-                        <th>Survey No.</th>
+                        <th>Name</th>
+                        <th>Sample No.</th>
                         <th>Date</th>
                         <th>Action</th>
                       </tr>
