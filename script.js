@@ -422,7 +422,7 @@ function buildCardMarkup(card) {
       <section class="soil-card-section">
         <h4>Card Issued To</h4>
         <div class="soil-card-issued">
-          <div><strong>Survey No.</strong><p>${card.surveyNo}</p></div>
+          <div><strong>Sample No.</strong><p>${card.surveyNo}</p></div>
           <div><strong>Name</strong><p>${card.farmerName}</p></div>
           <div><strong>Village</strong><p>${card.farmerVillage}</p></div>
         </div>
@@ -737,7 +737,7 @@ function handleBulkUpload() {
 }
 
 function downloadCardsExampleCsv() {
-  const csvContent = `District,Testing Date,Test Center Address,Test Center ID,Survey No.,Farmer Name,Farmer Village,Soil Texture,Soil-Color,pH,EC,Organic Carbon,Nitrogen,Phosphorous,Potassium,Sulphur,Zinc,Boron,Iron,Manganese,Copper,Manual Recommendation
+  const csvContent = `District,Testing Date,Test Center Address,Test Center ID,Sample No.,Name,Address,Soil Texture,Soil-Color,pH,EC,Organic Carbon,Nitrogen,Phosphorous,Potassium,Sulphur,Zinc,Boron,Iron,Manganese,Copper,Manual Recommendation
 Kohima,2024-05-07,District Test Center, Kohima, Nagaland,KTC001,1,John Doe,Kohima Village,Sandy,Dry,6.5,0.8,0.6,320,18,200,12,0.8,0.6,5.5,3,0.3,Custom recommendation text here
 Kohima,2024-05-08,District Test Center, Kohima, Nagaland,KTC002,2,Jane Smith,Kohima Village,Loamy,Moderate,7.2,1.2,0.7,280,22,180,15,0.7,0.7,6.0,2.5,0.4,Another recommendation`;
 
@@ -770,7 +770,7 @@ function handleBulkCardsUpload() {
     }
 
     const headers = lines[0].split(',').map(h => h.trim());
-    const expectedHeaders = ['District', 'Testing Date', 'Test Center Address', 'Test Center ID', 'Survey No.', 'Farmer Name', 'Farmer Village', 'Soil Texture', 'Soil-Color', 'pH', 'EC', 'Organic Carbon', 'Nitrogen', 'Phosphorous', 'Potassium', 'Sulphur', 'Zinc', 'Boron', 'Iron', 'Manganese', 'Copper', 'Manual Recommendation'];
+    const expectedHeaders = ['District', 'Testing Date', 'Test Center Address', 'Test Center ID', 'Sample No.', 'Name', 'Address', 'Soil Texture', 'Soil-Color', 'pH', 'EC', 'Organic Carbon', 'Nitrogen', 'Phosphorous', 'Potassium', 'Sulphur', 'Zinc', 'Boron', 'Iron', 'Manganese', 'Copper', 'Manual Recommendation'];
 
     if (!expectedHeaders.every(header => headers.includes(header))) {
       setMessage(ui.bulkCardsUploadMessage, "CSV headers must match the expected format. Please check the example CSV.", "error");
