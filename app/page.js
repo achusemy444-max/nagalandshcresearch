@@ -289,9 +289,9 @@ export default function HomePage() {
                   <p className="section-tag">Welcome to the Soil Health Report Research and Training Portal</p>
                   <h2></h2>
                   <p>
-                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland Soil Health Team, Department of Soil & Water Conservation, Government of Nagaland for research and training Services only</strong></p>
+                    The portal is Autonomous and run by the Department of Soil & Water Conservation, Nagaland. Administrators can create and manage district users, review district soil data, and monitor generated advisory soil health reports. District users can log in, enter soil testing data, and generate automated, training-ready soil health reports. <strong>This platform is developed and operated by the Nagaland Soil Health Team for research and training Services only</strong></p>
                   <div className="hero-features">
-                    <span>Autonomous Soil Health Project Team Nagaland</span>
+                    <span>Autonomous Soil Health Team Nagaland</span>
                     <span>Scheme Supervise under administration</span>
                     <span>District account creation</span>
                     <span>12 soil parameters</span>
