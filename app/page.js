@@ -26,6 +26,7 @@ export default function HomePage() {
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [downloadReportId, setDownloadReportId] = useState("");
   const [analysisDistrictFilter, setAnalysisDistrictFilter] = useState("All");
+  const [conditionDistrictFilter, setConditionDistrictFilter] = useState("All");
 
   useEffect(() => {
     // Check if user is already logged in
@@ -426,15 +427,29 @@ export default function HomePage() {
           <section className="workspace-section" style={{ minHeight: '50vh' }}>
             <div className="container panel-grid">
               <article className="panel-card wide-card">
-                <div className="card-head">
-                  <p className="section-tag">District Overview</p>
-                  <h3>District Soil Health Condition</h3>
+                <div className="card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div>
+                    <p className="section-tag">District Overview</p>
+                    <h3>District Soil Health Condition</h3>
+                  </div>
+                  <div>
+                    <select
+                      value={conditionDistrictFilter}
+                      onChange={(e) => setConditionDistrictFilter(e.target.value)}
+                      style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#fff', cursor: 'pointer' }}
+                    >
+                      <option value="All">All Districts</option>
+                      {districtAccounts.map(account => (
+                        <option key={account.id} value={account.district}>{account.district}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <div className="district-condition-list">
                   {districtAccounts.length === 0 ? (
                     <p>No district conditions available at the moment.</p>
                   ) : (
-                    districtAccounts.map(account => (
+                    districtAccounts.filter(account => conditionDistrictFilter === "All" || account.district === conditionDistrictFilter).map(account => (
                       <div key={account.id} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #eee', borderRadius: '8px', background: '#fafbf7' }}>
                         <h4 style={{ margin: '0 0 0.5rem 0', color: '#165f32' }}>{account.district} District</h4>
                         <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{account.conditionNote || "No condition note available for this district."}</p>

@@ -33,8 +33,9 @@ export const update = mutation(async ({ db }, account) => {
   if (existing.length === 0) {
     throw new Error("Account not found.");
   }
-  const { _id, ...updateData } = existing[0];
-  const mergedData = { ...updateData, ...account };
+  const { _id, _creationTime, ...updateData } = existing[0];
+  const { _id: incomingId, _creationTime: incomingCreationTime, ...incomingData } = account as any;
+  const mergedData = { ...updateData, ...incomingData };
   await db.patch("accounts", existing[0]._id, mergedData);
   return await db.query("accounts")
     .filter((q) => q.eq(q.field("id"), account.id))
