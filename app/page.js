@@ -316,6 +316,32 @@ export default function HomePage() {
                 </div>
               </div>
             </section>
+            <section className="info-section" style={{ paddingBottom: '3rem' }}>
+              <div className="container info-grid">
+                <article className="panel-card">
+                  <div className="card-head">
+                    <p className="section-tag">Soil Health Scheme</p>
+                    <h3>Research and Field Support</h3>
+                  </div>
+                  <p>
+                    The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government.
+                  </p>
+                </article>
+
+                <article className="panel-card">
+                  <div className="card-head">
+                    <p className="section-tag">Benefits</p>
+                    <h3>Why This Programme Matters</h3>
+                  </div>
+                  <ul className="check-list compact">
+                    <li>Supports accurate fertilizer and nutrient planning.</li>
+                    <li>Improves soil health monitoring across districts.</li>
+                    <li>Helps generate recommendation-based soil health reports.</li>
+                    <li>Provides programme-wide inspection for the scheme administrator.</li>
+                  </ul>
+                </article>
+              </div>
+            </section>
           </>
         )}
 
@@ -332,28 +358,7 @@ export default function HomePage() {
                 </p>
               </article>
 
-              <article className="panel-card">
-                <div className="card-head">
-                  <p className="section-tag">Soil Health Scheme</p>
-                  <h3>Research and Field Support</h3>
-                </div>
-                <p>
-                  The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government.
-                </p>
-              </article>
 
-              <article className="panel-card">
-                <div className="card-head">
-                  <p className="section-tag">Benefits</p>
-                  <h3>Why This Programme Matters</h3>
-                </div>
-                <ul className="check-list compact">
-                  <li>Supports accurate fertilizer and nutrient planning.</li>
-                  <li>Improves soil health monitoring across districts.</li>
-                  <li>Helps generate recommendation-based soil health reports.</li>
-                  <li>Provides programme-wide inspection for the scheme administrator.</li>
-                </ul>
-              </article>
               <article className="panel-card">
                 <div className="card-head">
                   <p className="section-tag">Programme Credits</p>
