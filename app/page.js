@@ -340,6 +340,16 @@ export default function HomePage() {
                     <li>Provides programme-wide inspection for the scheme administrator.</li>
                   </ul>
                 </article>
+
+                <article className="panel-card">
+                  <div className="card-head">
+                    <p className="section-tag">Importance</p>
+                    <h3>Why test your Soil ?</h3>
+                  </div>
+                  <p>
+                    Soil testing is the foundation of sustainable agriculture. It helps farmers identify exact nutrient deficiencies, prevents over-use of fertilizers, optimizes crop yield, and maintains long-term soil fertility while protecting the environment.
+                  </p>
+                </article>
               </div>
             </section>
           </>
