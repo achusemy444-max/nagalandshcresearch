@@ -208,8 +208,8 @@ export default function DistrictDashboard() {
       return;
     }
     try {
+      await convexClient.mutation(apiClient.accounts.updateConditionNote, { id: currentUser.id, conditionNote: conditionNoteForm });
       const updatedAccount = { ...currentUser, conditionNote: conditionNoteForm };
-      await convexClient.mutation(apiClient.accounts.update, updatedAccount);
       saveCurrentUser(updatedAccount);
       setCurrentUser(updatedAccount);
       alert("Condition note updated successfully");

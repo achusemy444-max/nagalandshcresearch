@@ -43,6 +43,21 @@ export const update = mutation(async ({ db }, account) => {
     .then(results => results[0] || null);
 });
 
+export const updateConditionNote = mutation(async ({ db }, { id, conditionNote }) => {
+  const existing = await db
+    .query("accounts")
+    .filter((q) => q.eq(q.field("id"), id))
+    .collect();
+  if (existing.length === 0) {
+    throw new Error("Account not found.");
+  }
+  await db.patch("accounts", existing[0]._id, { conditionNote });
+  return await db.query("accounts")
+    .filter((q) => q.eq(q.field("id"), id))
+    .collect()
+    .then(results => results[0] || null);
+});
+
 export const deleteAccount = mutation(async ({ db }, { id }) => {
   const existing = await db
     .query("accounts")

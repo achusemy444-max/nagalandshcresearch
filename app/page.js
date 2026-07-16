@@ -284,7 +284,7 @@ export default function HomePage() {
             <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
             <button className={`nav-tab ${activeTab === 'contact' ? 'active' : ''}`} onClick={() => setActiveTab('contact')}>Support and Contact Us</button>
             <button className={`nav-tab ${activeTab === 'login' ? 'active' : ''}`} onClick={() => setActiveTab('login')}>Login</button>
-            <button className="nav-tab" onClick={() => { setActiveTab('dashboard'); setTimeout(() => document.getElementById('aboutUs')?.scrollIntoView({ behavior: 'smooth' }), 100); }}>About Us</button>
+            <button className={`nav-tab ${activeTab === 'about' ? 'active' : ''}`} onClick={() => setActiveTab('about')}>About Us</button>
           </div>
         </div>
 
@@ -316,58 +316,60 @@ export default function HomePage() {
                 </div>
               </div>
             </section>
-
-            <section className="info-section">
-              <div className="container info-grid">
-                <article className="panel-card" id="aboutUs">
-                  <div className="card-head">
-                    <p className="section-tag">About Us</p>
-                    <h3>Soil Health Report Team Center</h3>
-                  </div>
-                  <p>
-                    This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme.
-                  </p>
-                </article>
-
-                <article className="panel-card">
-                  <div className="card-head">
-                    <p className="section-tag">Soil Health Scheme</p>
-                    <h3>Research and Field Support</h3>
-                  </div>
-                  <p>
-                    The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government.
-                  </p>
-                </article>
-
-                <article className="panel-card">
-                  <div className="card-head">
-                    <p className="section-tag">Benefits</p>
-                    <h3>Why This Programme Matters</h3>
-                  </div>
-                  <ul className="check-list compact">
-                    <li>Supports accurate fertilizer and nutrient planning.</li>
-                    <li>Improves soil health monitoring across districts.</li>
-                    <li>Helps generate recommendation-based soil health reports.</li>
-                    <li>Provides programme-wide inspection for the scheme administrator.</li>
-                  </ul>
-                </article>
-                <article className="panel-card">
-                  <div className="card-head">
-                    <p className="section-tag">Programme Credits</p>
-                    <h3>Research Programme Team</h3>
-                  </div>
-                  <div className="credits-list">
-                    <p><strong>Developer Team</strong> MagnuraSDigital Team</p>
-                    <p><strong>Int. Developer and Cyber Security:</strong> XXXXXXXlo Semy</p>
-                    <p><strong>Programme Optimizer:</strong> XXXXXXXlo Semy</p>
-                    <p><strong>Soil Health Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
-                    <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
-                    <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
-                  </div>
-                </article>
-              </div>
-            </section>
           </>
+        )}
+
+        {activeTab === 'about' && (
+          <section className="info-section" style={{ paddingTop: '2rem', paddingBottom: '3rem', minHeight: '50vh' }}>
+            <div className="container info-grid">
+              <article className="panel-card" id="aboutUs">
+                <div className="card-head">
+                  <p className="section-tag">About Us</p>
+                  <h3>Soil Health Report Team Center</h3>
+                </div>
+                <p>
+                  This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme.
+                </p>
+              </article>
+
+              <article className="panel-card">
+                <div className="card-head">
+                  <p className="section-tag">Soil Health Scheme</p>
+                  <h3>Research and Field Support</h3>
+                </div>
+                <p>
+                  The programme helps collect soil data, test key parameters, and provide practical recommendations for balanced nutrient use, soil conservation, and better productivity. This department-authorized report is for research and training purposes and is advisory only; it is not a substitute for the official government.
+                </p>
+              </article>
+
+              <article className="panel-card">
+                <div className="card-head">
+                  <p className="section-tag">Benefits</p>
+                  <h3>Why This Programme Matters</h3>
+                </div>
+                <ul className="check-list compact">
+                  <li>Supports accurate fertilizer and nutrient planning.</li>
+                  <li>Improves soil health monitoring across districts.</li>
+                  <li>Helps generate recommendation-based soil health reports.</li>
+                  <li>Provides programme-wide inspection for the scheme administrator.</li>
+                </ul>
+              </article>
+              <article className="panel-card">
+                <div className="card-head">
+                  <p className="section-tag">Programme Credits</p>
+                  <h3>Research Programme Team</h3>
+                </div>
+                <div className="credits-list">
+                  <p><strong>Developer Team</strong> MagnuraSDigital Team</p>
+                  <p><strong>Int. Developer and Cyber Security:</strong> XXXXXXXlo Semy</p>
+                  <p><strong>Programme Optimizer:</strong> XXXXXXXlo Semy</p>
+                  <p><strong>Soil Health Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
+                  <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
+                  <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
+                </div>
+              </article>
+            </div>
+          </section>
         )}
 
         {activeTab === 'analysis' && (
