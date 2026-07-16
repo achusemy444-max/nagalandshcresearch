@@ -351,6 +351,20 @@ export default function HomePage() {
                     <li>Provides programme-wide inspection for the scheme administrator.</li>
                   </ul>
                 </article>
+                <article className="panel-card">
+                  <div className="card-head">
+                    <p className="section-tag">Programme Credits</p>
+                    <h3>Research Programme Team</h3>
+                  </div>
+                  <div className="credits-list">
+                    <p><strong>Developer Team</strong> MagnuraSDigital Team</p>
+                    <p><strong>Int. Developer and Cyber Security:</strong> XXXXXXXlo Semy</p>
+                    <p><strong>Programme Optimizer:</strong> XXXXXXXlo Semy</p>
+                    <p><strong>Soil Health Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
+                    <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
+                    <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
+                  </div>
+                </article>
               </div>
             </section>
           </>
@@ -536,21 +550,6 @@ export default function HomePage() {
                   <p><strong>API Integration:</strong> Secure API keys and bulk data export capabilities are now available in the Administrator dashboard for integrating Soil Health Report data with external systems.</p>
                   <p><strong>Autonomous State Initiative:</strong> Please note that this Research & Training Service is an autonomous state scheme developed independently for the state of Nagaland. It is not affiliated with or part of any central scheme.</p>
                   <p><strong>Disclaimer:</strong> <strong>This platform is developed and operated by the Nagaland Soil Health Project Team (Autonomous) for research and training purposes only.</strong> The report generated is advisory and NOT the legally recognised Government of India Soil Health Card. For the official Soil Health Card, please visit soilhealth.dac.gov.in</p>
-                </div>
-              </div>
-
-              <div className="contact-card">
-                <div className="card-head">
-                  <p className="section-tag">Programme Credits</p>
-                  <h3>Research Programme Team</h3>
-                </div>
-                <div className="credits-list">
-                  <p><strong>Developer Team</strong> MagnuraSDigital Team</p>
-                  <p><strong>Int. Developer and Cyber Security:</strong> XXXXXXXlo Semy</p>
-                  <p><strong>Programme Optimizer:</strong> XXXXXXXlo Semy</p>
-                  <p><strong>Soil Health Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
-                  <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
-                  <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
                 </div>
               </div>
             </div>
