@@ -22,6 +22,7 @@ export default function HomePage() {
   const [convexClient, setConvexClient] = useState(null);
   const [apiClient, setApiClient] = useState(null);
   const [districtAnalysis, setDistrictAnalysis] = useState(null);
+  const [districtAccounts, setDistrictAccounts] = useState([]);
   const [analysisLoading, setAnalysisLoading] = useState(false);
   const [downloadReportId, setDownloadReportId] = useState("");
   const [analysisDistrictFilter, setAnalysisDistrictFilter] = useState("All");
@@ -118,19 +119,23 @@ export default function HomePage() {
 
     setAnalysisLoading(true);
     let active = true;
-    const loadAnalysis = async () => {
+    const loadData = async () => {
       try {
-        const cardList = await convexClient.query(apiClient.cards.list, {});
+        const [cardList, accountList] = await Promise.all([
+          convexClient.query(apiClient.cards.list, {}),
+          convexClient.query(apiClient.accounts.list, {})
+        ]);
         if (!active) return;
         setDistrictAnalysis(computeDistrictAnalysis(cardList || []));
+        setDistrictAccounts((accountList || []).filter(a => a.role === "district"));
       } catch (error) {
-        console.warn("Failed to load nutrient analysis:", error);
+        console.warn("Failed to load data:", error);
       } finally {
         if (active) setAnalysisLoading(false);
       }
     };
 
-    loadAnalysis();
+    loadData();
     return () => {
       active = false;
     };
@@ -272,6 +277,7 @@ export default function HomePage() {
           <div className="admin-navbar">
             <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
             <button className={`nav-tab ${activeTab === 'analysis' ? 'active' : ''}`} onClick={() => setActiveTab('analysis')}>State Level Nutrient Analysis</button>
+            <button className={`nav-tab ${activeTab === 'districtCondition' ? 'active' : ''}`} onClick={() => setActiveTab('districtCondition')}>District Soil Health Condition</button>
             <button className={`nav-tab ${activeTab === 'manuals' ? 'active' : ''}`} onClick={() => setActiveTab('manuals')}>Manuals</button>
             <button className={`nav-tab ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>Downloads</button>
             <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
@@ -410,6 +416,31 @@ export default function HomePage() {
                       <p className="analysis-note">No district nutrient data available yet. Once soil reports are added, this chart will update automatically.</p>
                     )}
                   </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'districtCondition' && (
+          <section className="workspace-section" style={{ minHeight: '50vh' }}>
+            <div className="container panel-grid">
+              <article className="panel-card wide-card">
+                <div className="card-head">
+                  <p className="section-tag">District Overview</p>
+                  <h3>District Soil Health Condition</h3>
+                </div>
+                <div className="district-condition-list">
+                  {districtAccounts.length === 0 ? (
+                    <p>No district conditions available at the moment.</p>
+                  ) : (
+                    districtAccounts.map(account => (
+                      <div key={account.id} style={{ marginBottom: '1.5rem', padding: '1rem', border: '1px solid #eee', borderRadius: '8px', background: '#fafbf7' }}>
+                        <h4 style={{ margin: '0 0 0.5rem 0', color: '#165f32' }}>{account.district} District</h4>
+                        <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{account.conditionNote || "No condition note available for this district."}</p>
+                      </div>
+                    ))
+                  )}
                 </div>
               </article>
             </div>

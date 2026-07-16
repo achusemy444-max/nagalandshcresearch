@@ -41,6 +41,8 @@ export default function DistrictDashboard() {
       potassium: "", sulphur: "", zinc: "", boron: "", iron: "", manganese: "", copper: ""
     }
   });
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [conditionNoteForm, setConditionNoteForm] = useState("");
   const [messages, setMessages] = useState({ soilCard: "", soilCardType: "", bulkCards: "", bulkCardsType: "" });
 
   useEffect(() => {
@@ -56,6 +58,9 @@ export default function DistrictDashboard() {
       district: user.district,
       testCenterAddress: prev.testCenterAddress || user.address
     }));
+    if (user.conditionNote) {
+      setConditionNoteForm(user.conditionNote);
+    }
   }, [router]);
 
   useEffect(() => {
@@ -165,6 +170,53 @@ export default function DistrictDashboard() {
         [key]: value
       }
     }));
+  };
+
+  const handleAutoGenerateNote = () => {
+    if (!districtCards.length) {
+      setConditionNoteForm("Insufficient data to auto-generate condition note. Please add soil reports for this district first.");
+      return;
+    }
+    
+    const totalReports = districtCards.length;
+    let autoNote = `Based on ${totalReports} soil health report(s) analyzed in ${currentUser.district} district, soil parameters are actively monitored. `;
+    
+    let phCount = 0;
+    let phSum = 0;
+    districtCards.forEach(c => {
+       if(c.parameters?.ph) {
+          phSum += Number(c.parameters.ph);
+          phCount++;
+       }
+    });
+
+    if (phCount > 0) {
+       const avgPh = (phSum / phCount).toFixed(2);
+       autoNote += `The average pH level is approximately ${avgPh}. `;
+       if (avgPh < 5.5) autoNote += `This indicates generally acidic soils, for which lime application is highly recommended. `;
+       else if (avgPh > 8.5) autoNote += `This indicates generally alkaline soils. `;
+       else autoNote += `This indicates generally neutral soils. `;
+    }
+
+    autoNote += `Continuous testing and following the recommended nutrient management practices are advised for improving overall soil health.`;
+    setConditionNoteForm(autoNote);
+  };
+
+  const handleSaveConditionNote = async () => {
+    if (!convexClient || !apiClient) {
+      alert("Database connection unavailable.");
+      return;
+    }
+    try {
+      const updatedAccount = { ...currentUser, conditionNote: conditionNoteForm };
+      await convexClient.mutation(apiClient.accounts.update, updatedAccount);
+      saveCurrentUser(updatedAccount);
+      setCurrentUser(updatedAccount);
+      alert("Condition note updated successfully");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update note");
+    }
   };
 
   const buildCardRecord = (form) => {
@@ -387,15 +439,22 @@ export default function DistrictDashboard() {
               </div>
             </div>
 
-            <div className="stats-grid">
-              {districtStats.map((item) => (
-                <article key={item.label} className="stat-card">
-                  <strong>{item.value}</strong>
-                  <span>{item.label}</span>
-                  <p>{item.note}</p>
-                </article>
-              ))}
+            <div className="admin-navbar" style={{ marginBottom: '2rem' }}>
+              <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+              <button className={`nav-tab ${activeTab === 'condition' ? 'active' : ''}`} onClick={() => setActiveTab('condition')}>District Soil Health Condition</button>
             </div>
+
+            {activeTab === 'dashboard' && (
+              <>
+                <div className="stats-grid">
+                  {districtStats.map((item) => (
+                    <article key={item.label} className="stat-card">
+                      <strong>{item.value}</strong>
+                      <span>{item.label}</span>
+                      <p>{item.note}</p>
+                    </article>
+                  ))}
+                </div>
 
             <div className="panel-grid">
               <article className="panel-card wide-card">
@@ -604,6 +663,36 @@ export default function DistrictDashboard() {
                 </div>
               </article>
             </div>
+            </>
+            )}
+
+            {activeTab === 'condition' && (
+              <div className="panel-grid">
+                <article className="panel-card wide-card">
+                  <div className="card-head">
+                    <p className="section-tag">Manage</p>
+                    <h3>District Soil Health Condition Note</h3>
+                  </div>
+                  <div className="stack-form">
+                    <p style={{ marginBottom: '1rem' }}>This note is displayed on the main home page for public visibility. You can write your own insights or auto-generate a summary based on the submitted soil reports.</p>
+                    <label>
+                      <span>Condition Note</span>
+                      <textarea 
+                        value={conditionNoteForm} 
+                        onChange={(e) => setConditionNoteForm(e.target.value)} 
+                        rows="6"
+                        placeholder="Describe the soil condition for this district..."
+                        style={{ width: '100%', padding: '0.75rem', borderRadius: '4px', border: '1px solid #ccc', fontFamily: 'inherit' }}
+                      />
+                    </label>
+                    <div className="form-actions" style={{ marginTop: '1rem' }}>
+                      <button type="button" className="button button-primary" onClick={handleSaveConditionNote}>Save Note</button>
+                      <button type="button" className="button button-secondary" onClick={handleAutoGenerateNote}>Auto Generate Note</button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            )}
           </div>
         </section>
       </main>

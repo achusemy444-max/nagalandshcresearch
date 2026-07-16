@@ -18,7 +18,8 @@ export default defineSchema({
     username: v.string(),
     password: v.string(),
     address: v.string(),
-    createdAt: v.string()
+    createdAt: v.string(),
+    conditionNote: v.optional(v.string())
   })
     .index("by_username", ["username"]),
 
