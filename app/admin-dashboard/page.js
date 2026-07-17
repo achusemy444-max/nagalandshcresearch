@@ -39,38 +39,6 @@ export default function AdminDashboard() {
     setApiKey(newKey);
   };
 
-  const handleDownloadBulkCSV = () => {
-    if (!state.cards || state.cards.length === 0) {
-      alert("No Soil Health Report data available to export.");
-      return;
-    }
-    const headers = [
-      "Report ID", "District", "Test Center Address", "Test Center ID", "Testing Date",
-      "Sample No", "Name", "Address", "Soil Texture", "Moisture Content",
-      "pH", "EC", "Organic Carbon", "Nitrogen", "Phosphorous", "Potassium", "Sulphur", "Zinc", "Boron", "Iron", "Manganese", "Copper",
-      "Recommendation", "Created At"
-    ];
-    
-    const rows = state.cards.map(card => {
-      const escapeCsv = (str) => `"${(str || '').toString().replace(/"/g, '""')}"`;
-      return [
-        card.id, card.district, escapeCsv(card.testCenterAddress), card.testCenterId, card.testingDate,
-        card.surveyNo, escapeCsv(card.farmerName), escapeCsv(card.farmerVillage), card.soilTexture, card.moistureContext,
-        card.parameters?.ph, card.parameters?.ec, card.parameters?.organicCarbon, card.parameters?.nitrogen, card.parameters?.phosphorous, card.parameters?.potassium, card.parameters?.sulphur, card.parameters?.zinc, card.parameters?.boron, card.parameters?.iron, card.parameters?.manganese, card.parameters?.copper,
-        escapeCsv(card.recommendation), card.createdAt
-      ].join(",");
-    });
-    
-    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `soil_health_data_bulk_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   useEffect(() => {
     const user = loadCurrentUser();
     if (!user || user.role !== "admin") {
@@ -708,8 +676,11 @@ export default function AdminDashboard() {
 
                   <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #eee' }}>
                     <h4>Data Export Integration</h4>
-                    <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>Download bulk Soil Health Report data across all districts in CSV format for transfer to other systems.</p>
-                    <button type="button" className="button button-secondary" onClick={handleDownloadBulkCSV}>Download Soil Health Data (CSV Bulk)</button>
+                    <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>To download bulk Soil Health Report data across all districts in CSV format, please use the Download ID below on the Home page Downloads section.</p>
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                      <span style={{ fontWeight: 'bold' }}>Download ID:</span>
+                      <input type="text" readOnly value="SHC-BULK-EXPORT-ID" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', width: '250px' }} />
+                    </div>
                   </div>
                 </article>
               </div>

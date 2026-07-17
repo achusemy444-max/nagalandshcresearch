@@ -175,8 +175,43 @@ export default function HomePage() {
       setMessage("download", "Database connection unavailable.", "error");
       return;
     }
+
     try {
       const cardList = await convexClient.query(apiClient.cards.list, {});
+
+      if (downloadReportId.trim() === "SHC-BULK-EXPORT-ID") {
+        if (!cardList || cardList.length === 0) {
+          setMessage("download", "No Soil Health Report data available to export.", "error");
+          return;
+        }
+        const headers = [
+          "Report ID", "District", "Test Center Address", "Test Center ID", "Testing Date",
+          "Sample No", "Name", "Address", "Soil Texture", "Moisture Content",
+          "pH", "EC", "Organic Carbon", "Nitrogen", "Phosphorous", "Potassium", "Sulphur", "Zinc", "Boron", "Iron", "Manganese", "Copper",
+          "Recommendation", "Created At"
+        ];
+        
+        const rows = cardList.map(card => {
+          const escapeCsv = (str) => `"${(str || '').toString().replace(/"/g, '""')}"`;
+          return [
+            card.id, card.district, escapeCsv(card.testCenterAddress), card.testCenterId, card.testingDate,
+            card.surveyNo, escapeCsv(card.farmerName), escapeCsv(card.farmerVillage), card.soilTexture, card.moistureContext,
+            card.parameters?.ph, card.parameters?.ec, card.parameters?.organicCarbon, card.parameters?.nitrogen, card.parameters?.phosphorous, card.parameters?.potassium, card.parameters?.sulphur, card.parameters?.zinc, card.parameters?.boron, card.parameters?.iron, card.parameters?.manganese, card.parameters?.copper,
+            escapeCsv(card.recommendation), card.createdAt
+          ].join(",");
+        });
+        
+        const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `soil_health_data_bulk_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setMessage("download", "Bulk download initiated.", "success");
+        return;
+      }
       const card = cardList?.find(c => c.id === downloadReportId.trim());
       if (!card) {
         setMessage("download", `Report ID ${downloadReportId} not found.`, "error");
@@ -515,12 +550,12 @@ export default function HomePage() {
                   <p className="section-tag">Resources</p>
                   <h3>Downloads</h3>
                 </div>
-                <p style={{ marginBottom: '1.5rem' }}>Download Soil Health Report pdf by entering 'Report ID' below, or find downloadable report templates, offline forms, and other assets here.</p>
+                <p style={{ marginBottom: '1.5rem' }}>Download Soil Health Report pdf or bulk data by entering 'Report ID' or 'Download ID' below, or find downloadable report templates, offline forms, and other assets here.</p>
                 <form onSubmit={handleDownloadPdfById} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', maxWidth: '500px', flexWrap: 'wrap' }}>
                   <div style={{ flex: 1, minWidth: '200px' }}>
                     <input
                       type="text"
-                      placeholder="Enter Report ID"
+                      placeholder="Enter Report ID or Download ID"
                       value={downloadReportId}
                       onChange={(e) => setDownloadReportId(e.target.value)}
                       style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
