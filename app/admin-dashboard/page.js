@@ -32,7 +32,7 @@ export default function AdminDashboard() {
   const [apiKey, setApiKey] = useState("");
   const [districtFilter, setDistrictFilter] = useState("All");
   const [editingAccountId, setEditingAccountId] = useState(null);
-  const [editAccountForm, setEditAccountForm] = useState({ district: "", officerName: "", username: "" });
+  const [editAccountForm, setEditAccountForm] = useState({ district: "", officerName: "", username: "", password: "", address: "" });
 
   const handleGenerateApiKey = () => {
     const newKey = 'shc_api_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -288,7 +288,7 @@ export default function AdminDashboard() {
 
   const handleEditAccountClick = (account) => {
     setEditingAccountId(account.id);
-    setEditAccountForm({ district: account.district, officerName: account.officerName, username: account.username });
+    setEditAccountForm({ district: account.district || "", officerName: account.officerName || "", username: account.username || "", password: account.password || "", address: account.address || "" });
   };
 
   const handleSaveAccountEdit = async (accountId) => {
@@ -303,7 +303,9 @@ export default function AdminDashboard() {
       ...account,
       district: editAccountForm.district.trim() || account.district,
       officerName: editAccountForm.officerName.trim() || account.officerName,
-      username: editAccountForm.username.trim() || account.username
+      username: editAccountForm.username.trim() || account.username,
+      password: editAccountForm.password.trim() || account.password,
+      address: editAccountForm.address.trim() || account.address
     };
     if (!convexClient || !apiClient) {
       setMessage("districtAccount", "Database connection unavailable. Please check your internet connection and try again.", "error");
@@ -534,6 +536,8 @@ export default function AdminDashboard() {
                           <th>District</th>
                           <th>Officer</th>
                           <th>Username</th>
+                          <th>Password</th>
+                          <th>Test Center Address</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -545,6 +549,8 @@ export default function AdminDashboard() {
                                 <td><input type="text" value={editAccountForm.district} onChange={(e) => setEditAccountForm(prev => ({...prev, district: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
                                 <td><input type="text" value={editAccountForm.officerName} onChange={(e) => setEditAccountForm(prev => ({...prev, officerName: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
                                 <td><input type="text" value={editAccountForm.username} onChange={(e) => setEditAccountForm(prev => ({...prev, username: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.password} onChange={(e) => setEditAccountForm(prev => ({...prev, password: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.address} onChange={(e) => setEditAccountForm(prev => ({...prev, address: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
                                 <td>
                                   <button type="button" className="button button-primary" onClick={() => handleSaveAccountEdit(account.id)} style={{ marginRight: '5px' }}>Save</button>
                                   <button type="button" className="button button-secondary" onClick={() => setEditingAccountId(null)}>Cancel</button>
@@ -555,6 +561,8 @@ export default function AdminDashboard() {
                                 <td>{account.district}</td>
                                 <td>{account.officerName}</td>
                                 <td>{account.username}</td>
+                                <td>{account.password}</td>
+                                <td>{account.address}</td>
                                 <td>
                                   <button type="button" className="button button-secondary" onClick={() => handleEditAccountClick(account)} style={{ marginRight: '5px' }}>Edit</button>
                                   <button type="button" className="button button-secondary" onClick={() => handleDeleteAccount(account.id)}>Delete</button>
@@ -563,7 +571,7 @@ export default function AdminDashboard() {
                             )}
                           </tr>
                         )) : (
-                          <tr><td colSpan="4">No district accounts created yet.</td></tr>
+                          <tr><td colSpan="6">No district accounts created yet.</td></tr>
                         )}
                       </tbody>
                     </table>
