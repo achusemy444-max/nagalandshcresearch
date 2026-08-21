@@ -190,7 +190,7 @@ export default function HomePage() {
           "pH", "EC", "Organic Carbon", "Nitrogen", "Phosphorous", "Potassium", "Sulphur", "Zinc", "Boron", "Iron", "Manganese", "Copper",
           "Recommendation", "Created At"
         ];
-        
+
         const rows = cardList.map(card => {
           const escapeCsv = (str) => `"${(str || '').toString().replace(/"/g, '""')}"`;
           return [
@@ -200,7 +200,7 @@ export default function HomePage() {
             escapeCsv(card.recommendation), card.createdAt
           ].join(",");
         });
-        
+
         const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
@@ -411,10 +411,9 @@ export default function HomePage() {
                 </div>
                 <div className="credits-list">
                   <p><strong>Developer Team</strong> MagnuraSDigital Team</p>
-                  <p><strong>Int. Developer and Cyber Security:</strong> XXXXXXXlo Semy</p>
-                  <p><strong>Programme Optimizer:</strong> XXXXXXXlo Semy</p>
-                  <p><strong>Soil Health Data Virtualizer and Supervisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
-                  <p><strong>Programme Advisor:</strong> Soil Health Project Team Advisor</p>
+                  <p><strong>Main Developer and Cyber Security:</strong> Dev. Khanchulo Semy </p>
+                  <p><strong>Sub Developer and Programme Optimizer:</strong> Er. Chentilo Semy</p>
+                  <p><strong>Programme Advisor:</strong> Directorate Soil Health Project Team, Nagaland</p>
                   <p><strong>Programme Supporter:</strong> Directorate Soil Health Project Team, Nagaland</p>
                 </div>
               </article>
