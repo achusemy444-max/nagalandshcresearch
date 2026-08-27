@@ -303,7 +303,7 @@ export default function HomePage() {
           </div>
           <div className="session-box">
             <span className={`status-dot ${backendStatus}`}></span>
-            <span>Main Server Status: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Synchronizing..."}</span>
+            <span>Main Server Status: {backendStatus === "online" ? "Online" : backendStatus === "offline" ? "Offline" : "Online"}</span>
           </div>
           {/* logo removed to avoid implication of official government branding */}
         </div>
@@ -335,12 +335,16 @@ export default function HomePage() {
                   <div className="hero-features">
                     <span>Autonomous Soil Health Team Nagaland</span>
                     <span>Scheme Supervise under administration</span>
-                    <span>District account creation</span>
-                    <span>12 soil parameters</span>
-                    <span>Texture and Soil-Color</span>
-                    <span>Status color indicators</span>
-                    <span>Nutrient Analysis</span>
-                    <span>Auto Recommendation generator</span>
+                    <span>District Account & User Management</span>
+                    <span>12 Measured Soil Parameters</span>
+                    <span>Texture and Soil-Color Classification</span>
+                    <span>Enhanced pH & EC Scale Indicators</span>
+                    <span>Auto Recommendation Generator</span>
+                    <span>State Level Nutrient Analysis</span>
+                    <span>District Soil Health Condition Tracking</span>
+                    <span>Permanent API Key Integration</span>
+                    <span>Bulk CSV Export & Import</span>
+                    <span>Print-Ready PDF Generation & Download</span>
                   </div>
                   <div className="hero-contact">
                     <p><strong>Support & Contact:</strong> Soilandwaterconservation123@gmail.com</p>
@@ -678,15 +682,6 @@ export default function HomePage() {
               <li><a href="https://necouncil.gov.in" target="_blank" rel="noopener noreferrer">necouncil.gov.in</a></li>
               <li><a href="https://nagaland.gov.in" target="_blank" rel="noopener noreferrer">Nagaland State Portal</a></li>
               <li><a href="https://india.gov.in" target="_blank" rel="noopener noreferrer">National Portal of India</a></li>
-            </ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>QUICK LINKS</h4>
-            <ul className="footer-links">
-              <li><a href="#">Home</a></li>
-              <li><a href="https://github.com/achusemy444-max/nagalandshcresearch" target="_blank" rel="noopener noreferrer">Project Repository</a></li>
-              <li><a href="/admin-dashboard">Admin Portal</a></li>
             </ul>
           </div>
         </div>

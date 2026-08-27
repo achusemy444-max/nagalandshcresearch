@@ -717,15 +717,6 @@ export default function DistrictDashboard() {
               <li><a href="https://india.gov.in" target="_blank" rel="noopener noreferrer">National Portal of India</a></li>
             </ul>
           </div>
-
-          <div className="footer-col">
-            <h4>QUICK LINKS</h4>
-            <ul className="footer-links">
-              <li><Link href="/">Home</Link></li>
-              <li><a href="https://github.com/achusemy444-max/nagalandshcresearch" target="_blank" rel="noopener noreferrer">Project Repository</a></li>
-              <li><Link href="/district-dashboard">District Dashboard</Link></li>
-            </ul>
-          </div>
         </div>
 
         <div className="footer-bottom-bar">

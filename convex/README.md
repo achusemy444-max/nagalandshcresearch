@@ -42,4 +42,4 @@ const CONVEX_URL = "https://YOUR_CONVEX_DEPLOYMENT_URL";
 const CONVEX_ACCESS_TOKEN = "<your-access-token>";
 ```
 
-Then load the page from GitHub Pages or your Vercel domain.
+Then load the page from your web server or Vercel domain.

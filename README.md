@@ -1,4 +1,4 @@
-# nagalandshcresearch
+# nagalandshrresearch
 Nagaland Soil Health research team
 
 ## Convex and Vercel setup
@@ -12,3 +12,4 @@ This app connects to Convex using environment variables.
 3. Deploy the app on Vercel.
 
 > Do not commit local environment files like `.env.local` to GitHub.
+rsion control.
