@@ -153,8 +153,12 @@ a {
 
 .top-logo-round,
 .showcase-logo-round,
-.card-logo-round {
+.card-logo-round,
+.footer-logo-round {
   border-radius: 50%;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 .mini-label,

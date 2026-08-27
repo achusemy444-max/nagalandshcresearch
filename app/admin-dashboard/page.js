@@ -471,7 +471,7 @@ export default function AdminDashboard() {
     <>
       <header className="site-header">
         <div className="container topbar">
-          <img src="/assets/soil-logo.jpg" alt="Department of Soil & Water Conservation, Nagaland logo" className="top-logo top-logo-round top-logo-left" />
+          <img src="/assets/soil-logo.png" alt="Department of Soil & Water Conservation, Nagaland logo" className="top-logo top-logo-round top-logo-left" />
           <div className="brand-center">
             <p className="mini-label">Department of Soil & Water Conservation, Nagaland</p>
             <h1>Soil Health Report Research Programme</h1>
@@ -794,7 +794,7 @@ export default function AdminDashboard() {
           <div className="footer-col-brand">
             <div className="footer-logo-group">
               <img src="/assets/gon-logo.png" alt="Government of Nagaland" className="footer-logo footer-logo-round" />
-              <img src="/assets/soil-logo.jpg" alt="Department of Soil & Water Conservation" className="footer-logo footer-logo-round" />
+              <img src="/assets/soil-logo.png" alt="Department of Soil & Water Conservation" className="footer-logo footer-logo-round" />
             </div>
             <p className="footer-brand-text">
               Department of Soil & Water Conservation,<br />
