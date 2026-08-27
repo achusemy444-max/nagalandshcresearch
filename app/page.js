@@ -573,7 +573,7 @@ export default function HomePage() {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
               }}>
                 <h4 style={{ margin: '0 0 0.4rem 0', color: '#1b5e20', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span>📌</span> Note
+                  <span>*</span><strong>Note:</strong>
                 </h4>
                 <p style={{ margin: 0, fontSize: '0.92rem', color: '#2e7d32', lineHeight: '1.5' }}>
                   Training Materials, Operational Guidelines, and Scheme Technical Manuals will be provided by the <strong>Administrator</strong>. District users can reference these documents for standard operating procedures and testing compliance.
@@ -589,7 +589,7 @@ export default function HomePage() {
                     <h3>📚 Training Materials</h3>
                   </div>
                   <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: '1.6' }}>
-                    Comprehensive training modules for district laboratory personnel, field officers, and agricultural advisors.
+                    Comprehensive training modules for district laboratory personnel and agricultural advisors.
                   </p>
                   <ul className="check-list compact" style={{ marginTop: '1rem' }}>
                     <li>Soil Sample Collection Protocols & Best Practices</li>
@@ -610,9 +610,9 @@ export default function HomePage() {
                   </p>
                   <ul className="check-list compact" style={{ marginTop: '1rem' }}>
                     <li>District Portal User Account Setup & Role Security</li>
-                    <li>Flame Photometer & Spectrophotometer Calibration</li>
-                    <li>Bulk CSV Soil Report Batch Processing Guide</li>
-                    <li>Print-Ready PDF Generation & Verification Checklist</li>
+                    <li>Soil Testing Kit & Instruments Operation</li>
+                    <li>Soil Report Batch Processing Guide</li>
+                    <li>PDF Generation & Verification</li>
                   </ul>
                 </article>
 
@@ -627,9 +627,9 @@ export default function HomePage() {
                   </p>
                   <ul className="check-list compact" style={{ marginTop: '1rem' }}>
                     <li>Research & Training Programme Overview Manual</li>
-                    <li>Nagaland Soil Classification & Agro-Climatic Norms</li>
-                    <li>Permanent API Key Integration Specification</li>
-                    <li>Autonomous Research Scheme Compliance Guidelines</li>
+                    <li>Soil Testing Manual</li>
+                    <li>API Key Integration Specification</li>
+                    <li>Soil Health Scheme Guideline</li>
                   </ul>
                 </article>
               </div>
