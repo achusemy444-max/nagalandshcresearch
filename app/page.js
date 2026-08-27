@@ -304,7 +304,7 @@ export default function HomePage() {
           <img src="/assets/soil-logo.png" alt="Department of Soil & Water Conservation, Nagaland logo" className="top-logo top-logo-round top-logo-left" />
           <div className="brand-center">
             <p className="mini-label">Department of Soil & Water Conservation, Nagaland</p>
-            <h1>Soil Health Report Research & Training Programme</h1>
+            <h1>Soil Health Report Research & Training Portal</h1>
             <p className="brand-subtitle">Research and training service</p>
           </div>
           <div className="session-box">
@@ -561,15 +561,78 @@ export default function HomePage() {
         )}
 
         {activeTab === 'manuals' && (
-          <section className="workspace-section" style={{ minHeight: '50vh' }}>
-            <div className="container panel-grid">
-              <article className="panel-card wide-card">
-                <div className="card-head">
-                  <p className="section-tag">Resources</p>
-                  <h3>Manuals & Guidelines</h3>
-                </div>
-                <p>Training materials, operation guidelines, and scheme manuals will be available here.</p>
-              </article>
+          <section className="workspace-section" style={{ minHeight: '50vh', paddingTop: '2rem', paddingBottom: '3rem' }}>
+            <div className="container">
+              {/* Admin Note Header Alert */}
+              <div style={{
+                background: '#eef7ed',
+                borderLeft: '4px solid #4caf50',
+                padding: '1.25rem 1.5rem',
+                borderRadius: '8px',
+                marginBottom: '2rem',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+              }}>
+                <h4 style={{ margin: '0 0 0.4rem 0', color: '#1b5e20', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span>📌</span> Scheme Administrator Note
+                </h4>
+                <p style={{ margin: 0, fontSize: '0.92rem', color: '#2e7d32', lineHeight: '1.5' }}>
+                  Official training materials, operational guidelines, and scheme technical manuals can be published and updated by the Scheme Administrator from the <strong>Admin Portal</strong>. District users and field officers can reference these documents for standard operating procedures and testing compliance.
+                </p>
+              </div>
+
+              {/* Resource Cards Grid */}
+              <div className="info-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+                {/* Training Materials Card */}
+                <article className="panel-card">
+                  <div className="card-head">
+                    <p className="section-tag">Education & Field Guide</p>
+                    <h3>📚 Training Materials</h3>
+                  </div>
+                  <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: '1.6' }}>
+                    Comprehensive training modules for district laboratory personnel, field officers, and agricultural advisors.
+                  </p>
+                  <ul className="check-list compact" style={{ marginTop: '1rem' }}>
+                    <li>Soil Sample Collection Protocols & Best Practices</li>
+                    <li>12-Parameter Laboratory Analysis Procedures</li>
+                    <li>Soil Texture & Color Assessment Methodology</li>
+                    <li>Farmer Advisory & Recommendation Guidance</li>
+                  </ul>
+                </article>
+
+                {/* Operation Guidelines Card */}
+                <article className="panel-card">
+                  <div className="card-head">
+                    <p className="section-tag">Standard Operating Procedures</p>
+                    <h3>⚙️ Operation Guidelines</h3>
+                  </div>
+                  <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: '1.6' }}>
+                    Step-by-step operating guidelines for district testing centers and data entry verification.
+                  </p>
+                  <ul className="check-list compact" style={{ marginTop: '1rem' }}>
+                    <li>District Portal User Account Setup & Role Security</li>
+                    <li>Flame Photometer & Spectrophotometer Calibration</li>
+                    <li>Bulk CSV Soil Report Batch Processing Guide</li>
+                    <li>Print-Ready PDF Generation & Verification Checklist</li>
+                  </ul>
+                </article>
+
+                {/* Scheme Manuals Card */}
+                <article className="panel-card">
+                  <div className="card-head">
+                    <p className="section-tag">Programme Documentation</p>
+                    <h3>📋 Scheme Manuals</h3>
+                  </div>
+                  <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: '1.6' }}>
+                    Official policy, research methodology, and framework manuals from the Department of Soil & Water Conservation, Nagaland.
+                  </p>
+                  <ul className="check-list compact" style={{ marginTop: '1rem' }}>
+                    <li>Research & Training Programme Overview Manual</li>
+                    <li>Nagaland Soil Classification & Agro-Climatic Norms</li>
+                    <li>Permanent API Key Integration Specification</li>
+                    <li>Autonomous Research Scheme Compliance Guidelines</li>
+                  </ul>
+                </article>
+              </div>
             </div>
           </section>
         )}
