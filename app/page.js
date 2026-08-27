@@ -30,8 +30,18 @@ export default function HomePage() {
   const [conditionDistrictFilter, setConditionDistrictFilter] = useState("All");
   const [visitorInfo, setVisitorInfo] = useState({ count: 17, lastUpdated: "27-Aug-2026" });
 
+  const MANUALS_NOTE_KEY = "shr-manuals-note";
+  const DEFAULT_MANUALS_NOTE = "Training Materials, Operational Guidelines, and Scheme Technical Manuals will be provided by the Administrator. District users can reference these documents for standard operating procedures and testing compliance.";
+  const [manualsNote, setManualsNote] = useState(DEFAULT_MANUALS_NOTE);
+
   useEffect(() => {
     setVisitorInfo(getVisitorCountInfo());
+    if (typeof window !== "undefined") {
+      const savedNote = localStorage.getItem(MANUALS_NOTE_KEY);
+      if (savedNote) {
+        setManualsNote(savedNote);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -427,8 +437,7 @@ export default function HomePage() {
             <div className="container info-grid">
               <article className="panel-card" id="aboutUs">
                 <div className="card-head">
-                  <p className="section-tag">About Us</p>
-                  <h3>Soil Health Report Team Center</h3>
+                  <p className="section-tag">Soil Health Report Team Center</p>
                 </div>
                 <p>
                   This team center supports scientific soil testing, district coordination, and data-driven advisory for farmers through the Department of Soil & Water Conservation, Nagaland research and training programme.
@@ -576,7 +585,7 @@ export default function HomePage() {
                   <span>*</span><strong>Note:</strong>
                 </h4>
                 <p style={{ margin: 0, fontSize: '0.92rem', color: '#2e7d32', lineHeight: '1.5' }}>
-                  Training Materials, Operational Guidelines, and Scheme Technical Manuals will be provided by the <strong>Administrator</strong>. District users can reference these documents for standard operating procedures and testing compliance.
+                  {manualsNote}
                 </p>
               </div>
 

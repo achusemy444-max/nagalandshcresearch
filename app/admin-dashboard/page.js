@@ -42,6 +42,38 @@ export default function AdminDashboard() {
   }, []);
 
   const API_KEYS_STORAGE_KEY = "shr-permanent-api-keys";
+  const MANUALS_NOTE_KEY = "shr-manuals-note";
+  const DEFAULT_MANUALS_NOTE = "Training Materials, Operational Guidelines, and Scheme Technical Manuals will be provided by the Administrator. District users can reference these documents for standard operating procedures and testing compliance.";
+
+  const [manualsNoteForm, setManualsNoteForm] = useState(DEFAULT_MANUALS_NOTE);
+  const [manualsNoteMessage, setManualsNoteMessage] = useState({ text: "", type: "" });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedNote = localStorage.getItem(MANUALS_NOTE_KEY);
+      if (savedNote) {
+        setManualsNoteForm(savedNote);
+      }
+    }
+  }, []);
+
+  const handleSaveManualsNote = (e) => {
+    e.preventDefault();
+    if (typeof window !== "undefined") {
+      localStorage.setItem(MANUALS_NOTE_KEY, manualsNoteForm);
+      setManualsNoteMessage({ text: "Manuals Training Note updated successfully! The updated note is now live on the home page.", type: "success" });
+      setTimeout(() => setManualsNoteMessage({ text: "", type: "" }), 4000);
+    }
+  };
+
+  const handleResetManualsNote = () => {
+    setManualsNoteForm(DEFAULT_MANUALS_NOTE);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(MANUALS_NOTE_KEY, DEFAULT_MANUALS_NOTE);
+      setManualsNoteMessage({ text: "Manuals Training Note reset to default text.", type: "success" });
+      setTimeout(() => setManualsNoteMessage({ text: "", type: "" }), 4000);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -488,6 +520,7 @@ export default function AdminDashboard() {
           <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Admin Dashboard</button>
           <button className={`nav-tab ${activeTab === 'district-accounts' ? 'active' : ''}`} onClick={() => setActiveTab('district-accounts')}>District Accounts</button>
           <button className={`nav-tab ${activeTab === 'all-district-data' ? 'active' : ''}`} onClick={() => setActiveTab('all-district-data')}>All District Data</button>
+          <button className={`nav-tab ${activeTab === 'manuals' ? 'active' : ''}`} onClick={() => setActiveTab('manuals')}>Manuals</button>
           <button className={`nav-tab ${activeTab === 'api-integration' ? 'active' : ''}`} onClick={() => setActiveTab('api-integration')}>API Integration</button>
         </div>
       </div>
@@ -783,6 +816,52 @@ export default function AdminDashboard() {
                       <span style={{ fontWeight: 'bold' }}>Download ID:</span>
                       <input type="text" readOnly value="SHR-BULK-EXPORT-ID" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', width: '250px' }} />
                     </div>
+                  </div>
+                </article>
+              </div>
+            )}
+
+            {activeTab === 'manuals' && (
+              <div className="panel-grid">
+                <article className="panel-card wide-card">
+                  <div className="card-head">
+                    <p className="section-tag">Content Management</p>
+                    <h3>Edit Home Page Manuals & Training Note</h3>
+                  </div>
+                  <p style={{ marginBottom: '1.5rem', color: '#555' }}>
+                    As the Scheme Administrator, you can update the official Training & Guidelines Note displayed on the Home Page's <strong>Manuals</strong> tab. District users and portal visitors will see your updated note immediately.
+                  </p>
+
+                  <form onSubmit={handleSaveManualsNote} className="stack-form">
+                    <label>
+                      <span style={{ fontWeight: '600', marginBottom: '0.4rem', display: 'block' }}>Manuals Training Note Text</span>
+                      <textarea
+                        rows="5"
+                        value={manualsNoteForm}
+                        onChange={(e) => setManualsNoteForm(e.target.value)}
+                        placeholder="Enter the training and manuals note for users..."
+                        style={{ width: '100%', padding: '0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontFamily: 'inherit', fontSize: '0.95rem' }}
+                        required
+                      />
+                    </label>
+
+                    <div className="form-actions" style={{ marginTop: '1rem', display: 'flex', gap: '10px' }}>
+                      <button type="submit" className="button button-primary">Save Note</button>
+                      <button type="button" className="button button-secondary" onClick={handleResetManualsNote}>Reset to Default</button>
+                    </div>
+                  </form>
+
+                  {manualsNoteMessage.text && (
+                    <p className={`form-message ${manualsNoteMessage.type === "success" ? "message-success" : "message-error"}`} style={{ marginTop: '1rem' }}>
+                      {manualsNoteMessage.text}
+                    </p>
+                  )}
+
+                  <div style={{ marginTop: '2rem', padding: '1.2rem', background: '#eef7ed', borderLeft: '4px solid #4caf50', borderRadius: '6px' }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#1b5e20' }}>Preview of Live Note:</h4>
+                    <p style={{ margin: 0, fontSize: '0.92rem', color: '#2e7d32' }}>
+                      <span>*</span> <strong>Note:</strong> {manualsNoteForm}
+                    </p>
                   </div>
                 </article>
               </div>
