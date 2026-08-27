@@ -704,27 +704,6 @@ export default function DistrictDashboard() {
         </section>
       </main>
 
-      {/* Soil Testing Laboratory Showcase */}
-      <section className="lab-section">
-        <div className="container">
-          <div className="lab-header">
-            <p className="section-tag">Facilities</p>
-            <h3>Soil Testing Laboratory</h3>
-          </div>
-          <div className="lab-grid">
-            <div className="lab-card">
-              <img src="/assets/lab-1.png" alt="Soil Testing Laboratory Equipment Analysis" className="lab-img" />
-            </div>
-            <div className="lab-card">
-              <img src="/assets/lab-2.png" alt="Soil Testing Glassware and Reagents" className="lab-img" />
-            </div>
-            <div className="lab-card">
-              <img src="/assets/lab-3.png" alt="Distillation Apparatus for Soil Testing" className="lab-img" />
-            </div>
-          </div>
-        </div>
-      </section>
-
       <footer className="site-footer">
         <div className="footer-inner">
           <div className="footer-col-brand">
