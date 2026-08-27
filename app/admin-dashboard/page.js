@@ -483,6 +483,14 @@ export default function AdminDashboard() {
           </div>
         </div>
       </header>
+      <div className="admin-navbar-full">
+        <div className="admin-navbar">
+          <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Admin Dashboard</button>
+          <button className={`nav-tab ${activeTab === 'district-accounts' ? 'active' : ''}`} onClick={() => setActiveTab('district-accounts')}>District Accounts</button>
+          <button className={`nav-tab ${activeTab === 'all-district-data' ? 'active' : ''}`} onClick={() => setActiveTab('all-district-data')}>All District Data</button>
+          <button className={`nav-tab ${activeTab === 'api-integration' ? 'active' : ''}`} onClick={() => setActiveTab('api-integration')}>API Integration</button>
+        </div>
+      </div>
       <main>
         <section className="workspace-section">
           <div className="container">
@@ -496,13 +504,6 @@ export default function AdminDashboard() {
                 <Link href="/" className="button button-secondary">Home</Link>
                 <button type="button" className="button button-primary" onClick={handleLogout}>Logout</button>
               </div>
-            </div>
-
-            <div className="admin-navbar">
-              <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Admin Dashboard</button>
-              <button className={`nav-tab ${activeTab === 'district-accounts' ? 'active' : ''}`} onClick={() => setActiveTab('district-accounts')}>District Accounts</button>
-              <button className={`nav-tab ${activeTab === 'all-district-data' ? 'active' : ''}`} onClick={() => setActiveTab('all-district-data')}>All District Data</button>
-              <button className={`nav-tab ${activeTab === 'api-integration' ? 'active' : ''}`} onClick={() => setActiveTab('api-integration')}>API Integration</button>
             </div>
 
             {activeTab === 'dashboard' && (

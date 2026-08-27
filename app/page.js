@@ -314,20 +314,20 @@ export default function HomePage() {
           {/* logo removed to avoid implication of official government branding */}
         </div>
       </header>
-      <main className="home-main">
-        <div className="container" style={{ paddingTop: '2rem' }}>
-          <div className="admin-navbar">
-            <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
-            <button className={`nav-tab ${activeTab === 'analysis' ? 'active' : ''}`} onClick={() => setActiveTab('analysis')}>State Level Nutrient Analysis</button>
-            <button className={`nav-tab ${activeTab === 'districtCondition' ? 'active' : ''}`} onClick={() => setActiveTab('districtCondition')}>District Soil Health Condition</button>
-            <button className={`nav-tab ${activeTab === 'manuals' ? 'active' : ''}`} onClick={() => setActiveTab('manuals')}>Manuals</button>
-            <button className={`nav-tab ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>Downloads</button>
-            <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
-            <button className={`nav-tab ${activeTab === 'contact' ? 'active' : ''}`} onClick={() => setActiveTab('contact')}>Support and Contact Us</button>
-            <button className={`nav-tab ${activeTab === 'login' ? 'active' : ''}`} onClick={() => setActiveTab('login')}>Login</button>
-            <button className={`nav-tab ${activeTab === 'about' ? 'active' : ''}`} onClick={() => setActiveTab('about')}>About Us</button>
-          </div>
+      <div className="admin-navbar-full">
+        <div className="admin-navbar">
+          <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+          <button className={`nav-tab ${activeTab === 'analysis' ? 'active' : ''}`} onClick={() => setActiveTab('analysis')}>State Level Nutrient Analysis</button>
+          <button className={`nav-tab ${activeTab === 'districtCondition' ? 'active' : ''}`} onClick={() => setActiveTab('districtCondition')}>District Soil Health Condition</button>
+          <button className={`nav-tab ${activeTab === 'manuals' ? 'active' : ''}`} onClick={() => setActiveTab('manuals')}>Manuals</button>
+          <button className={`nav-tab ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => setActiveTab('downloads')}>Downloads</button>
+          <button className={`nav-tab ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>Feedback</button>
+          <button className={`nav-tab ${activeTab === 'contact' ? 'active' : ''}`} onClick={() => setActiveTab('contact')}>Support and Contact Us</button>
+          <button className={`nav-tab ${activeTab === 'login' ? 'active' : ''}`} onClick={() => setActiveTab('login')}>Login</button>
+          <button className={`nav-tab ${activeTab === 'about' ? 'active' : ''}`} onClick={() => setActiveTab('about')}>About Us</button>
         </div>
+      </div>
+      <main className="home-main">
 
         {activeTab === 'dashboard' && (
           <>

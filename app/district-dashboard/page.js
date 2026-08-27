@@ -430,6 +430,12 @@ export default function DistrictDashboard() {
           </div>
         </div>
       </header>
+      <div className="admin-navbar-full">
+        <div className="admin-navbar">
+          <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+          <button className={`nav-tab ${activeTab === 'condition' ? 'active' : ''}`} onClick={() => setActiveTab('condition')}>District Soil Health Condition</button>
+        </div>
+      </div>
       <main>
         <section className="workspace-section">
           <div className="container">
@@ -443,11 +449,6 @@ export default function DistrictDashboard() {
                 <Link href="/" className="button button-secondary">Home</Link>
                 <button type="button" className="button button-primary" onClick={handleLogout}>Logout</button>
               </div>
-            </div>
-
-            <div className="admin-navbar" style={{ marginBottom: '2rem' }}>
-              <button className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
-              <button className={`nav-tab ${activeTab === 'condition' ? 'active' : ''}`} onClick={() => setActiveTab('condition')}>District Soil Health Condition</button>
             </div>
 
             {activeTab === 'dashboard' && (

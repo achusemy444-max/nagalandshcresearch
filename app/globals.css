@@ -25,6 +25,18 @@
   --grey-bg: #eef1f4;
 }
 
+.admin-navbar-full {
+  width: 100%;
+  background-color: #1c1c1c;
+  border-top: 3px solid #4caf50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  padding: 0;
+  z-index: 15;
+  position: relative;
+}
+
 .admin-navbar {
   display: flex;
   align-items: center;
@@ -33,11 +45,22 @@
   background-color: #1c1c1c;
   border-top: 3px solid #4caf50;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
+  border-radius: 0;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-  margin-bottom: 2rem;
+  margin-bottom: 0;
   overflow-x: auto;
   scrollbar-width: thin;
+  width: 100%;
+}
+
+.admin-navbar-full .admin-navbar {
+  margin-bottom: 0;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: none;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .nav-tab {
