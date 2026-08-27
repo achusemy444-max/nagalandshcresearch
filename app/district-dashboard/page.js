@@ -13,7 +13,8 @@ import {
   buildCardPreviewHtml,
   formatDate,
   getStatusClass,
-  buildConvexClient
+  buildConvexClient,
+  getVisitorCountInfo
 } from "../utils/shr-helpers";
 
 export default function DistrictDashboard() {
@@ -25,6 +26,11 @@ export default function DistrictDashboard() {
   const [convexReady, setConvexReady] = useState(false);
   const [convexClient, setConvexClient] = useState(null);
   const [apiClient, setApiClient] = useState(null);
+  const [visitorInfo, setVisitorInfo] = useState({ count: 17, lastUpdated: "27-Aug-2026" });
+
+  useEffect(() => {
+    setVisitorInfo(getVisitorCountInfo());
+  }, []);
   const [soilCardForm, setSoilCardForm] = useState({
     district: "",
     testingDate: "",
@@ -722,8 +728,8 @@ export default function DistrictDashboard() {
           <div className="footer-col">
             <h4>VISITOR COUNT</h4>
             <div style={{ fontSize: '0.85rem', color: '#b8b8b8', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <p style={{ margin: 0 }}>Total Visitors: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>637,890</span></p>
-              <p style={{ margin: 0 }}>Last Updated: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>27-Aug-2026</span></p>
+              <p style={{ margin: 0 }}>Total Visitors: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>{visitorInfo.count.toLocaleString()}</span></p>
+              <p style={{ margin: 0 }}>Last Updated: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>{visitorInfo.lastUpdated}</span></p>
             </div>
           </div>
         </div>

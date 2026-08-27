@@ -3,6 +3,33 @@
 export const STORAGE_KEY = "soil-health-report-nagaland-next";
 export const CURRENT_USER_KEY = "shr-current-user";
 
+export function getVisitorCountInfo() {
+  if (typeof window === "undefined") {
+    return { count: 17, lastUpdated: "27-Aug-2026" };
+  }
+
+  const INITIAL_COUNT = 17;
+  const STORAGE_KEY_COUNT = "shr-visitor-count";
+  const SESSION_KEY = "shr-visited-session";
+
+  let currentCount = parseInt(localStorage.getItem(STORAGE_KEY_COUNT) || "0", 10);
+  if (!currentCount || currentCount < INITIAL_COUNT) {
+    currentCount = INITIAL_COUNT;
+  }
+
+  if (!sessionStorage.getItem(SESSION_KEY)) {
+    currentCount += 1;
+    sessionStorage.setItem(SESSION_KEY, "true");
+    localStorage.setItem(STORAGE_KEY_COUNT, currentCount.toString());
+  }
+
+  const now = new Date();
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const formattedDate = `${now.getDate()}-${months[now.getMonth()]}-${now.getFullYear()}`;
+
+  return { count: currentCount, lastUpdated: formattedDate };
+}
+
 export const parameterDefinitions = [
   { key: "ph", label: "pH", unit: "", type: "ph", min: 5.5, max: 8.5, rangeText: "5.5 - 8.5" },
   { key: "ec", label: "EC (Electric Conductivity)", unit: "dS/m", type: "ec", max: 1, rangeText: "< 1" },

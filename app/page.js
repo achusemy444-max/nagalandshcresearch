@@ -9,7 +9,8 @@ import {
   saveCurrentUser,
   buildConvexClient,
   parameterDefinitions,
-  buildCardPreviewHtml
+  buildCardPreviewHtml,
+  getVisitorCountInfo
 } from "./utils/shr-helpers";
 
 export default function HomePage() {
@@ -27,6 +28,11 @@ export default function HomePage() {
   const [downloadReportId, setDownloadReportId] = useState("");
   const [analysisDistrictFilter, setAnalysisDistrictFilter] = useState("All");
   const [conditionDistrictFilter, setConditionDistrictFilter] = useState("All");
+  const [visitorInfo, setVisitorInfo] = useState({ count: 17, lastUpdated: "27-Aug-2026" });
+
+  useEffect(() => {
+    setVisitorInfo(getVisitorCountInfo());
+  }, []);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -698,8 +704,8 @@ export default function HomePage() {
           <div className="footer-col">
             <h4>VISITOR COUNT</h4>
             <div style={{ fontSize: '0.85rem', color: '#b8b8b8', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <p style={{ margin: 0 }}>Total Visitors: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>637,890</span></p>
-              <p style={{ margin: 0 }}>Last Updated: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>27-Aug-2026</span></p>
+              <p style={{ margin: 0 }}>Total Visitors: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>{visitorInfo.count.toLocaleString()}</span></p>
+              <p style={{ margin: 0 }}>Last Updated: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>{visitorInfo.lastUpdated}</span></p>
             </div>
           </div>
         </div>

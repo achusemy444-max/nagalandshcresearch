@@ -14,7 +14,8 @@ import {
   buildCardPreviewHtml,
   formatDate,
   getStatusClass,
-  buildConvexClient
+  buildConvexClient,
+  getVisitorCountInfo
 } from "../utils/shr-helpers";
 
 export default function AdminDashboard() {
@@ -34,6 +35,11 @@ export default function AdminDashboard() {
   const [districtFilter, setDistrictFilter] = useState("All");
   const [editingAccountId, setEditingAccountId] = useState(null);
   const [editAccountForm, setEditAccountForm] = useState({ district: "", officerName: "", username: "", password: "", address: "" });
+  const [visitorInfo, setVisitorInfo] = useState({ count: 17, lastUpdated: "27-Aug-2026" });
+
+  useEffect(() => {
+    setVisitorInfo(getVisitorCountInfo());
+  }, []);
 
   const API_KEYS_STORAGE_KEY = "shr-permanent-api-keys";
 
@@ -809,8 +815,8 @@ export default function AdminDashboard() {
           <div className="footer-col">
             <h4>VISITOR COUNT</h4>
             <div style={{ fontSize: '0.85rem', color: '#b8b8b8', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-              <p style={{ margin: 0 }}>Total Visitors: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>637,890</span></p>
-              <p style={{ margin: 0 }}>Last Updated: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>27-Aug-2026</span></p>
+              <p style={{ margin: 0 }}>Total Visitors: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>{visitorInfo.count.toLocaleString()}</span></p>
+              <p style={{ margin: 0 }}>Last Updated: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>{visitorInfo.lastUpdated}</span></p>
             </div>
           </div>
         </div>
