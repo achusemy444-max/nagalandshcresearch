@@ -715,7 +715,16 @@ export default function DistrictDashboard() {
               <li><a href="https://necouncil.gov.in" target="_blank" rel="noopener noreferrer">necouncil.gov.in</a></li>
               <li><a href="https://nagaland.gov.in" target="_blank" rel="noopener noreferrer">Nagaland State Portal</a></li>
               <li><a href="https://india.gov.in" target="_blank" rel="noopener noreferrer">National Portal of India</a></li>
+              <li><a href="https://snwc.nagaland.gov.in/" target="_blank" rel="noopener noreferrer">snwc.nagaland.gov.in</a></li>
             </ul>
+          </div>
+
+          <div className="footer-col">
+            <h4>VISITOR COUNT</h4>
+            <div style={{ fontSize: '0.85rem', color: '#b8b8b8', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <p style={{ margin: 0 }}>Total Visitors: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>637,890</span></p>
+              <p style={{ margin: 0 }}>Last Updated: <span style={{ color: '#ff6b6b', fontWeight: '700' }}>27-Aug-2026</span></p>
+            </div>
           </div>
         </div>
 
