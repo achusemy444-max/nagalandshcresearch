@@ -573,10 +573,10 @@ export default function HomePage() {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
               }}>
                 <h4 style={{ margin: '0 0 0.4rem 0', color: '#1b5e20', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span>📌</span> Scheme Administrator Note
+                  <span>📌</span> Note
                 </h4>
                 <p style={{ margin: 0, fontSize: '0.92rem', color: '#2e7d32', lineHeight: '1.5' }}>
-                  Official training materials, operational guidelines, and scheme technical manuals can be published and updated by the Scheme Administrator from the <strong>Admin Portal</strong>. District users and field officers can reference these documents for standard operating procedures and testing compliance.
+                  Training Materials, Operational Guidelines, and Scheme Technical Manuals will be provided by the <strong>Administrator</strong>. District users can reference these documents for standard operating procedures and testing compliance.
                 </p>
               </div>
 
