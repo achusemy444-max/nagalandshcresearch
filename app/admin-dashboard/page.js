@@ -29,14 +29,56 @@ export default function AdminDashboard() {
   const [districtAccountForm, setDistrictAccountForm] = useState({ district: "", officerName: "", username: "", password: "", address: "" });
   const [messages, setMessages] = useState({ districtAccount: "", districtAccountType: "", bulkUpload: "", bulkUploadType: "" });
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [apiKey, setApiKey] = useState("");
+  const [apiKeys, setApiKeys] = useState([]);
+  const [copyMessage, setCopyMessage] = useState("");
   const [districtFilter, setDistrictFilter] = useState("All");
   const [editingAccountId, setEditingAccountId] = useState(null);
   const [editAccountForm, setEditAccountForm] = useState({ district: "", officerName: "", username: "", password: "", address: "" });
 
+  const API_KEYS_STORAGE_KEY = "shr-permanent-api-keys";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedKeys = localStorage.getItem(API_KEYS_STORAGE_KEY);
+      if (savedKeys) {
+        try {
+          setApiKeys(JSON.parse(savedKeys));
+        } catch (e) {
+          console.error("Failed to parse saved API keys:", e);
+        }
+      }
+    }
+  }, []);
+
+  const saveApiKeysToStorage = (keys) => {
+    setApiKeys(keys);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(API_KEYS_STORAGE_KEY, JSON.stringify(keys));
+    }
+  };
+
   const handleGenerateApiKey = () => {
-    const newKey = 'shc_api_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    setApiKey(newKey);
+    const newKeyObj = {
+      id: "key-" + Date.now(),
+      key: "shr_api_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+      createdAt: new Date().toISOString()
+    };
+    const updatedKeys = [newKeyObj, ...apiKeys];
+    saveApiKeysToStorage(updatedKeys);
+  };
+
+  const handleDeleteApiKey = (keyId) => {
+    if (!confirm("Are you sure you want to delete this API key?")) return;
+    const updatedKeys = apiKeys.filter((item) => item.id !== keyId);
+    saveApiKeysToStorage(updatedKeys);
+  };
+
+  const handleCopyKey = (keyString) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(keyString);
+      setCopyMessage("API key copied to clipboard!");
+      setTimeout(() => setCopyMessage(""), 3000);
+    }
   };
 
   useEffect(() => {
@@ -669,16 +711,61 @@ export default function AdminDashboard() {
                     <p className="section-tag">Integration</p>
                     <h3>API Integration Features</h3>
                   </div>
-                  <p>Configure API keys, webhooks, and third-party integrations for the Soil Health Report system.</p>
+                  <p>Configure permanent API keys, webhooks, and third-party integrations for the Soil Health Report system.</p>
 
                   <div style={{ marginTop: '2rem' }}>
-                    <h4>Generate API Key</h4>
-                    <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>Create a secure key for external applications to integrate with the Soil Health Report data.</p>
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '10px' }}>
+                      <div>
+                        <h4>Generate Permanent API Key</h4>
+                        <p style={{ fontSize: '0.9rem', color: '#666', margin: 0 }}>Create a secure permanent key for external applications to integrate with Soil Health Report data.</p>
+                      </div>
                       <button type="button" className="button button-primary" onClick={handleGenerateApiKey}>Generate New Key</button>
-                      {apiKey && (
-                        <input type="text" readOnly value={apiKey} style={{ flex: 1, padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px' }} />
-                      )}
+                    </div>
+
+                    {copyMessage && (
+                      <p className="form-message message-success" style={{ marginBottom: '1rem' }}>{copyMessage}</p>
+                    )}
+
+                    <div className="table-wrap" style={{ marginTop: '1rem', border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden' }}>
+                      <table style={{ margin: 0 }}>
+                        <thead>
+                          <tr style={{ background: '#f5f7f4' }}>
+                            <th>Permanent API Key</th>
+                            <th>Created Date</th>
+                            <th>Status</th>
+                            <th style={{ textAlign: 'right' }}>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {apiKeys.length > 0 ? (
+                            apiKeys.map((item) => (
+                              <tr key={item.id}>
+                                <td>
+                                  <code style={{ background: '#eef3eb', padding: '0.35rem 0.6rem', borderRadius: '4px', fontSize: '0.9rem', color: '#165f32', fontWeight: 'bold' }}>
+                                    {item.key}
+                                  </code>
+                                </td>
+                                <td>{formatDate(item.createdAt)}</td>
+                                <td><span className="param-status status-green">Active (Permanent)</span></td>
+                                <td style={{ textAlign: 'right' }}>
+                                  <button type="button" className="button button-secondary" onClick={() => handleCopyKey(item.key)} style={{ marginRight: '6px', padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
+                                    Copy
+                                  </button>
+                                  <button type="button" className="button button-secondary" onClick={() => handleDeleteApiKey(item.id)} style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem', color: '#b00020' }}>
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="4" style={{ textAlign: 'center', padding: '1.5rem', color: '#666' }}>
+                                No permanent API keys generated yet. Click "Generate New Key" to create one.
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
 
@@ -699,8 +786,8 @@ export default function AdminDashboard() {
       <footer className="site-footer">
         <div className="container footer-row">
           <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
+          <p>Soil Health Report Programme | © 2026</p>
           <p>Developed by MagnuraSdigital Team</p>
-          <p>Soil Health Report Programme | © 2026  </p>
         </div>
       </footer>
     </>
