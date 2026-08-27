@@ -696,11 +696,10 @@ export default function DistrictDashboard() {
           </div>
         </section>
       </main>
-      <footer className="site-footer">
+      <footer className="centered-footer">
         <div className="container footer-row">
-          <p>Department of Soil & Water Conservation, Nagaland </p>
+          <p>© All Rights Reserved 2026 - Department of Soil & Water Conservation, Nagaland</p>
           <p> Research & Training Service</p>
-          <p> All Rights Reserved 2026</p>
           <p> Designed & developed by MagnuraSDigital Team</p>
         </div>
       </footer>
