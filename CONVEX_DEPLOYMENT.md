@@ -11,7 +11,7 @@ Create `.env.local` in the project root with:
 CONVEX_DEPLOYMENT=dev:savory-elk-98
 ```
 
-### 2. Link to your new Convex project (shcportalkohimateam)
+### 2. Link to your new Convex project (shrportalkohimateam)
 From the project root directory, run:
 ```bash
 npx convex env set CONVEX_DEPLOYMENT dev:savory-elk-98
@@ -22,7 +22,7 @@ Or use the Convex CLI to link:
 npx convex deploy
 ```
 
-When prompted, authenticate and select your `shcportalkohimateam` deployment.
+When prompted, authenticate and select your `shrportalkohimateam` deployment.
 
 ### 3. Deploy the backend functions
 ```bash

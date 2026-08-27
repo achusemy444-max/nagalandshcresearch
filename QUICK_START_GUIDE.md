@@ -1,4 +1,4 @@
-# Soil Health Card System - Quick Start Guide
+# Soil Health Report System - Quick Start Guide
 
 ## Login Credentials
 
@@ -14,7 +14,7 @@ Access: All district data, account management, program oversight
 Username: kohima_user
 Password: District@123
 ```
-Access: Kohima district card generation and management
+Access: Kohima district report generation and management
 
 ---
 
@@ -22,7 +22,7 @@ Access: Kohima district card generation and management
 
 ### 🏠 Home Page
 The landing page now displays:
-1. **Soil Health Card Scheme Overview** - Introduction and benefits
+1. **Soil Health Report Overview** - Introduction and benefits
 2. **Benefits Section** - 6 key benefits for farmers
 3. **Laboratory Information** - Facilities, parameters, and process
 4. **Login Portal** - Secure access to system
@@ -42,13 +42,13 @@ The landing page now displays:
 | NORMAL | < 1 dS/m | 🟢 Green | Healthy salinity |
 | HIGH SALINE | > 1 dS/m | 🔴 Red | Too much salt |
 
-### 📋 Soil Health Card Components
+### 📋 Soil Health Report Components
 
-Each card includes:
+Each report includes:
 - **Test Center Information**: ID, District, Address, Testing Date
-- **Card Issued To**: Survey No., Farmer Name, Village
+- **Report Issued To**: Survey No., Farmer Name, Village
 - **Soil Sample Details**: 12 measured parameters
-- **Additional Information**: Soil Texture, Soil-Color, Card ID
+- **Additional Information**: Soil Texture, Soil-Color, Report ID
 - **Indicator Information**: pH/EC scale indicators + status colors
 - **Recommendation**: Personalized farming guidance
 - **Contact Information**: Support email and phone
@@ -57,7 +57,7 @@ Each card includes:
 
 1. **Statistics**
    - Number of district accounts
-   - Total cards generated
+   - Total reports generated
    - Active districts count
 
 2. **District Account Management**
@@ -68,45 +68,45 @@ Each card includes:
 
 3. **Nutrient Analysis by District** (NEW!)
    - View all districts
-   - See total cards per district
+   - See total reports per district
    - Check pH status breakdown
    - Check EC status breakdown
    - Visual indicators with emoji
 
 4. **All District Data**
-   - View all generated cards
-   - Inspect individual cards
-   - Download cards as PDF
-   - Delete cards
+   - View all generated reports
+   - Inspect individual reports
+   - Download reports as PDF
+   - Delete reports
 
 ### 🌾 District Dashboard Features
 
 1. **District Statistics**
-   - Cards saved in district
+   - Reports saved in district
    - District name and address
    - Number of measured parameters
 
-2. **Generate Soil Health Card**
+2. **Generate Soil Health Report**
    - Enter soil testing data
    - All 12 parameters
    - Soil texture and Soil-Color
    - Manual or auto-generated recommendations
 
-3. **Card Management**
-   - View saved cards
-   - Preview cards before saving
+3. **Report Management**
+   - View saved reports
+   - Preview reports before saving
    - Download as PDF
    - Delete outdated records
 
 4. **Bulk Upload**
-   - Upload multiple cards via CSV
+   - Upload multiple reports via CSV
    - Batch processing
 
 ---
 
 ## How to Use
 
-### Creating a New Soil Health Card
+### Creating a New Soil Health Report
 
 1. **Login** as a district user
 2. **Fill in the form**:
@@ -118,7 +118,7 @@ Each card includes:
 3. **Choose recommendation method**:
    - Auto-generate based on values
    - Provide manual recommendations
-4. **Save and Generate** - Card is created with color-coded indicators
+4. **Save and Generate** - Report is created with color-coded indicators
 5. **Download PDF** - Export for printing and distribution
 
 ### Viewing Nutrient Analysis
@@ -126,14 +126,14 @@ Each card includes:
 1. **Login** as admin
 2. Scroll to **"Nutrient Analysis by District"** section
 3. View statistics for each district:
-   - Total cards
+   - Total reports
    - pH status (Red vs Green counts)
    - EC status (Red vs Green counts)
 4. Use this to identify districts needing support
 
-### Downloading a Card as PDF
+### Downloading a Report as PDF
 
-1. Select or preview a card
+1. Select or preview a report
 2. Click **"Download PDF"** button
 3. Popup window opens with printable version
 4. Use browser print function or save as PDF
@@ -187,7 +187,7 @@ Dimapur,John Doe,dimapur_user,Pass@123,Test Lab Address
 Tuensang,Jane Smith,tuensang_user,Pass@456,Another Address
 ```
 
-### Soil Cards CSV
+### Soil Health Reports CSV
 ```
 District,Testing Date,Test Center Address,Test Center ID,Survey No.,Farmer Name,Farmer Village,Soil Texture,Soil-Color,pH,EC,Organic Carbon,Nitrogen,Phosphorous,Potassium,Sulphur,Zinc,Boron,Iron,Manganese,Copper,Manual Recommendation
 Kohima,2024-01-15,Lab Address,TC-001,123,Ram Kumar,Nagaland,Loamy,Moderate,7.2,0.8,0.6,350,15,200,15,0.8,0.6,5,2.5,0.3,
@@ -216,7 +216,7 @@ Kohima,2024-01-15,Lab Address,TC-001,123,Ram Kumar,Nagaland,Loamy,Moderate,7.2,0
 1. ✓ Always verify soil parameter values for accuracy
 2. ✓ Use consistent date formats (YYYY-MM-DD)
 3. ✓ Include descriptive village names for farmer records
-4. ✓ Download and save PDF copies of important cards
+4. ✓ Download and save PDF copies of important reports
 5. ✓ Regularly review nutrient analysis by district
 6. ✓ Use the auto-recommendation feature to ensure consistency
 7. ✓ Backup data regularly through bulk exports
@@ -230,10 +230,10 @@ Kohima,2024-01-15,Lab Address,TC-001,123,Ram Kumar,Nagaland,Loamy,Moderate,7.2,0
 - Ensure caps lock is off
 - Try admin credentials if available
 
-**Card not saving?**
+**Report not saving?**
 - Ensure all required fields are filled
 - Check internet connection for remote sync
-- Card should save locally even without connection
+- Report should save locally even without connection
 
 **PDF not downloading?**
 - Allow popups in browser settings

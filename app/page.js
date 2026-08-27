@@ -10,7 +10,7 @@ import {
   buildConvexClient,
   parameterDefinitions,
   buildCardPreviewHtml
-} from "./utils/shc-helpers";
+} from "./utils/shr-helpers";
 
 export default function HomePage() {
   const router = useRouter();
@@ -179,7 +179,7 @@ export default function HomePage() {
     try {
       const cardList = await convexClient.query(apiClient.cards.list, {});
 
-      if (downloadReportId.trim() === "SHC-BULK-EXPORT-ID") {
+      if (downloadReportId.trim() === "SHR-BULK-EXPORT-ID") {
         if (!cardList || cardList.length === 0) {
           setMessage("download", "No Soil Health Report data available to export.", "error");
           return;
@@ -662,7 +662,8 @@ export default function HomePage() {
       <footer className="site-footer">
         <div className="container footer-row">
           <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
-          <p>Soil Health Report Programme</p>
+          <p>Developed by MagnuraSdigital Team</p>
+          <p>Soil Health Report Programme | © 2026</p>
         </div>
       </footer>
     </>

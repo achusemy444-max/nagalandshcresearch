@@ -1,5 +1,5 @@
 {
-  "name": "shc-convex-backend",
+  "name": "shr-convex-backend",
   "private": true,
   "dependencies": {
     "convex": "^1.3.1"

@@ -15,7 +15,7 @@ import {
   formatDate,
   getStatusClass,
   buildConvexClient
-} from "../utils/shc-helpers";
+} from "../utils/shr-helpers";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -546,11 +546,11 @@ export default function AdminDashboard() {
                           <tr key={account.id}>
                             {editingAccountId === account.id ? (
                               <>
-                                <td><input type="text" value={editAccountForm.district} onChange={(e) => setEditAccountForm(prev => ({...prev, district: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
-                                <td><input type="text" value={editAccountForm.officerName} onChange={(e) => setEditAccountForm(prev => ({...prev, officerName: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
-                                <td><input type="text" value={editAccountForm.username} onChange={(e) => setEditAccountForm(prev => ({...prev, username: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
-                                <td><input type="text" value={editAccountForm.password} onChange={(e) => setEditAccountForm(prev => ({...prev, password: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
-                                <td><input type="text" value={editAccountForm.address} onChange={(e) => setEditAccountForm(prev => ({...prev, address: e.target.value}))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.district} onChange={(e) => setEditAccountForm(prev => ({ ...prev, district: e.target.value }))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.officerName} onChange={(e) => setEditAccountForm(prev => ({ ...prev, officerName: e.target.value }))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.username} onChange={(e) => setEditAccountForm(prev => ({ ...prev, username: e.target.value }))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.password} onChange={(e) => setEditAccountForm(prev => ({ ...prev, password: e.target.value }))} style={{ width: '100%', padding: '0.25rem' }} /></td>
+                                <td><input type="text" value={editAccountForm.address} onChange={(e) => setEditAccountForm(prev => ({ ...prev, address: e.target.value }))} style={{ width: '100%', padding: '0.25rem' }} /></td>
                                 <td>
                                   <button type="button" className="button button-primary" onClick={() => handleSaveAccountEdit(account.id)} style={{ marginRight: '5px' }}>Save</button>
                                   <button type="button" className="button button-secondary" onClick={() => setEditingAccountId(null)}>Cancel</button>
@@ -590,9 +590,9 @@ export default function AdminDashboard() {
                         <h3>Generated Soil Health Reports</h3>
                       </div>
                       <div>
-                        <select 
-                          value={districtFilter} 
-                          onChange={(e) => setDistrictFilter(e.target.value)} 
+                        <select
+                          value={districtFilter}
+                          onChange={(e) => setDistrictFilter(e.target.value)}
                           style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc', backgroundColor: '#fff', cursor: 'pointer' }}
                         >
                           <option value="All">All Districts</option>
@@ -615,7 +615,7 @@ export default function AdminDashboard() {
                           </tr>
                         </thead>
                         <tbody>
-                          {state.cards.filter(c => districtFilter === "All" || c.district === districtFilter).length ? 
+                          {state.cards.filter(c => districtFilter === "All" || c.district === districtFilter).length ?
                             [...state.cards].filter(c => districtFilter === "All" || c.district === districtFilter).reverse().map((card) => (
                               <tr key={card.id}>
                                 <td>{card.id}</td>
@@ -628,9 +628,9 @@ export default function AdminDashboard() {
                                   <button type="button" className="button button-secondary" onClick={() => handleDeleteCard(card.id)}>Delete</button>
                                 </td>
                               </tr>
-                          )) : (
-                            <tr><td colSpan="6">No Soil Health Reports found.</td></tr>
-                          )}
+                            )) : (
+                              <tr><td colSpan="6">No Soil Health Reports found.</td></tr>
+                            )}
                         </tbody>
                       </table>
                     </div>
@@ -670,7 +670,7 @@ export default function AdminDashboard() {
                     <h3>API Integration Features</h3>
                   </div>
                   <p>Configure API keys, webhooks, and third-party integrations for the Soil Health Report system.</p>
-                  
+
                   <div style={{ marginTop: '2rem' }}>
                     <h4>Generate API Key</h4>
                     <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>Create a secure key for external applications to integrate with the Soil Health Report data.</p>
@@ -683,11 +683,11 @@ export default function AdminDashboard() {
                   </div>
 
                   <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #eee' }}>
-                    <h4>Data Export Integration</h4>
-                    <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>To download bulk Soil Health Report data across all districts in CSV format, please use the Download ID below on the Home page Downloads section.</p>
+                    <h4>Download Soil Health Report Data Across All Districts</h4>
+                    <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#666' }}>To download Soil Health Report data across all districts, use the ID below in the Downloads section.</p>
                     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                       <span style={{ fontWeight: 'bold' }}>Download ID:</span>
-                      <input type="text" readOnly value="SHC-BULK-EXPORT-ID" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', width: '250px' }} />
+                      <input type="text" readOnly value="SHR-BULK-EXPORT-ID" style={{ padding: '0.5rem', border: '1px solid #ccc', borderRadius: '4px', width: '250px' }} />
                     </div>
                   </div>
                 </article>
@@ -699,7 +699,8 @@ export default function AdminDashboard() {
       <footer className="site-footer">
         <div className="container footer-row">
           <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
-          <p>Soil Health Report Programme</p>
+          <p>Developed by MagnuraSdigital Team</p>
+          <p>Soil Health Report Programme | © 2026  </p>
         </div>
       </footer>
     </>

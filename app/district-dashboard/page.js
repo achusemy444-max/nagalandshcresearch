@@ -14,7 +14,7 @@ import {
   formatDate,
   getStatusClass,
   buildConvexClient
-} from "../utils/shc-helpers";
+} from "../utils/shr-helpers";
 
 export default function DistrictDashboard() {
   const router = useRouter();
@@ -699,7 +699,8 @@ export default function DistrictDashboard() {
       <footer className="site-footer">
         <div className="container footer-row">
           <p>Department of Soil & Water Conservation, Nagaland — Research & Training Service</p>
-          <p>Soil Health Report Programme</p>
+          <p>Developed by MagnuraSdigital Team</p>
+          <p>Soil Health Report Programme | © 2026</p>
         </div>
       </footer>
     </>

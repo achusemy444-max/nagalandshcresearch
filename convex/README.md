@@ -1,6 +1,6 @@
 # Convex Backend for Soil Health Project
 
-This folder contains Convex server functions for the Soil Health Card portal.
+This folder contains Convex server functions for the Soil Health Report portal.
 
 ## Setup
 
@@ -29,9 +29,9 @@ This folder contains Convex server functions for the Soil Health Card portal.
 - `accounts.create` - create a new district account
 - `accounts.update` - update a district account
 - `accounts.deleteAccount` - delete a district account
-- `cards.list` - list soil health cards, optionally filtered by district
-- `cards.save` - insert a new soil health card
-- `cards.deleteCard` - delete a soil health card
+- `cards.list` - list soil health reports, optionally filtered by district
+- `cards.save` - insert a new soil health report
+- `cards.deleteCard` - delete a soil health report
 
 ## Front-end integration
 
