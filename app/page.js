@@ -10,7 +10,9 @@ import {
   buildConvexClient,
   parameterDefinitions,
   buildCardPreviewHtml,
-  getVisitorCountInfo
+  getVisitorCountInfo,
+  loadManualsData,
+  DEFAULT_MANUALS_DATA
 } from "./utils/shr-helpers";
 
 export default function HomePage() {
@@ -29,18 +31,12 @@ export default function HomePage() {
   const [analysisDistrictFilter, setAnalysisDistrictFilter] = useState("All");
   const [conditionDistrictFilter, setConditionDistrictFilter] = useState("All");
   const [visitorInfo, setVisitorInfo] = useState({ count: 17, lastUpdated: "27-Aug-2026" });
-
-  const MANUALS_NOTE_KEY = "shr-manuals-note";
-  const DEFAULT_MANUALS_NOTE = "Training Materials, Operational Guidelines, and Scheme Technical Manuals will be provided by the Administrator. District users can reference these documents for standard operating procedures and testing compliance.";
-  const [manualsNote, setManualsNote] = useState(DEFAULT_MANUALS_NOTE);
+  const [manualsData, setManualsData] = useState(DEFAULT_MANUALS_DATA);
 
   useEffect(() => {
     setVisitorInfo(getVisitorCountInfo());
     if (typeof window !== "undefined") {
-      const savedNote = localStorage.getItem(MANUALS_NOTE_KEY);
-      if (savedNote) {
-        setManualsNote(savedNote);
-      }
+      setManualsData(loadManualsData());
     }
   }, []);
 
@@ -585,7 +581,7 @@ export default function HomePage() {
                   <span>*</span><strong>Note:</strong>
                 </h4>
                 <p style={{ margin: 0, fontSize: '0.92rem', color: '#2e7d32', lineHeight: '1.5' }}>
-                  {manualsNote}
+                  {manualsData.note}
                 </p>
               </div>
 
@@ -598,13 +594,12 @@ export default function HomePage() {
                     <h3>📚 Training Materials</h3>
                   </div>
                   <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: '1.6' }}>
-                    Comprehensive training modules for district laboratory personnel and agricultural advisors.
+                    {manualsData.trainingTitle}
                   </p>
                   <ul className="check-list compact" style={{ marginTop: '1rem' }}>
-                    <li>Soil Sample Collection Protocols & Best Practices</li>
-                    <li>12-Parameter Laboratory Analysis Procedures</li>
-                    <li>Soil Texture & Color Assessment Methodology</li>
-                    <li>Farmer Advisory & Recommendation Guidance</li>
+                    {manualsData.trainingItems.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </article>
 
@@ -615,13 +610,12 @@ export default function HomePage() {
                     <h3>⚙️ Operation Guidelines</h3>
                   </div>
                   <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: '1.6' }}>
-                    Step-by-step operating guidelines for district testing centers and data entry verification.
+                    {manualsData.operationTitle}
                   </p>
                   <ul className="check-list compact" style={{ marginTop: '1rem' }}>
-                    <li>District Portal User Account Setup & Role Security</li>
-                    <li>Soil Testing Kit & Instruments Operation</li>
-                    <li>Soil Report Batch Processing Guide</li>
-                    <li>PDF Generation & Verification</li>
+                    {manualsData.operationItems.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </article>
 
@@ -632,13 +626,12 @@ export default function HomePage() {
                     <h3>📋 Scheme Manuals</h3>
                   </div>
                   <p style={{ fontSize: '0.9rem', color: '#444', lineHeight: '1.6' }}>
-                    Official policy, research methodology, and framework manuals from the Department of Soil & Water Conservation, Nagaland.
+                    {manualsData.schemeTitle}
                   </p>
                   <ul className="check-list compact" style={{ marginTop: '1rem' }}>
-                    <li>Research & Training Programme Overview Manual</li>
-                    <li>Soil Testing Manual</li>
-                    <li>API Key Integration Specification</li>
-                    <li>Soil Health Scheme Guideline</li>
+                    {manualsData.schemeItems.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
                   </ul>
                 </article>
               </div>

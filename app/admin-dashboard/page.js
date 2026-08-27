@@ -15,7 +15,10 @@ import {
   formatDate,
   getStatusClass,
   buildConvexClient,
-  getVisitorCountInfo
+  getVisitorCountInfo,
+  loadManualsData,
+  saveManualsData,
+  DEFAULT_MANUALS_DATA
 } from "../utils/shr-helpers";
 
 export default function AdminDashboard() {
@@ -42,37 +45,63 @@ export default function AdminDashboard() {
   }, []);
 
   const API_KEYS_STORAGE_KEY = "shr-permanent-api-keys";
-  const MANUALS_NOTE_KEY = "shr-manuals-note";
-  const DEFAULT_MANUALS_NOTE = "Training Materials, Operational Guidelines, and Scheme Technical Manuals will be provided by the Administrator. District users can reference these documents for standard operating procedures and testing compliance.";
+  const [manualsForm, setManualsForm] = useState({
+    note: DEFAULT_MANUALS_DATA.note,
+    trainingTitle: DEFAULT_MANUALS_DATA.trainingTitle,
+    trainingItemsText: DEFAULT_MANUALS_DATA.trainingItems.join("\n"),
+    operationTitle: DEFAULT_MANUALS_DATA.operationTitle,
+    operationItemsText: DEFAULT_MANUALS_DATA.operationItems.join("\n"),
+    schemeTitle: DEFAULT_MANUALS_DATA.schemeTitle,
+    schemeItemsText: DEFAULT_MANUALS_DATA.schemeItems.join("\n")
+  });
 
-  const [manualsNoteForm, setManualsNoteForm] = useState(DEFAULT_MANUALS_NOTE);
-  const [manualsNoteMessage, setManualsNoteMessage] = useState({ text: "", type: "" });
+  const [manualsMessage, setManualsMessage] = useState({ text: "", type: "" });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedNote = localStorage.getItem(MANUALS_NOTE_KEY);
-      if (savedNote) {
-        setManualsNoteForm(savedNote);
-      }
+      const data = loadManualsData();
+      setManualsForm({
+        note: data.note,
+        trainingTitle: data.trainingTitle,
+        trainingItemsText: data.trainingItems.join("\n"),
+        operationTitle: data.operationTitle,
+        operationItemsText: data.operationItems.join("\n"),
+        schemeTitle: data.schemeTitle,
+        schemeItemsText: data.schemeItems.join("\n")
+      });
     }
   }, []);
 
-  const handleSaveManualsNote = (e) => {
+  const handleSaveManualsData = (e) => {
     e.preventDefault();
-    if (typeof window !== "undefined") {
-      localStorage.setItem(MANUALS_NOTE_KEY, manualsNoteForm);
-      setManualsNoteMessage({ text: "Manuals Training Note updated successfully! The updated note is now live on the home page.", type: "success" });
-      setTimeout(() => setManualsNoteMessage({ text: "", type: "" }), 4000);
-    }
+    const updatedData = {
+      note: manualsForm.note.trim(),
+      trainingTitle: manualsForm.trainingTitle.trim(),
+      trainingItems: manualsForm.trainingItemsText.split("\n").map(s => s.trim()).filter(Boolean),
+      operationTitle: manualsForm.operationTitle.trim(),
+      operationItems: manualsForm.operationItemsText.split("\n").map(s => s.trim()).filter(Boolean),
+      schemeTitle: manualsForm.schemeTitle.trim(),
+      schemeItems: manualsForm.schemeItemsText.split("\n").map(s => s.trim()).filter(Boolean)
+    };
+    saveManualsData(updatedData);
+    setManualsMessage({ text: "All Manuals & Guidelines content updated successfully! Live changes are now active on the home page.", type: "success" });
+    setTimeout(() => setManualsMessage({ text: "", type: "" }), 4000);
   };
 
-  const handleResetManualsNote = () => {
-    setManualsNoteForm(DEFAULT_MANUALS_NOTE);
-    if (typeof window !== "undefined") {
-      localStorage.setItem(MANUALS_NOTE_KEY, DEFAULT_MANUALS_NOTE);
-      setManualsNoteMessage({ text: "Manuals Training Note reset to default text.", type: "success" });
-      setTimeout(() => setManualsNoteMessage({ text: "", type: "" }), 4000);
-    }
+  const handleResetManualsData = () => {
+    if (!confirm("Are you sure you want to reset all Manuals content to default?")) return;
+    saveManualsData(DEFAULT_MANUALS_DATA);
+    setManualsForm({
+      note: DEFAULT_MANUALS_DATA.note,
+      trainingTitle: DEFAULT_MANUALS_DATA.trainingTitle,
+      trainingItemsText: DEFAULT_MANUALS_DATA.trainingItems.join("\n"),
+      operationTitle: DEFAULT_MANUALS_DATA.operationTitle,
+      operationItemsText: DEFAULT_MANUALS_DATA.operationItems.join("\n"),
+      schemeTitle: DEFAULT_MANUALS_DATA.schemeTitle,
+      schemeItemsText: DEFAULT_MANUALS_DATA.schemeItems.join("\n")
+    });
+    setManualsMessage({ text: "All Manuals & Guidelines content reset to defaults.", type: "success" });
+    setTimeout(() => setManualsMessage({ text: "", type: "" }), 4000);
   };
 
   useEffect(() => {
@@ -826,43 +855,118 @@ export default function AdminDashboard() {
                 <article className="panel-card wide-card">
                   <div className="card-head">
                     <p className="section-tag">Content Management</p>
-                    <h3>Edit Home Page Manuals & Training Note</h3>
+                    <h3>Edit Home Page Manuals & Guidelines Content</h3>
                   </div>
                   <p style={{ marginBottom: '1.5rem', color: '#555' }}>
-                    As the Scheme Administrator, you can update the official Training & Guidelines Note displayed on the Home Page's <strong>Manuals</strong> tab. District users and portal visitors will see your updated note immediately.
+                    As the Scheme Administrator, you can edit all text, descriptions, and bullet items displayed under the <strong>Manuals</strong> tab on the Home Page. Any changes saved here will be published immediately for all portal visitors and district users.
                   </p>
 
-                  <form onSubmit={handleSaveManualsNote} className="stack-form">
-                    <label>
-                      <span style={{ fontWeight: '600', marginBottom: '0.4rem', display: 'block' }}>Manuals Training Note Text</span>
-                      <textarea
-                        rows="5"
-                        value={manualsNoteForm}
-                        onChange={(e) => setManualsNoteForm(e.target.value)}
-                        placeholder="Enter the training and manuals note for users..."
-                        style={{ width: '100%', padding: '0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontFamily: 'inherit', fontSize: '0.95rem' }}
-                        required
-                      />
-                    </label>
+                  <form onSubmit={handleSaveManualsData} className="stack-form">
+                    {/* 1. Header Note Alert */}
+                    <div style={{ padding: '1rem', background: '#eef7ed', borderLeft: '4px solid #4caf50', borderRadius: '6px', marginBottom: '1.5rem' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#1b5e20' }}>1. Manuals Header Note</h4>
+                      <label>
+                        <span style={{ fontWeight: '600', marginBottom: '0.3rem', display: 'block' }}>Note Text</span>
+                        <textarea
+                          rows="3"
+                          value={manualsForm.note}
+                          onChange={(e) => setManualsForm((prev) => ({ ...prev, note: e.target.value }))}
+                          placeholder="Header note text..."
+                          style={{ width: '100%', padding: '0.65rem', borderRadius: '6px', border: '1px solid #ccc', fontFamily: 'inherit' }}
+                          required
+                        />
+                      </label>
+                    </div>
+
+                    {/* 2. Training Materials */}
+                    <div style={{ padding: '1rem', background: '#fafbf7', border: '1px solid #e2e8e0', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#165f32' }}>2. 📚 Training Materials Section</h4>
+                      <label style={{ marginBottom: '0.8rem', display: 'block' }}>
+                        <span style={{ fontWeight: '600', marginBottom: '0.3rem', display: 'block' }}>Section Description</span>
+                        <input
+                          type="text"
+                          value={manualsForm.trainingTitle}
+                          onChange={(e) => setManualsForm((prev) => ({ ...prev, trainingTitle: e.target.value }))}
+                          style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                          required
+                        />
+                      </label>
+                      <label>
+                        <span style={{ fontWeight: '600', marginBottom: '0.3rem', display: 'block' }}>Bullet Items (One item per line)</span>
+                        <textarea
+                          rows="4"
+                          value={manualsForm.trainingItemsText}
+                          onChange={(e) => setManualsForm((prev) => ({ ...prev, trainingItemsText: e.target.value }))}
+                          placeholder="Enter bullet items, one per line..."
+                          style={{ width: '100%', padding: '0.65rem', borderRadius: '6px', border: '1px solid #ccc', fontFamily: 'inherit' }}
+                          required
+                        />
+                      </label>
+                    </div>
+
+                    {/* 3. Operation Guidelines */}
+                    <div style={{ padding: '1rem', background: '#fafbf7', border: '1px solid #e2e8e0', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#165f32' }}>3. ⚙️ Operation Guidelines Section</h4>
+                      <label style={{ marginBottom: '0.8rem', display: 'block' }}>
+                        <span style={{ fontWeight: '600', marginBottom: '0.3rem', display: 'block' }}>Section Description</span>
+                        <input
+                          type="text"
+                          value={manualsForm.operationTitle}
+                          onChange={(e) => setManualsForm((prev) => ({ ...prev, operationTitle: e.target.value }))}
+                          style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                          required
+                        />
+                      </label>
+                      <label>
+                        <span style={{ fontWeight: '600', marginBottom: '0.3rem', display: 'block' }}>Bullet Items (One item per line)</span>
+                        <textarea
+                          rows="4"
+                          value={manualsForm.operationItemsText}
+                          onChange={(e) => setManualsForm((prev) => ({ ...prev, operationItemsText: e.target.value }))}
+                          placeholder="Enter bullet items, one per line..."
+                          style={{ width: '100%', padding: '0.65rem', borderRadius: '6px', border: '1px solid #ccc', fontFamily: 'inherit' }}
+                          required
+                        />
+                      </label>
+                    </div>
+
+                    {/* 4. Scheme Manuals */}
+                    <div style={{ padding: '1rem', background: '#fafbf7', border: '1px solid #e2e8e0', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                      <h4 style={{ margin: '0 0 0.5rem 0', color: '#165f32' }}>4. 📋 Scheme Manuals Section</h4>
+                      <label style={{ marginBottom: '0.8rem', display: 'block' }}>
+                        <span style={{ fontWeight: '600', marginBottom: '0.3rem', display: 'block' }}>Section Description</span>
+                        <input
+                          type="text"
+                          value={manualsForm.schemeTitle}
+                          onChange={(e) => setManualsForm((prev) => ({ ...prev, schemeTitle: e.target.value }))}
+                          style={{ width: '100%', padding: '0.6rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                          required
+                        />
+                      </label>
+                      <label>
+                        <span style={{ fontWeight: '600', marginBottom: '0.3rem', display: 'block' }}>Bullet Items (One item per line)</span>
+                        <textarea
+                          rows="4"
+                          value={manualsForm.schemeItemsText}
+                          onChange={(e) => setManualsForm((prev) => ({ ...prev, schemeItemsText: e.target.value }))}
+                          placeholder="Enter bullet items, one per line..."
+                          style={{ width: '100%', padding: '0.65rem', borderRadius: '6px', border: '1px solid #ccc', fontFamily: 'inherit' }}
+                          required
+                        />
+                      </label>
+                    </div>
 
                     <div className="form-actions" style={{ marginTop: '1rem', display: 'flex', gap: '10px' }}>
-                      <button type="submit" className="button button-primary">Save Note</button>
-                      <button type="button" className="button button-secondary" onClick={handleResetManualsNote}>Reset to Default</button>
+                      <button type="submit" className="button button-primary">Save All Manuals Content</button>
+                      <button type="button" className="button button-secondary" onClick={handleResetManualsData}>Reset All to Default</button>
                     </div>
                   </form>
 
-                  {manualsNoteMessage.text && (
-                    <p className={`form-message ${manualsNoteMessage.type === "success" ? "message-success" : "message-error"}`} style={{ marginTop: '1rem' }}>
-                      {manualsNoteMessage.text}
+                  {manualsMessage.text && (
+                    <p className={`form-message ${manualsMessage.type === "success" ? "message-success" : "message-error"}`} style={{ marginTop: '1rem' }}>
+                      {manualsMessage.text}
                     </p>
                   )}
-
-                  <div style={{ marginTop: '2rem', padding: '1.2rem', background: '#eef7ed', borderLeft: '4px solid #4caf50', borderRadius: '6px' }}>
-                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#1b5e20' }}>Preview of Live Note:</h4>
-                    <p style={{ margin: 0, fontSize: '0.92rem', color: '#2e7d32' }}>
-                      <span>*</span> <strong>Note:</strong> {manualsNoteForm}
-                    </p>
-                  </div>
                 </article>
               </div>
             )}
