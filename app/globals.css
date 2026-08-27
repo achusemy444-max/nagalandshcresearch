@@ -40,17 +40,24 @@
 .admin-navbar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  padding: 0.5rem 1rem;
   background-color: #1c1c1c;
   border-top: 3px solid #4caf50;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   margin-bottom: 0;
-  overflow-x: auto;
-  scrollbar-width: thin;
+  overflow: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   width: 100%;
+}
+
+.admin-navbar::-webkit-scrollbar {
+  display: none;
 }
 
 .admin-navbar-full .admin-navbar {
@@ -58,7 +65,7 @@
   border-top: none;
   border-bottom: none;
   box-shadow: none;
-  max-width: 1240px;
+  max-width: 1350px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -66,13 +73,13 @@
 .nav-tab {
   background: transparent;
   border: none;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: #b8b8b8;
   cursor: pointer;
-  padding: 0.65rem 1.1rem;
+  padding: 0.55rem 0.95rem;
   border-bottom: 3px solid transparent;
-  border-radius: 6px 6px 0 0;
+  border-radius: 6px;
   transition: all 0.22s ease;
   white-space: nowrap;
 }
