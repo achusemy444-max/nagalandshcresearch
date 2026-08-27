@@ -27,32 +27,44 @@
 
 .admin-navbar {
   display: flex;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border);
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #1c1c1c;
+  border-top: 3px solid #4caf50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   margin-bottom: 2rem;
   overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .nav-tab {
-  background: none;
+  background: transparent;
   border: none;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  color: var(--muted);
+  color: #b8b8b8;
   cursor: pointer;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1.1rem;
   border-bottom: 3px solid transparent;
-  transition: all 0.2s ease;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.22s ease;
+  white-space: nowrap;
 }
 
 .nav-tab:hover {
-  color: var(--primary);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-tab.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  color: #4caf50;
+  font-weight: 700;
+  border-bottom-color: #4caf50;
+  background: rgba(76, 175, 80, 0.12);
+  text-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
 }
 
 * {
