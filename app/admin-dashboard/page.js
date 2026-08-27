@@ -783,11 +783,42 @@ export default function AdminDashboard() {
           </div>
         </section>
       </main>
-      <footer className="centered-footer">
-        <div className="container footer-row">
-          <p>© All Rights Reserved 2026 - Department of Soil & Water Conservation, Nagaland</p>
-          <p> Research & Training Service</p>
-          <p> Designed & developed by MagnuraSDigital Team</p>
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <div className="footer-col-brand">
+            <div className="footer-logo-group">
+              <img src="/assets/gon-logo.png" alt="Government of Nagaland" className="footer-logo footer-logo-round" />
+              <img src="/assets/soil-logo.jpg" alt="Department of Soil & Water Conservation" className="footer-logo footer-logo-round" />
+            </div>
+            <p className="footer-brand-text">
+              Department of Soil & Water Conservation,<br />
+              Government of Nagaland.
+            </p>
+          </div>
+
+          <div className="footer-col">
+            <h4>GOVERNMENT PORTALS</h4>
+            <ul className="footer-links">
+              <li><a href="https://necouncil.gov.in" target="_blank" rel="noopener noreferrer">necouncil.gov.in</a></li>
+              <li><a href="https://nagaland.gov.in" target="_blank" rel="noopener noreferrer">Nagaland State Portal</a></li>
+              <li><a href="https://india.gov.in" target="_blank" rel="noopener noreferrer">National Portal of India</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h4>QUICK LINKS</h4>
+            <ul className="footer-links">
+              <li><Link href="/">Home</Link></li>
+              <li><a href="https://github.com/achusemy444-max/nagalandshcresearch" target="_blank" rel="noopener noreferrer">Project Repository</a></li>
+              <li><Link href="/admin-dashboard">Admin Portal</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="footer-bottom-bar">
+          <div className="footer-bottom-text">
+            © All Rights Reserved 2026 - Department of Soil & Water Conservation, Nagaland | Research & Training Service | Designed & developed by MagnuraSDigital Team
+          </div>
         </div>
       </footer>
     </>
