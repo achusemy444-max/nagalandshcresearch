@@ -447,12 +447,11 @@ export default function HomePage() {
                   <h3>Research Programme Team</h3>
                 </div>
                 <div className="credits-list">
-                  <p><strong>Developer Team</strong> MagnuraSDigital Team</p>
-                  <p><strong>Main Developer:</strong> Shri. Khanchulo Semy (SCA) </p>
-                  <p><strong>Cyber Law and Security Authentication:</strong> MagnuraSDigital Team </p>
-                  <p><strong>Sub Developer:</strong> Er. Chentilo Semy</p>
-                  <p><strong>SHRPortal Project Advisor:</strong> Directorate Soil Health Report Project Team, Nagaland</p>
-                  <p><strong>Operational SHRPortal Project Sponsor:</strong> Director ********</p>
+                  <p><strong>Developer Team</strong> MagnuraSDigital</p>
+                  <p><strong>Main Developer:</strong> Shri. Khanchulo Semy (Dev.MagnuraSDigital) </p>
+                  <p><strong>Security Authentication and Technical Support:</strong> Er. C.Semy (Dev.MagnuraSDigital) </p>
+                  <p><strong>SHR Portal Advisor:</strong> Directorate Soil Health Report Project Team, Nagaland</p>
+                  <p><strong>Operational SHR Portal Implemantation:</strong> ********</p>
                 </div>
               </article>
             </div>
